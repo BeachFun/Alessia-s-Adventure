@@ -9,6 +9,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int power = 3;
     [SerializeField] private int protection = 1;
 
+    [Header("Enemy class Components")]
+    [SerializeField] protected Animator animator;
+
+
     public virtual void Attack()
     {
 

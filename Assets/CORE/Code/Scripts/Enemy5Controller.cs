@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class Enemy5Controller : Enemy
 {
-    [SerializeField] private Animator animator;
-
     private void Start()
     {
         animator = GetComponent<Animator>();

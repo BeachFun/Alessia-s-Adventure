@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class Enemy2Controller : Enemy
 {
-    [SerializeField] private Animator animator;
-
     private float speed = 0f;
 
     private void Start()
