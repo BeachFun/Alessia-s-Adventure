@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 
-public class Enemy5Controller : MonoBehaviour
+public class Enemy5Controller : Enemy
 {
     [SerializeField] private Animator animator;
 

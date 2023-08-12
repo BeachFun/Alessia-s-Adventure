@@ -4,8 +4,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 
-public class Enemy3Controller : MonoBehaviour
+public class Enemy3Controller : Enemy
 {
+    [Header("Components")]
     [SerializeField] private Animator animator;
 
     private void Start()
