@@ -1,9 +1,15 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class HeroineController : MonoBehaviour
 {
     private enum MovementState { Idle, Running, Jumping, Falling };
+
+    [Header("Characteristics")]
+    [SerializeField] protected int _hp = 100;
+    [SerializeField] protected int _atk = 10;
+    [SerializeField] protected int _def = 3;
 
     [Header("Components")]
     [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -126,5 +132,15 @@ public class HeroineController : MonoBehaviour
         Gizmos.color = Color.red;
 
         Gizmos.DrawWireSphere(transform.position + _checkerOffset, _checkRadius);
+    }
+
+    /// <summary>
+    /// Ранить игрока, получить ранение.
+    /// </summary>
+    /// <param name="numAtk">Величина атаки</param>
+    public void Hurt(int numAtk)
+    {
+        _hp -= (numAtk - _def);
+        Debug.Log(_hp);
     }
 }

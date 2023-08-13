@@ -10,43 +10,50 @@ public class Enemy3Controller : Enemy
     [SerializeField] private float aggressionDistance;
 
     private string attackAnimationName;
+    private Vector3 raycastDirection;
 
     private void FixedUpdate()
     {
         if (!isBusy)
         {
-            RaycastHit2D hit;
+            Transform transform;
 
-            hit = Physics2D.Raycast(transform.position, Vector3.left, aggressionDistance);
+            transform = Physics2D.Raycast(this.transform.position, Vector3.left, aggressionDistance).transform;
 
-            if (hit.transform is not null && hit.transform.tag == "Player")
+            if (transform is not null && transform.tag == "Player")
             {
                 attackAnimationName = "left_attack";
-                StartCoroutine(Attack());
+                raycastDirection = Vector3.left;
+                StartCoroutine(Attack(transform));
             }
 
-            hit = Physics2D.Raycast(transform.position, Vector3.right, aggressionDistance);
+            transform = Physics2D.Raycast(this.transform.position, Vector3.right, aggressionDistance).transform;
 
-            if (hit.transform is not null && hit.transform.tag == "Player")
+            if (transform is not null && transform.tag == "Player")
             {
                 attackAnimationName = "right_attack";
-                StartCoroutine(Attack());
+                raycastDirection = Vector3.right;
+                StartCoroutine(Attack(transform));
             }
         }
     }
 
-    private IEnumerator Attack()
+    private IEnumerator Attack(Transform playerTransform)
     {
         yield return null;
 
         isBusy = true;
-
         animator.SetTrigger(attackAnimationName);
 
-        while (UnityUtils.IsAnimationPlaying(animator, attackAnimationName))
+        yield return new WaitForSeconds(atkSpeed / 2);
+
+        playerTransform = Physics2D.Raycast(this.transform.position, raycastDirection, aggressionDistance).transform;
+        if (playerTransform is not null && playerTransform.tag == "Player")
         {
-            yield return new WaitForSeconds(.05f);
+            playerTransform.GetComponent<HeroineController>().Hurt(atk);
         }
+
+        yield return new WaitForSeconds(atkSpeed / 2 + timeBetweenAttacks);
 
         isBusy = false;
     }

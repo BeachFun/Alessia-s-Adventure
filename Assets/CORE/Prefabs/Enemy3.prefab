@@ -121,13 +121,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76d5301e64573fb4fbe4132cbee206e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5
-  power: 3
-  defence: 1
+  hp: 10
+  atk: 5
+  def: 3
+  timeBetweenAttacks: 0
+  atkSpeed: 1
+  spriteRenderer: {fileID: 0}
   animator: {fileID: 1639910714167217052}
   physic: {fileID: 0}
   collider2D: {fileID: 0}
-  player: {fileID: 0}
   aggressionDistance: 0.8
 --- !u!50 &7452756386537538050
 Rigidbody2D:

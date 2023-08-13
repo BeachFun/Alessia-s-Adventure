@@ -131,6 +131,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1555418522036214553, guid: 64e4626dd1a2d89468215eecaf8af66d, type: 3}
+      propertyPath: _hp
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 5499383012209758304, guid: 64e4626dd1a2d89468215eecaf8af66d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.962
@@ -321,6 +325,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1797693127 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 2252529990343094667, guid: 640e6f38587898a4da162c0aab5f10ed, type: 3}
+  m_PrefabInstance: {fileID: 7956280344435595409}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3976905663314352473
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -572,10 +581,14 @@ PrefabInstance:
     - target: {fileID: 6758912288500429169, guid: 640e6f38587898a4da162c0aab5f10ed, type: 3}
       propertyPath: collider2D
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1797693127}
     - target: {fileID: 6758912288500429169, guid: 640e6f38587898a4da162c0aab5f10ed, type: 3}
       propertyPath: aggressionDistance
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6758912288500429169, guid: 640e6f38587898a4da162c0aab5f10ed, type: 3}
+      propertyPath: timeBetweenAttacks
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7452756386537538050, guid: 640e6f38587898a4da162c0aab5f10ed, type: 3}
       propertyPath: m_Simulated
