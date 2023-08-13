@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 5499383012209758304}
   - component: {fileID: 1555418522036214553}
   - component: {fileID: 7081216371628442493}
-  - component: {fileID: 1337824474285996509}
+  - component: {fileID: 603721709302718443}
   m_Layer: 0
   m_Name: Heroine
   m_TagString: Player
@@ -193,8 +193,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &1337824474285996509
-CircleCollider2D:
+--- !u!61 &603721709302718443
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -225,6 +225,16 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0275, y: -0.08}
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Size: {x: 0.7, y: 1.15}
+  m_EdgeRadius: 0

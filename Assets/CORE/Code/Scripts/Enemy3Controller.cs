@@ -6,15 +6,48 @@ using UnityEngine;
 
 public class Enemy3Controller : Enemy
 {
-    private void Start()
+    [Header("Enemy3 Settings")]
+    [SerializeField] private float aggressionDistance;
+
+    private string attackAnimationName;
+
+    private void FixedUpdate()
     {
-        animator = GetComponent<Animator>();
-        StartCoroutine(Loop());
+        if (!isBusy)
+        {
+            RaycastHit2D hit;
+
+            hit = Physics2D.Raycast(transform.position, Vector3.left, aggressionDistance);
+
+            if (hit.transform is not null && hit.transform.tag == "Player")
+            {
+                attackAnimationName = "left_attack";
+                StartCoroutine(Attack());
+            }
+
+            hit = Physics2D.Raycast(transform.position, Vector3.right, aggressionDistance);
+
+            if (hit.transform is not null && hit.transform.tag == "Player")
+            {
+                attackAnimationName = "right_attack";
+                StartCoroutine(Attack());
+            }
+        }
     }
 
-    private IEnumerator Loop()
+    private IEnumerator Attack()
     {
         yield return null;
 
+        isBusy = true;
+
+        animator.SetTrigger(attackAnimationName);
+
+        while (UnityUtils.IsAnimationPlaying(animator, attackAnimationName))
+        {
+            yield return new WaitForSeconds(.05f);
+        }
+
+        isBusy = false;
     }
 }
