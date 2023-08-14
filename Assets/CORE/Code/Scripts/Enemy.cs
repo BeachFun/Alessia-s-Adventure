@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     [Header("Enemy Settings")]
     [SerializeField] protected float timeBetweenAttacks;
     [SerializeField] protected float atkSpeed = 1;
+    [SerializeField] protected float moveSpeed = 0f;
 
     [Header("Enemy class Components")]
     [SerializeField] protected SpriteRenderer spriteRenderer;

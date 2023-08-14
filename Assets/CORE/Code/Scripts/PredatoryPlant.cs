@@ -4,10 +4,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 
-public class Enemy3Controller : Enemy
+public class PredatoryPlant : Enemy
 {
-    [Header("Enemy3 Settings")]
-    [SerializeField] private float aggressionDistance;
+    [Header("PredatoryPlant Settings")]
+    [SerializeField] private float attackDistance;
 
     private string attackAnimationName;
     private Vector3 raycastDirection;
@@ -18,7 +18,7 @@ public class Enemy3Controller : Enemy
         {
             Transform transform;
 
-            transform = Physics2D.Raycast(this.transform.position, Vector3.left, aggressionDistance).transform;
+            transform = Physics2D.Raycast(this.transform.position, Vector3.left, attackDistance).transform;
 
             if (transform is not null && transform.tag == "Player")
             {
@@ -27,7 +27,7 @@ public class Enemy3Controller : Enemy
                 StartCoroutine(Attack(transform));
             }
 
-            transform = Physics2D.Raycast(this.transform.position, Vector3.right, aggressionDistance).transform;
+            transform = Physics2D.Raycast(this.transform.position, Vector3.right, attackDistance).transform;
 
             if (transform is not null && transform.tag == "Player")
             {
@@ -45,15 +45,15 @@ public class Enemy3Controller : Enemy
         isBusy = true;
         animator.SetTrigger(attackAnimationName);
 
-        yield return new WaitForSeconds(atkSpeed / 2);
+        yield return new WaitForSeconds(atkSpeed / 1.5f);
 
-        playerTransform = Physics2D.Raycast(this.transform.position, raycastDirection, aggressionDistance).transform;
+        playerTransform = Physics2D.Raycast(this.transform.position, raycastDirection, attackDistance).transform;
         if (playerTransform is not null && playerTransform.tag == "Player")
         {
             playerTransform.GetComponent<HeroineController>().Hurt(atk);
         }
 
-        yield return new WaitForSeconds(atkSpeed / 2 + timeBetweenAttacks);
+        yield return new WaitForSeconds(atkSpeed / 3 + timeBetweenAttacks);
 
         isBusy = false;
     }

@@ -129,7 +129,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   animator: {fileID: 1639910714167217052}
   physic: {fileID: 0}
-  collider2D: {fileID: 0}
+  collider2D: {fileID: 2252529990343094667}
   aggressionDistance: 0.8
 --- !u!50 &7452756386537538050
 Rigidbody2D:
