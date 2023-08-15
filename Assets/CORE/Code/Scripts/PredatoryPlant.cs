@@ -45,7 +45,7 @@ public class PredatoryPlant : Enemy
         isBusy = true;
         animator.SetTrigger(attackAnimationName);
 
-        yield return new WaitForSeconds(atkSpeed / 1.5f);
+        yield return new WaitForSeconds(hurtSpeed / 1.5f);
 
         playerTransform = Physics2D.Raycast(this.transform.position, raycastDirection, attackDistance).transform;
         if (playerTransform is not null && playerTransform.tag == "Player")
@@ -53,7 +53,7 @@ public class PredatoryPlant : Enemy
             playerTransform.GetComponent<HeroineController>().Hurt(atk);
         }
 
-        yield return new WaitForSeconds(atkSpeed / 3 + timeBetweenAttacks);
+        yield return new WaitForSeconds(hurtSpeed / 3 + timeBetweenAttacks);
 
         isBusy = false;
     }

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Morlock : Enemy
 {
-    private enum MoveDirection { Left, Right }
+    private enum MorlockState { Idle, Walk, Rotate, Attack, Hit }
 
 
     [Space] [Header("Morlock Settings")]
@@ -15,42 +15,86 @@ public class Morlock : Enemy
     [SerializeField] private float aggressionDistance;
     [SerializeField] private float attackDistance;
 
-    [Header("Moving system")]
-    [SerializeField] private bool isGround;
+    [Header("Movement system")]
     [SerializeField] private float rayDistanceGroundCheck = 1f;
     [SerializeField] private float rayDistanceFarGroundCheck = 2f;
     [SerializeField] private MoveDirection moveDirection = MoveDirection.Left;
     [SerializeField] private float rotateSeconds;
+    [SerializeField] private bool isAggressiveWalk;
 
-    private bool raycastOn = true;
-    private bool isAggressiveWalk;
+    [Header("Other")]
+    [SerializeField] private bool isGround;
 
+    [Header("Morlock class Components")]
+    [SerializeField] private BoxCollider2D boxCollider2D;
+
+    private Vector2 lookDirection;
+    private bool _movementOn = true;
+    private bool _attackOn = true;
+    private MorlockState _state;
+
+
+    protected override void Start()
+    {
+        base.Start();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+    }
 
     private void FixedUpdate()
     {
-        if (raycastOn)
+        if (!isBusy && isGround)
         {
-            // Movement, check ground
-            if (isGround)
+            if (!_attackOn && _state == MorlockState.Idle) _movementOn = true;
+
+            // Cheking environment
+            RaycastHit2D hitBottom, hitFar; // РїРѕРІРµСЂС…РЅРѕСЃС‚СЊ РїРѕРґ РїРµСЂСЃРѕРЅР°Р¶РµРј Рё С‡СѓС‚СЊ РґР°Р»СЊС€Рµ РїРµСЂСЃРѕРЅР°Р¶Р°
+            Vector2 bottomBodyPoint, forwardBodyPoint;
+
+            bottomBodyPoint = new Vector2(this.transform.position.x, boxCollider2D.bounds.min.y);
+
+            if (moveDirection == MoveDirection.Left)
             {
-                RaycastHit2D hitBottom, hitFar; // поверхность под персонажем и чуть дальше персонажа
-                Vector2 bottomPoint = new Vector2(this.transform.position.x, collider2D.bounds.min.y);
-                Vector2 forwardPoint;
+                forwardBodyPoint = new Vector2(boxCollider2D.bounds.min.x, this.transform.position.y);
+                hitFar = Physics2D.Raycast(forwardBodyPoint, new Vector2(-0.7f, -1f), rayDistanceFarGroundCheck);
+            }
+            else
+            {
+                forwardBodyPoint = new Vector2(boxCollider2D.bounds.max.x, this.transform.position.y);
+                hitFar = Physics2D.Raycast(forwardBodyPoint, new Vector2(0.7f, -1f), rayDistanceFarGroundCheck);
+            }
 
-                if (moveDirection == MoveDirection.Left)
+
+            // Attacked, check player
+            lookDirection = moveDirection == MoveDirection.Left ? Vector2.left : Vector2.right;
+            Transform playerTransform = Physics2D.Raycast(forwardBodyPoint, lookDirection, attackDistance).transform;
+
+            if (playerTransform is not null && playerTransform.tag == "Player")
+            {
+                _movementOn = false;
+
+                if (_attackOn) StartCoroutine(Attack(playerTransform, forwardBodyPoint));
+            }
+            else
+            {
+                playerTransform = Physics2D.Raycast(forwardBodyPoint, lookDirection, aggressionDistance).transform;
+                if (playerTransform is null)
                 {
-                    forwardPoint = new Vector2(collider2D.bounds.min.x, this.transform.position.y);
-                    hitFar = Physics2D.Raycast(forwardPoint, new Vector2(-0.7f, -1f), rayDistanceFarGroundCheck);
+                    isAggressiveWalk = false;
+                    animator.speed = 1f;
                 }
-                else
+                else if (playerTransform.tag == "Player")
                 {
-                    forwardPoint = new Vector2(collider2D.bounds.max.x, this.transform.position.y);
-                    hitFar = Physics2D.Raycast(forwardPoint, new Vector2(0.7f, -1f), rayDistanceFarGroundCheck);
+                    isAggressiveWalk = true;
+                    animator.speed = 2f;
                 }
+            }
 
-                hitBottom = Physics2D.Raycast(bottomPoint, Vector2.down, rayDistanceGroundCheck);
+            // Moving
+            if (_movementOn)
+            {
+                hitBottom = Physics2D.Raycast(bottomBodyPoint, Vector2.down, rayDistanceGroundCheck);
 
-                if (hitFar.collider is null || Mathf.Approximately(hitBottom.point.y, hitFar.point.y))
+                if (hitFar.collider is null || !Mathf.Approximately(Mathf.Round(hitBottom.point.y), Mathf.Round(hitFar.point.y)))
                 {
                     StartCoroutine(SlowRotate());
                 }
@@ -61,23 +105,12 @@ public class Morlock : Enemy
                     else
                         physic.velocity = new Vector2(moveSpeed * Time.fixedDeltaTime, 0);
 
+                    if (isAggressiveWalk)
+                        physic.velocity *= 2; // РµСЃР»Рё СѓРІРёРґРµР» РёРіСЂРѕРєР°, С‚Рѕ СѓСЃРєРѕСЂРµРЅРЅРѕРµ РґРІРёР¶РµРЅРёРµ Рє РёРіСЂРѕРєСѓ
+
                     animator.SetFloat("speed", physic.velocity.magnitude / Time.fixedDeltaTime);
                 }
             }
-
-            // Attacked, check player
-
-            Transform playerTransform;
-
-            if (moveDirection == MoveDirection.Left)
-                playerTransform = Physics2D.Raycast(this.transform.position, Vector2.left, aggressionDistance).transform;
-            else
-                playerTransform = Physics2D.Raycast(this.transform.position, Vector2.right, aggressionDistance).transform;
-
-            if (playerTransform is null)
-                isAggressiveWalk = false;
-            else if (playerTransform.tag == "Player")
-                isAggressiveWalk = true;
         }
     }
 
@@ -98,14 +131,34 @@ public class Morlock : Enemy
     }
 
 
-    private IEnumerator Attack(Transform transform)
+    private IEnumerator Attack(Transform transform, Vector2 forwardPoint)
     {
-        yield return null;
+        isBusy = true;
+        _attackOn = false;
+
+        animator.SetFloat("speed", 0);
+        animator.SetTrigger("attack");
+
+        yield return new WaitForSeconds(hurtSpeed);
+
+        Transform playerTransform = Physics2D.Raycast(forwardPoint, lookDirection, attackDistance).transform;
+        if (playerTransform is not null && playerTransform.tag == "Player")
+        {
+            transform.GetComponent<HeroineController>().Hurt(atk);
+        }
+
+        isBusy = false;
+
+        yield return new WaitForSeconds(timeBetweenAttacks);
+
+        _attackOn = true;
     }
 
     private IEnumerator SlowRotate()
     {
-        raycastOn = false;
+        _state = MorlockState.Rotate;
+        _movementOn = false;
+
         animator.SetFloat("speed", 0f);
 
         yield return new WaitForSeconds(rotateSeconds / 1.5f);
@@ -123,6 +176,7 @@ public class Morlock : Enemy
 
         yield return new WaitForSeconds(rotateSeconds / 3f);
 
-        raycastOn = true;
+        _movementOn = true;
+        _state = MorlockState.Idle;
     }
 }

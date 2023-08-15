@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 8263281725397485862}
   - component: {fileID: 2831698771277155319}
   - component: {fileID: 1639910714167217052}
-  - component: {fileID: 6758912288500429169}
   - component: {fileID: 7452756386537538050}
   - component: {fileID: 2252529990343094667}
+  - component: {fileID: 6758912288500429169}
   m_Layer: 0
-  m_Name: Enemy3
+  m_Name: Predatory Plant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,28 +109,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6758912288500429169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4150626833935404340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76d5301e64573fb4fbe4132cbee206e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 10
-  atk: 5
-  def: 3
-  timeBetweenAttacks: 0
-  atkSpeed: 1
-  spriteRenderer: {fileID: 0}
-  animator: {fileID: 1639910714167217052}
-  physic: {fileID: 0}
-  collider2D: {fileID: 2252529990343094667}
-  aggressionDistance: 0.8
 --- !u!50 &7452756386537538050
 Rigidbody2D:
   serializedVersion: 4
@@ -203,3 +181,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.75, y: 1.3}
   m_EdgeRadius: 0
+--- !u!114 &6758912288500429169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4150626833935404340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76d5301e64573fb4fbe4132cbee206e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 10
+  atk: 5
+  def: 3
+  timeBetweenAttacks: 5
+  atkSpeed: 1
+  moveSpeed: 0
+  spriteRenderer: {fileID: 2831698771277155319}
+  animator: {fileID: 1639910714167217052}
+  physic: {fileID: 0}
+  collider2D: {fileID: 2252529990343094667}
+  attackDistance: 0

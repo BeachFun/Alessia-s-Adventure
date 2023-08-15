@@ -2,23 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
+
 public class Enemy : MonoBehaviour
 {
+    [Space][Header("Enemy Settings")]
+
     [Header("Characteristics")]
     [SerializeField] protected int hp = 5;
     [SerializeField] protected int atk = 3;
     [SerializeField] protected int def = 1;
 
     [Header("Enemy Settings")]
-    [SerializeField] protected float timeBetweenAttacks;
-    [SerializeField] protected float atkSpeed = 1;
+    [Tooltip("Скорость нанесения урона (удара)")]
+    [SerializeField] protected float hurtSpeed = 1;
+    [Tooltip("Время между атаками")]
+    [SerializeField] protected float timeBetweenAttacks = 1;
     [SerializeField] protected float moveSpeed = 0f;
 
     [Header("Enemy class Components")]
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected Animator animator;
     [SerializeField] protected Rigidbody2D physic;
-    [SerializeField] protected Collider2D collider2D;
 
 
     protected bool isBusy;
@@ -29,13 +37,16 @@ public class Enemy : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         physic = GetComponent<Rigidbody2D>();
-        collider2D = GetComponent<Collider2D>();
     }
 
 
-    public virtual void Hurt(int number)
+    public virtual void Hurt(int numAtk)
     {
-        hp -= (number - def);
+        hp -= (numAtk - def);
+
+        isBusy = true;
+        animator.SetTrigger("hit");
+        isBusy = false;
     }
 
     protected virtual void Death()
@@ -48,3 +59,5 @@ public class Enemy : MonoBehaviour
         spriteRenderer.flipX = !spriteRenderer.flipX;
     }
 }
+
+public enum MoveDirection { Left, Right }
