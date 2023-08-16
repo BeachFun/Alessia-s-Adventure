@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Collider2D))]
 
 public class Enemy : MonoBehaviour
 {
@@ -38,6 +37,7 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         physic = GetComponent<Rigidbody2D>();
     }
+
 
 
     public virtual void Hurt(int numAtk)

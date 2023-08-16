@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 930539fe13ef3a84f86bc7f4cc6814b6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -124,7 +124,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -193,17 +193,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e76cb070cba384a8bef79d63d1c93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 5
-  atk: 3
-  def: 1
+  hp: 10
+  atk: 20
+  def: 0
+  hurtSpeed: 1
   timeBetweenAttacks: 7
-  atkSpeed: 1
-  moveSpeed: 50
+  moveSpeed: 80
   spriteRenderer: {fileID: 6875745587762059467}
   animator: {fileID: 3442777843677103704}
-  physic: {fileID: 0}
-  collider2D: {fileID: 8994908165812191569}
-  startPoint: {x: 0, y: 0}
-  endPoint: {x: 0, y: 0}
-  rotateSeconds: 1.2
-  isStand: 0
+  physic: {fileID: 191504214546491134}
+  finishPos: {x: 0, y: 0}
+  rotateSeconds: 1.7
+  attackDistance: 16
+  playerTransform: {fileID: 5499383012209758304, guid: 64e4626dd1a2d89468215eecaf8af66d, type: 3}

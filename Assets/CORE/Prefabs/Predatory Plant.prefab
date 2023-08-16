@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 8e1e1125ba0406c44abe374a66cc6db4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -196,11 +196,10 @@ MonoBehaviour:
   hp: 10
   atk: 5
   def: 3
+  hurtSpeed: 1
   timeBetweenAttacks: 5
-  atkSpeed: 1
   moveSpeed: 0
   spriteRenderer: {fileID: 2831698771277155319}
   animator: {fileID: 1639910714167217052}
   physic: {fileID: 0}
-  collider2D: {fileID: 2252529990343094667}
   attackDistance: 0

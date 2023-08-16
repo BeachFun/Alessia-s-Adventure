@@ -40,7 +40,7 @@ public class Morlock : Enemy
         boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (!isBusy && isGround)
         {
@@ -94,7 +94,7 @@ public class Morlock : Enemy
             {
                 hitBottom = Physics2D.Raycast(bottomBodyPoint, Vector2.down, rayDistanceGroundCheck);
 
-                if (hitFar.collider is null || !Mathf.Approximately(Mathf.Round(hitBottom.point.y), Mathf.Round(hitFar.point.y)))
+                if (hitFar.collider is null || !UnityUtils.Approximately(hitBottom.point, hitFar.point, SnapAxis2D.Y))
                 {
                     StartCoroutine(SlowRotate());
                 }
@@ -114,7 +114,7 @@ public class Morlock : Enemy
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 6)
         {
@@ -122,7 +122,7 @@ public class Morlock : Enemy
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 6)
         {

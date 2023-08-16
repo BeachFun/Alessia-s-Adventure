@@ -6,40 +6,77 @@ using UnityEngine;
 
 public class Bat : Enemy
 {
+    private enum BatState { Idle, Move, Attack, Rotation }
+
+
+    [Space][Header("Bat Settings")]
+
     [Header("Moving system")]
-    [SerializeField] private Vector2 startPoint;
-    [SerializeField] private Vector2 endPoint;
+    [SerializeField] private Vector2 finishPos;
     [SerializeField] private float rotateSeconds;
-    [SerializeField] private bool isStand;
+
+    [Header("Attack system")]
+    [SerializeField] private float attackDistance;
+
+    [Header("Bat class Components")]
+    [SerializeField] private BoxCollider2D boxCollider2D;
+
+    [Header("References")]
+    [SerializeField] private Transform playerTransform;
 
     private bool _isMoveBack;
+    private Vector2 _startPos;
     private Vector2 _destination;
+    private BatState _state;
 
 
-    private void FixedUpdate()
+    protected override void Start()
     {
-        if (!isStand)
+        base.Start();
+
+        boxCollider2D = GetComponent<BoxCollider2D>();
+        Initialize();
+    }
+
+    void FixedUpdate()
+    {
+        if (_state != BatState.Rotation)
         {
-            Vector2 currPosition = new Vector2(this.transform.position.x, this.transform.position.y);
+            //Debug.Log(Vector2.Distance(playerTransform.position, this.transform.position));
+            Vector2 currentPosition = this.transform.position;
+            Vector2 direction = (_destination - currentPosition).normalized;
+            physic.velocity = direction * moveSpeed * Time.fixedDeltaTime;
 
-            if (startPoint == currPosition)
+            if (UnityUtils.Approximately(currentPosition, _destination))
                 StartCoroutine(SlowRotate());
-
-            physic.velocity = (_destination - currPosition) * moveSpeed * Time.fixedDeltaTime;
         }
     }
 
+
+    private void Initialize()
+    {
+        _startPos = this.transform.position;
+        _destination = finishPos;
+
+        Vector2 direction = (_destination - _startPos).normalized;
+        if (direction.x > 0) spriteRenderer.flipX = false;
+        else spriteRenderer.flipX = true;
+    }
+
+
     private IEnumerator SlowRotate()
     {
-        isStand = true;
+        _state = BatState.Rotation;
+        physic.velocity = Vector2.zero;
 
         yield return new WaitForSeconds(rotateSeconds / 1.5f);
 
-        _destination = _isMoveBack ? endPoint : startPoint;
+        _destination = _isMoveBack ? finishPos : _startPos;
+        _isMoveBack = !_isMoveBack;
         spriteRenderer.flipX = _destination.x < this.transform.position.x ? true : false;
 
         yield return new WaitForSeconds(rotateSeconds / 3f);
 
-        isStand = false;
+        _state = BatState.Idle;
     }
 }
