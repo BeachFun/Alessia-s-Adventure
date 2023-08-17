@@ -128,6 +128,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 850351003342634611, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
   m_PrefabInstance: {fileID: 1311324027}
   m_PrefabAsset: {fileID: 0}
+--- !u!50 &168648492 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 7081216371628442493, guid: 64e4626dd1a2d89468215eecaf8af66d, type: 3}
+  m_PrefabInstance: {fileID: 909256405}
+  m_PrefabAsset: {fileID: 0}
 --- !u!61 &712462468 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 6654119717843473843, guid: f50612dbf190a03469443980f42c9599, type: 3}
@@ -143,11 +148,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5499383012209758304, guid: 64e4626dd1a2d89468215eecaf8af66d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.42
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5499383012209758304, guid: 64e4626dd1a2d89468215eecaf8af66d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.43
+      value: 1.98
       objectReference: {fileID: 0}
     - target: {fileID: 5499383012209758304, guid: 64e4626dd1a2d89468215eecaf8af66d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -187,7 +192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6837770208990168602, guid: 64e4626dd1a2d89468215eecaf8af66d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -652,11 +657,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 850351003342634611, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.13
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 850351003342634611, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.12
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 850351003342634611, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: m_LocalPosition.z
@@ -691,20 +696,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5759095768438808608, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
-      propertyPath: def
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5759095768438808608, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: isStand
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5759095768438808608, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: toStart
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5759095768438808608, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
-      propertyPath: moveSpeed
-      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5759095768438808608, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: endPoint.x
@@ -716,11 +713,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5759095768438808608, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: finishPos.x
-      value: 5.08
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5759095768438808608, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: finishPos.y
-      value: 8.32
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5759095768438808608, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: startPoint.x
@@ -731,9 +728,9 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5759095768438808608, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
-      propertyPath: attackDistance
-      value: 4
-      objectReference: {fileID: 0}
+      propertyPath: playerRigidbody
+      value: 
+      objectReference: {fileID: 168648492}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

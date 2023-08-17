@@ -13,21 +13,26 @@ public class Bat : Enemy
 
     [Header("Moving system")]
     [SerializeField] private Vector2 finishPos;
+    [SerializeField] private float barrierDistance = 1;
     [SerializeField] private float rotateSeconds;
 
     [Header("Attack system")]
-    [SerializeField] private float attackDistance;
+    [SerializeField] private bool attackOn;
+    [SerializeField] private float shootSpeed = 3;
+    [SerializeField] private EnergyBall energyBallPrefab;
 
     [Header("Bat class Components")]
     [SerializeField] private BoxCollider2D boxCollider2D;
 
     [Header("References")]
-    [SerializeField] private Transform playerTransform;
+    [Tooltip("Нужно установить ссылку на игрока на сцене, а не на префам игрока")]
+    [SerializeField] private Rigidbody2D playerRigidbody;
 
     private bool _isMoveBack;
     private Vector2 _startPos;
     private Vector2 _destination;
     private BatState _state;
+    private bool _attackOn = true;
 
 
     protected override void Start()
@@ -40,15 +45,36 @@ public class Bat : Enemy
 
     void FixedUpdate()
     {
-        if (_state != BatState.Rotation)
+        if (_state == BatState.Idle)
         {
-            //Debug.Log(Vector2.Distance(playerTransform.position, this.transform.position));
             Vector2 currentPosition = this.transform.position;
-            Vector2 direction = (_destination - currentPosition).normalized;
-            physic.velocity = direction * moveSpeed * Time.fixedDeltaTime;
+            Vector2 moveDirection = (_destination - currentPosition).normalized;
+            physic.velocity = moveDirection * moveSpeed * Time.fixedDeltaTime;
+
+            //Transform barrierTransform = Physics2D.Raycast(currentPosition, moveDirection).transform;
+            //if (barrierTransform is not null)
+            //{
+            //    float distance = Vector2.Distance(currentPosition, barrierTransform.position);
+            //    if (distance < barrierDistance)
+            //    {
+            //        SlowRotate();
+            //        return;
+            //    }
+            //}
 
             if (UnityUtils.Approximately(currentPosition, _destination))
-                StartCoroutine(SlowRotate());
+                SlowRotate();
+
+            if (attackOn & _attackOn)
+            {
+                Vector2 attackDirection = (playerRigidbody.position - physic.position).normalized;
+                Transform playerTransform = Physics2D.Raycast(physic.position + attackDirection, attackDirection).transform;
+
+                if (playerTransform is not null && playerTransform.tag == "Player")
+                {
+                    Attack(attackDirection);
+                }
+            }
         }
     }
 
@@ -64,11 +90,16 @@ public class Bat : Enemy
     }
 
 
-    private IEnumerator SlowRotate()
+    private void SlowRotate()
     {
         _state = BatState.Rotation;
         physic.velocity = Vector2.zero;
 
+        StartCoroutine(SlowRotateCoroutine());
+    }
+
+    private IEnumerator SlowRotateCoroutine()
+    {
         yield return new WaitForSeconds(rotateSeconds / 1.5f);
 
         _destination = _isMoveBack ? finishPos : _startPos;
@@ -78,5 +109,32 @@ public class Bat : Enemy
         yield return new WaitForSeconds(rotateSeconds / 3f);
 
         _state = BatState.Idle;
+    }
+
+    private void Attack(Vector2 direction)
+    {
+        _state = BatState.Attack;
+        _attackOn = false;
+        physic.velocity = Vector2.zero;
+
+        StartCoroutine(AttackCoroutine(direction));
+    }
+
+    private IEnumerator AttackCoroutine(Vector2 direction)
+    {
+        animator.SetTrigger("attack1");
+        float length = UnityUtils.AnimationPlayDuration(animator);
+
+        yield return new WaitForSeconds(length);
+
+        EnergyBall energyBall = Instantiate(energyBallPrefab, this.transform.position, new Quaternion(0, 0, 0, 0));
+        energyBall.power = atk;
+        energyBall.AddForce(direction, shootSpeed);
+
+        _state = BatState.Idle;
+
+        yield return new WaitForSeconds(timeBetweenAttacks);
+
+        _attackOn = true;
     }
 }

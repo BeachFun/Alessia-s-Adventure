@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
 
     public virtual void Hurt(int numAtk)
     {
-        hp -= (numAtk - def);
+        hp = numAtk > def ? numAtk - def : hp;
 
         isBusy = true;
         animator.SetTrigger("hit");

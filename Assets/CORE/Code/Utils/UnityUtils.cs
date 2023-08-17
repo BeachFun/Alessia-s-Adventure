@@ -11,6 +11,17 @@ public class UnityUtils : MonoBehaviour
     }
 
     /// <summary>
+    /// ¬озвращает длительность текущей анимации в переданном аниматоре
+    /// </summary>
+    /// <returns>ƒлителеность выраженна€ в секундах</returns>
+    public static float AnimationPlayDuration(Animator animator)
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.length;
+    }
+
+
+    /// <summary>
     /// ѕровер€ет приблизительно равны ли две координаты друг другу
     /// </summary>
     public static bool Approximately(Vector2 point1, Vector2 point2) =>
@@ -30,15 +41,6 @@ public class UnityUtils : MonoBehaviour
 
             default: return false;
         }
-    }
-
-    /// <summary>
-    /// ¬озвращает вектор направлени€ движени€ от точки a к точке b
-    /// </summary>
-    /// <returns>¬ектор со значени€ми до 1</returns>
-    public static Vector2 Direction(Vector2 a, Vector2 b)
-    {
-        return Vector2.zero;
     }
 }
 
