@@ -120,8 +120,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 0.24959998
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -203,6 +203,7 @@ MonoBehaviour:
   animator: {fileID: 3442777843677103704}
   physic: {fileID: 191504214546491134}
   finishPos: {x: 0, y: 0}
+  barrierDistance: 1
   rotateSeconds: 1.7
   attackOn: 1
   shootSpeed: 150

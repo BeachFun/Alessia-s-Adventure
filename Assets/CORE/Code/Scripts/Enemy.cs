@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour
 
 
     protected bool isBusy;
+    protected Coroutine freezeRotation;
 
 
     protected virtual void Start()
@@ -38,11 +39,20 @@ public class Enemy : MonoBehaviour
         physic = GetComponent<Rigidbody2D>();
     }
 
+    protected virtual void OnEnable()
+    {
+        freezeRotation = StartCoroutine(FreezeRotationLoop());
+    }
+
+    protected virtual void OnDisable()
+    {
+        StopCoroutine(freezeRotation);
+    }
 
 
     public virtual void Hurt(int numAtk)
     {
-        hp = numAtk > def ? numAtk - def : hp;
+        hp = numAtk > def ? hp - (numAtk - def) : hp;
 
         isBusy = true;
         animator.SetTrigger("hit");
@@ -57,6 +67,15 @@ public class Enemy : MonoBehaviour
     public void Flip()
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
+    }
+
+    protected IEnumerator FreezeRotationLoop()
+    {
+        while (true)
+        {
+            physic.rotation = 0;
+            yield return new WaitForSeconds(.25f);
+        }
     }
 }
 

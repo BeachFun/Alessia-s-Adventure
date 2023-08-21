@@ -45,6 +45,8 @@ public class Bat : Enemy
 
     void FixedUpdate()
     {
+        physic.rotation = 0;
+
         if (_state == BatState.Idle)
         {
             Vector2 currentPosition = this.transform.position;

@@ -33,7 +33,6 @@ public class Morlock : Enemy
     private bool _attackOn = true;
     private MorlockState _state;
 
-
     protected override void Start()
     {
         base.Start();

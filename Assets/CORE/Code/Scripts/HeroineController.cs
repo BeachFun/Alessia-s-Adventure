@@ -140,7 +140,7 @@ public class HeroineController : MonoBehaviour
     /// <param name="numAtk">Величина атаки</param>
     public void Hurt(int numAtk)
     {
-        _hp = numAtk > _def ? numAtk - _def : _hp;
+        _hp = numAtk > _def ? _hp - (numAtk - _def) : _hp;
 
         // TODO: прописать запуск анимации получения урона
 
