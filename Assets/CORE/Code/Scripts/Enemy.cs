@@ -32,13 +32,6 @@ public class Enemy : MonoBehaviour
     protected Coroutine freezeRotation;
 
 
-    protected virtual void Start()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
-        physic = GetComponent<Rigidbody2D>();
-    }
-
     protected virtual void OnEnable()
     {
         freezeRotation = StartCoroutine(FreezeRotationLoop());

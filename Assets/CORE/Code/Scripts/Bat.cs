@@ -35,10 +35,8 @@ public class Bat : Enemy
     private bool _attackOn = true;
 
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-
         boxCollider2D = GetComponent<BoxCollider2D>();
         Initialize();
     }
