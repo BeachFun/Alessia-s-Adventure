@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7721432171621253324}
   - component: {fileID: 7081216371628442493}
   - component: {fileID: 603721709302718443}
-  - component: {fileID: 1555418522036214553}
+  - component: {fileID: 5329786292577908999}
   m_Layer: 0
   m_Name: Heroine 1
   m_TagString: Player
@@ -181,7 +181,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.7, y: 1.15}
   m_EdgeRadius: 0
---- !u!114 &1555418522036214553
+--- !u!114 &5329786292577908999
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,22 +190,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 6837770208990168602}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 842f741811f898643aa7104758bb8067, type: 3}
+  m_Script: {fileID: 11500000, guid: 19f2c6720ba3e0c469ae4e382ee32560, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 100
-  _atk: 10
-  _def: 3
-  _spriteRenderer: {fileID: 4866195348730116073}
-  _moveSpeed: 4
-  _jumpForce: 6
-  _lowJumpMultiplier: 4
-  _fallMultiplier: 0.75
-  _moveDirection: {x: 0, y: 0}
-  _isGrounded: 0
-  _checkRadius: 0.25
-  _layerMask:
+  hp: 100
+  atk: 10
+  def: 3
+  moveOn: 1
+  moveSpeed: 4
+  jumpForce: 6
+  jumpMultiplyStepByFixedFrame: 0.02
+  jumpMultiplyLimit: 2
+  fallMultiplier: 0.75
+  attackInJumpDistance: 1
+  attackADistance: 1
+  attackBDistance: 1
+  attackCDistance: 1
+  attackDDistance: 1
+  throwSpeed: 4
+  isGrounded: 0
+  checkRadius: 0.25
+  layerMask:
     serializedVersion: 2
     m_Bits: 64
-  _checkerOffset: {x: 0, y: -0.37, z: 0}
-  _movementState: 0
+  checkerOffset: {x: 0, y: -0.37, z: 0}
+  inputOn: 1
+  _state: 0
+  spriteRenderer: {fileID: 4866195348730116073}
+  animator: {fileID: 7721432171621253324}
+  physic: {fileID: 7081216371628442493}
+  daggerPrefab: {fileID: 1455689628942184488, guid: bd224162c2947c642b12910758efd5d5, type: 3}

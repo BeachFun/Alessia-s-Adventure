@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class Heroine : MonoBehaviour
 {
-    private enum AnimationStates { Idle = 0, JumpStart = 10, Jumping = 11, ComboAttack = 20, Sliding = 30, Grab = 40, Dieth = 50 }
+    private enum AnimationStates { Idle = 0, JumpReady = 10, Jumping = 11, ComboAttack = 20, Sliding = 30, Grab = 40, Dieth = 50 }
     private enum AttackType { A, B, C, D, InJump }
     private enum InputMode { On, Off }
 
@@ -23,7 +23,8 @@ public class Heroine : MonoBehaviour
     [SerializeField] private bool moveOn = true;
     [SerializeField] private float moveSpeed = 0f;
     [SerializeField] private float jumpForce;
-    [SerializeField] private float lowJumpMultiplier;
+    [SerializeField] [Range(.005f, .025f)] private float jumpMultiplyStepByFixedFrame = .01f;
+    [SerializeField] [Range(1f, 3f)] private float jumpMultiplyLimit = 1.5f;
     [SerializeField] private float fallMultiplier;
 
     [Header("Attack Syatem")]
@@ -82,15 +83,16 @@ public class Heroine : MonoBehaviour
 
         isGrounded = Physics2D.OverlapCircle(transform.position + checkerOffset, checkRadius, layerMask);
 
+        if (!isGrounded) State = AnimationStates.Jumping;
+
         switch (_state)
         {
             case AnimationStates.Idle:
-                Movement();
+                MovementInputHandler();
                 IdleHandler();
                 break;
-            case AnimationStates.JumpStart:
             case AnimationStates.Jumping:
-                Movement();
+                MovementInputHandler();
                 JumpingHandler();
                 break;
             case AnimationStates.ComboAttack:
@@ -102,15 +104,27 @@ public class Heroine : MonoBehaviour
             case AnimationStates.Grab:
                 GrabingHandler();
                 break;
-            case AnimationStates.Dieth:
-                DiethHandler();
-                break;
         }
     }
 
     private void FixedUpdate()
     {
         if (moveOn) Move(_moveDirection);
+
+        switch (_state)
+        {
+            case AnimationStates.JumpReady:
+                MovementInputHandler();
+                JumpReadyHandler();
+                break;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireSphere(transform.position + checkerOffset, checkRadius);
     }
 
 
@@ -127,7 +141,10 @@ public class Heroine : MonoBehaviour
     }
 
 
-    private void Movement()
+
+    #region Обработчики нажатий на клавиши
+
+    private void MovementInputHandler()
     {
         _moveDirection.x = Input.GetAxisRaw("Horizontal");
 
@@ -135,23 +152,18 @@ public class Heroine : MonoBehaviour
         {
             physic.velocity += fallMultiplier * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
         }
-        else if (physic.velocity.y > 0.1f && !Input.GetKey(KeyCode.Space))
-        {
-            physic.velocity += lowJumpMultiplier * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
-        }
 
         SpriteFlip(_moveDirection);
     }
-
-
-    #region Обработчики нажатий на клавиши
 
     private void IdleHandler()
     {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            State = AnimationStates.JumpStart;
+            State = AnimationStates.JumpReady;
+            StopMove();
             moveOn = false;
+            _jumpPower = 1f;
             return;
         }
 
@@ -168,13 +180,17 @@ public class Heroine : MonoBehaviour
         }
     }
 
-    private void JumpStartHandler()
+    private void JumpReadyHandler()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (!Input.GetKey(KeyCode.Space) || !isGrounded)
         {
-            State = AnimationStates.JumpStart;
-            moveOn = false;
-            return;
+            State = AnimationStates.Jumping;
+            moveOn = true;
+            Jump();
+        }
+        else if (_jumpPower < jumpMultiplyLimit)
+        {
+            _jumpPower += jumpMultiplyStepByFixedFrame;
         }
     }
 
@@ -216,20 +232,10 @@ public class Heroine : MonoBehaviour
 
     }
 
-    private void DiethHandler()
-    {
-
-    }
-
     #endregion
 
 
     #region Методы для анимаций
-
-    private void Jump()
-    {
-        physic.velocity = jumpForce * Vector2.up;
-    }
 
     private void Attack(AttackType attackType)
     {
@@ -256,7 +262,7 @@ public class Heroine : MonoBehaviour
         if (!(State == AnimationStates.Idle || State == AnimationStates.Jumping)) return;
 
         Dagger dagger = Instantiate(daggerPrefab, this.transform.position, new Quaternion(0, 0, 0, 0));
-        dagger.Throw(this.LookDirection, throwSpeed);
+        dagger.Throw(this.LookDirection, throwSpeed + (State == AnimationStates.Jumping ? Mathf.Abs(_moveDirection.x) * moveSpeed : 0));
     }
 
     /// <summary>
@@ -288,4 +294,10 @@ public class Heroine : MonoBehaviour
         physic.velocity = new Vector2(0, physic.velocity.y);
         animator.SetFloat("speed", 0f);
     }
+
+    private void Jump()
+    {
+        physic.velocity = jumpForce * Vector2.up * _jumpPower;
+    }
+
 }
