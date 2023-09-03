@@ -102,7 +102,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 4
     messageOptions: 0
-  - time: 0.5833333
+  - time: 0.41666666
     functionName: SetInputOn
     data: 
     objectReferenceParameter: {fileID: 0}
