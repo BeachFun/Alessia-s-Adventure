@@ -320,7 +320,18 @@ public class Heroine : MonoBehaviour
     /// </summary>
     public void Hurt(int attackDamage)
     {
-        StopAllCoroutines();
+        if (hp - (attackDamage - def) <= 0)
+        {
+            hp = 0;
+            State = AnimatorStates.Dieth;
+        }
+        else
+        {
+            hp = hp - (attackDamage - def);
+            animator.SetTrigger("hit");
+        }
+
+        Debug.Log(hp);
     }
 
     public void StopMove()
