@@ -231,13 +231,13 @@ public class Heroine : MonoBehaviour
         if (_isComboAttackEnded == AnimationStates.False) return;
 
         if (!_isNextCombo) State = AnimatorStates.Idle;
-        else 
+        else State = State switch
         {
-            if      (State == AnimatorStates.AttackA) State = AnimatorStates.AttackB;
-            else if (State == AnimatorStates.AttackB) State = AnimatorStates.AttackC;
-            else if (State == AnimatorStates.AttackC) State = AnimatorStates.AttackD;
-            else if (State == AnimatorStates.AttackD) State = AnimatorStates.AttackA;
-        }
+            AnimatorStates.AttackA => AnimatorStates.AttackB,
+            AnimatorStates.AttackB => AnimatorStates.AttackC,
+            AnimatorStates.AttackC => AnimatorStates.AttackD,
+            _ => AnimatorStates.AttackA,
+        };
 
         _isNextCombo = false;
         _isComboAttackEnded = AnimationStates.False;
