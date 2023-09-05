@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
 
 public class Enemy : MonoBehaviour
 {
@@ -26,37 +27,51 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected Animator animator;
     [SerializeField] protected Rigidbody2D physic;
+    [SerializeField] protected Collider2D collider;
 
 
     protected bool isBusy;
+    protected Coroutine freezeRotation;
 
 
-    protected virtual void Start()
+    protected virtual void OnEnable()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
-        physic = GetComponent<Rigidbody2D>();
+        freezeRotation = StartCoroutine(FreezeRotationLoop());
     }
 
+    protected virtual void OnDisable()
+    {
+        StopCoroutine(freezeRotation);
+    }
 
 
     public virtual void Hurt(int numAtk)
     {
-        hp = numAtk > def ? numAtk - def : hp;
+        hp = numAtk > def ? hp - (numAtk - def) : hp;
 
         isBusy = true;
-        animator.SetTrigger("hit");
+        if (hp < 0) Death();
+        else animator.SetTrigger("hit");
         isBusy = false;
     }
 
     protected virtual void Death()
     {
-
+        Destroy(this.gameObject); // TODO: Улучшить метод смерти
     }
 
     public void Flip()
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
+    }
+
+    protected IEnumerator FreezeRotationLoop()
+    {
+        while (true)
+        {
+            physic.rotation = 0;
+            yield return new WaitForSeconds(.25f);
+        }
     }
 }
 

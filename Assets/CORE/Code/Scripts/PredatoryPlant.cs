@@ -38,6 +38,13 @@ public class PredatoryPlant : Enemy
         }
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(new Vector3(collider.bounds.min.x, this.transform.position.y), this.transform.position - new Vector3(attackDistance, 0f));
+        Gizmos.DrawLine(new Vector3(collider.bounds.max.x, this.transform.position.y), this.transform.position + new Vector3(attackDistance, 0f));
+    }
+
     private IEnumerator Attack(Transform playerTransform)
     {
         yield return null;
@@ -47,7 +54,11 @@ public class PredatoryPlant : Enemy
 
         yield return new WaitForSeconds(hurtSpeed / 1.5f);
 
-        playerTransform = Physics2D.Raycast(this.transform.position, raycastDirection, attackDistance).transform;
+        Vector2 origin;
+        origin.x = raycastDirection == Vector3.left ? collider.bounds.min.x : collider.bounds.max.x;
+        origin.y = this.transform.position.y;
+
+        playerTransform = Physics2D.Raycast(origin, raycastDirection, attackDistance).transform;
         if (playerTransform is not null && playerTransform.tag == "Player")
         {
             playerTransform.GetComponent<HeroineController>().Hurt(atk);
@@ -56,5 +67,10 @@ public class PredatoryPlant : Enemy
         yield return new WaitForSeconds(hurtSpeed / 3 + timeBetweenAttacks);
 
         isBusy = false;
+    }
+
+    private void Attack()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, raycastDirection, attackDistance);
     }
 }

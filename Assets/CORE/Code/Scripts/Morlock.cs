@@ -33,10 +33,8 @@ public class Morlock : Enemy
     private bool _attackOn = true;
     private MorlockState _state;
 
-
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         boxCollider2D = GetComponent<BoxCollider2D>();
     }
 

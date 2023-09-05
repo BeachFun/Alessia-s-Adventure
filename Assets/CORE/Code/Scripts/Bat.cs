@@ -35,16 +35,16 @@ public class Bat : Enemy
     private bool _attackOn = true;
 
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
-
         boxCollider2D = GetComponent<BoxCollider2D>();
         Initialize();
     }
 
     void FixedUpdate()
     {
+        physic.rotation = 0;
+
         if (_state == BatState.Idle)
         {
             Vector2 currentPosition = this.transform.position;
