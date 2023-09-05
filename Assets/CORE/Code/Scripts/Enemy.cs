@@ -9,6 +9,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public enum Bool { True, False}
+
+
     [Space][Header("Enemy Settings")]
 
     [Header("Characteristics")]
@@ -32,6 +35,13 @@ public class Enemy : MonoBehaviour
 
     protected bool isBusy;
     protected Coroutine freezeRotation;
+
+
+    protected Bool IsBusy
+    {
+        get => isBusy ? Bool.True : Bool.False;
+        set => isBusy = value == Bool.True ? true : false;
+    }
 
 
     protected virtual void OnEnable()

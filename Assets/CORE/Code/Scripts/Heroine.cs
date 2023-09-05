@@ -283,7 +283,7 @@ public class Heroine : MonoBehaviour
     {
         if (!(State == AnimatorStates.Idle || State == AnimatorStates.Jumping)) return;
 
-        Dagger dagger = Instantiate(daggerPrefab, this.transform.position, new Quaternion(0, 0, 0, 0));
+        Dagger dagger = Instantiate(daggerPrefab, this.transform.position, new Quaternion(0f, 0f, 0f, 0f));
         dagger.Throw(this.LookDirection, throwSpeed + (State == AnimatorStates.Jumping ? Mathf.Abs(_moveDirection.x) * moveSpeed : 0));
     }
 

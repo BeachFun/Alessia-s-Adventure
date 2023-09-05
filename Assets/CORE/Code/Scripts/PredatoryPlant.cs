@@ -9,31 +9,34 @@ public class PredatoryPlant : Enemy
     [Header("PredatoryPlant Settings")]
     [SerializeField] private float attackDistance;
 
-    private string attackAnimationName;
-    private Vector3 raycastDirection;
+    private Vector3 _raycastDirection;
 
     private void FixedUpdate()
     {
+        this.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
+
         if (!isBusy)
         {
             Transform transform;
 
-            transform = Physics2D.Raycast(this.transform.position, Vector3.left, attackDistance).transform;
+            Vector2 origin = new Vector2(0, this.transform.position.y);
+
+            origin.x = collider.bounds.min.x;
+            transform = Physics2D.Raycast(origin, Vector2.left, attackDistance).transform;
 
             if (transform is not null && transform.tag == "Player")
             {
-                attackAnimationName = "left_attack";
-                raycastDirection = Vector3.left;
-                StartCoroutine(Attack(transform));
+                _raycastDirection = Vector3.left;
+                animator.SetTrigger("left_attack");
             }
 
-            transform = Physics2D.Raycast(this.transform.position, Vector3.right, attackDistance).transform;
+            origin.x = collider.bounds.max.x;
+            transform = Physics2D.Raycast(origin, Vector2.right, attackDistance).transform;
 
             if (transform is not null && transform.tag == "Player")
             {
-                attackAnimationName = "right_attack";
-                raycastDirection = Vector3.right;
-                StartCoroutine(Attack(transform));
+                _raycastDirection = Vector3.right;
+                animator.SetTrigger("right_attack");
             }
         }
     }
@@ -45,32 +48,15 @@ public class PredatoryPlant : Enemy
         Gizmos.DrawLine(new Vector3(collider.bounds.max.x, this.transform.position.y), this.transform.position + new Vector3(attackDistance, 0f));
     }
 
-    private IEnumerator Attack(Transform playerTransform)
-    {
-        yield return null;
-
-        isBusy = true;
-        animator.SetTrigger(attackAnimationName);
-
-        yield return new WaitForSeconds(hurtSpeed / 1.5f);
-
-        Vector2 origin;
-        origin.x = raycastDirection == Vector3.left ? collider.bounds.min.x : collider.bounds.max.x;
-        origin.y = this.transform.position.y;
-
-        playerTransform = Physics2D.Raycast(origin, raycastDirection, attackDistance).transform;
-        if (playerTransform is not null && playerTransform.tag == "Player")
-        {
-            playerTransform.GetComponent<HeroineController>().Hurt(atk);
-        }
-
-        yield return new WaitForSeconds(hurtSpeed / 3 + timeBetweenAttacks);
-
-        isBusy = false;
-    }
-
     private void Attack()
     {
-        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, raycastDirection, attackDistance);
+        Vector2 origin = new Vector2(0, this.transform.position.y);
+        origin.x = _raycastDirection == Vector3.left ? collider.bounds.min.x : collider.bounds.max.x;
+
+        Transform playerTransform = Physics2D.Raycast(origin, _raycastDirection, attackDistance).transform;
+        if (playerTransform is not null && playerTransform.tag == "Player")
+        {
+            playerTransform.GetComponent<Heroine>().Hurt(atk);
+        }
     }
 }

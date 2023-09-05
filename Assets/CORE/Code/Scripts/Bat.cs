@@ -127,7 +127,7 @@ public class Bat : Enemy
 
         yield return new WaitForSeconds(length);
 
-        EnergyBall energyBall = Instantiate(energyBallPrefab, this.transform.position, new Quaternion(0, 0, 0, 0));
+        EnergyBall energyBall = Instantiate(energyBallPrefab, this.transform.position, new Quaternion(0f, 0f, 0f, 0f));
         energyBall.power = atk;
         energyBall.AddForce(direction, shootSpeed);
 
