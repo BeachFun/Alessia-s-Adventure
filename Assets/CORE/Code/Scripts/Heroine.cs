@@ -42,10 +42,6 @@ public class Heroine : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private Vector3 checkerOffset;
 
-    [Header("Other Settings")]
-    [SerializeField] private bool inputOn = true;
-    [SerializeField] private AnimatorStates _state = AnimatorStates.Idle;
-
     [Header("Heroine class Components")]
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
@@ -59,6 +55,8 @@ public class Heroine : MonoBehaviour
     private float _jumpPower;
     private bool _isNextCombo;
     private AnimationStates _isComboAttackEnded = AnimationStates.False;
+    private bool _inputOn = true;
+    private AnimatorStates _state = AnimatorStates.Idle;
 
     private AnimatorStates State
     {
@@ -75,8 +73,8 @@ public class Heroine : MonoBehaviour
     /// </summary>
     private InputMode InputOn
     {
-        get => inputOn ? InputMode.On : InputMode.Off;
-        set => inputOn = value == InputMode.On ? true : false;
+        get => _inputOn ? InputMode.On : InputMode.Off;
+        set => _inputOn = value == InputMode.On ? true : false;
     }
 
     /// <summary>
@@ -99,7 +97,7 @@ public class Heroine : MonoBehaviour
 
     private void Update()
     {
-        if (!inputOn) return;
+        if (!_inputOn) return;
 
         isGrounded = Physics2D.OverlapCircle(transform.position + checkerOffset, checkRadius, layerMask);
 
@@ -116,6 +114,9 @@ public class Heroine : MonoBehaviour
                 JumpingHandler();
                 break;
             case AnimatorStates.AttackA:
+            case AnimatorStates.AttackB:
+            case AnimatorStates.AttackC:
+            case AnimatorStates.AttackD:
                 ComboAttackHandler();
                 break;
             case AnimatorStates.Sliding:
