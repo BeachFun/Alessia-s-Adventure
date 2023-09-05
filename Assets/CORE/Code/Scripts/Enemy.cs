@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
 
 public class Enemy : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected Animator animator;
     [SerializeField] protected Rigidbody2D physic;
+    [SerializeField] protected Collider2D collider;
 
 
     protected bool isBusy;
@@ -48,13 +50,14 @@ public class Enemy : MonoBehaviour
         hp = numAtk > def ? hp - (numAtk - def) : hp;
 
         isBusy = true;
-        animator.SetTrigger("hit");
+        if (hp < 0) Death();
+        else animator.SetTrigger("hit");
         isBusy = false;
     }
 
     protected virtual void Death()
     {
-
+        Destroy(this.gameObject); // TODO: Улучшить метод смерти
     }
 
     public void Flip()

@@ -9,9 +9,10 @@ using UnityEngine;
 
 public class Heroine : MonoBehaviour
 {
-    private enum AnimationStates { Idle = 0, JumpReady = 10, Jumping = 11, ComboAttack = 20, Sliding = 30, Grab = 40, Dieth = 50 }
+    private enum AnimatorStates { Idle = 0, JumpReady = 10, Jumping = 11, AttackA = 20, AttackB = 21, AttackC = 22, AttackD = 23, Sliding = 30, Grab = 40, Dieth = 50 }
     private enum AttackType { A, B, C, D, InJump }
     private enum InputMode { On, Off }
+    private enum AnimationStates { True, False }
 
 
     [Header("Characteristics")]
@@ -43,7 +44,7 @@ public class Heroine : MonoBehaviour
 
     [Header("Other Settings")]
     [SerializeField] private bool inputOn = true;
-    [SerializeField] private AnimationStates _state = AnimationStates.Idle;
+    [SerializeField] private AnimatorStates _state = AnimatorStates.Idle;
 
     [Header("Heroine class Components")]
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -56,9 +57,10 @@ public class Heroine : MonoBehaviour
 
     private Vector2 _moveDirection;
     private float _jumpPower;
+    private bool _isNextCombo;
+    private AnimationStates _isComboAttackEnded = AnimationStates.False;
 
-
-    private AnimationStates State
+    private AnimatorStates State
     {
         get => _state;
         set
@@ -66,6 +68,24 @@ public class Heroine : MonoBehaviour
             _state = value;
             animator.SetInteger("animationState", (int)_state);
         }
+    }
+
+    /// <summary>
+    /// Обработка вводных данных
+    /// </summary>
+    private InputMode InputOn
+    {
+        get => inputOn ? InputMode.On : InputMode.Off;
+        set => inputOn = value == InputMode.On ? true : false;
+    }
+
+    /// <summary>
+    /// Свойство для аниматора. Указывает на завершение анимации атаки в комбо атаках
+    /// </summary>
+    private AnimationStates IsComboAttackEnded
+    {
+        get => _isComboAttackEnded;
+        set => _isComboAttackEnded = value;
     }
 
     /// <summary>
@@ -83,25 +103,25 @@ public class Heroine : MonoBehaviour
 
         isGrounded = Physics2D.OverlapCircle(transform.position + checkerOffset, checkRadius, layerMask);
 
-        if (!isGrounded) State = AnimationStates.Jumping;
+        if (!isGrounded) State = AnimatorStates.Jumping;
 
         switch (_state)
         {
-            case AnimationStates.Idle:
+            case AnimatorStates.Idle:
                 MovementInputHandler();
                 IdleHandler();
                 break;
-            case AnimationStates.Jumping:
+            case AnimatorStates.Jumping:
                 MovementInputHandler();
                 JumpingHandler();
                 break;
-            case AnimationStates.ComboAttack:
+            case AnimatorStates.AttackA:
                 ComboAttackHandler();
                 break;
-            case AnimationStates.Sliding:
+            case AnimatorStates.Sliding:
                 SlidingHandler();
                 break;
-            case AnimationStates.Grab:
+            case AnimatorStates.Grab:
                 GrabingHandler();
                 break;
         }
@@ -113,33 +133,19 @@ public class Heroine : MonoBehaviour
 
         switch (_state)
         {
-            case AnimationStates.JumpReady:
+            case AnimatorStates.JumpReady:
                 MovementInputHandler();
                 JumpReadyHandler();
                 break;
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
 
         Gizmos.DrawWireSphere(transform.position + checkerOffset, checkRadius);
     }
-
-
-    private void SpriteFlip(Vector2 direction)
-    {
-        if (direction.x < 0)
-        {
-            spriteRenderer.flipX = true;
-        }
-        else if (direction.x > 0)
-        {
-            spriteRenderer.flipX = false;
-        }
-    }
-
 
 
     #region Обработчики нажатий на клавиши
@@ -158,9 +164,9 @@ public class Heroine : MonoBehaviour
 
     private void IdleHandler()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
-            State = AnimationStates.JumpReady;
+            State = AnimatorStates.JumpReady;
             StopMove();
             moveOn = false;
             _jumpPower = 1f;
@@ -169,7 +175,8 @@ public class Heroine : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            State = AnimationStates.ComboAttack;
+            State = AnimatorStates.AttackA;
+            StopMove();
             return;
         }
 
@@ -184,7 +191,7 @@ public class Heroine : MonoBehaviour
     {
         if (!Input.GetKey(KeyCode.Space) || !isGrounded)
         {
-            State = AnimationStates.Jumping;
+            State = AnimatorStates.Jumping;
             moveOn = true;
             Jump();
         }
@@ -198,7 +205,7 @@ public class Heroine : MonoBehaviour
     {
         if (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Jump_Mid" && isGrounded)
         {
-            State = AnimationStates.Idle;
+            State = AnimatorStates.Idle;
             return;
         }
 
@@ -216,10 +223,24 @@ public class Heroine : MonoBehaviour
 
     private void ComboAttackHandler()
     {
-        if (!Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            State = AnimationStates.Idle;
+            _isNextCombo = true;
         }
+
+        if (_isComboAttackEnded == AnimationStates.False) return;
+
+        if (!_isNextCombo) State = AnimatorStates.Idle;
+        else 
+        {
+            if      (State == AnimatorStates.AttackA) State = AnimatorStates.AttackB;
+            else if (State == AnimatorStates.AttackB) State = AnimatorStates.AttackC;
+            else if (State == AnimatorStates.AttackC) State = AnimatorStates.AttackD;
+            else if (State == AnimatorStates.AttackD) State = AnimatorStates.AttackA;
+        }
+
+        _isNextCombo = false;
+        _isComboAttackEnded = AnimationStates.False;
     }
 
     private void SlidingHandler()
@@ -257,20 +278,40 @@ public class Heroine : MonoBehaviour
     /// <summary>
     /// Бросает меч в направлении куда смотрит
     /// </summary>
-    public void TrhrowAttack()
+    private void TrhrowAttack()
     {
-        if (!(State == AnimationStates.Idle || State == AnimationStates.Jumping)) return;
+        if (!(State == AnimatorStates.Idle || State == AnimatorStates.Jumping)) return;
 
         Dagger dagger = Instantiate(daggerPrefab, this.transform.position, new Quaternion(0, 0, 0, 0));
-        dagger.Throw(this.LookDirection, throwSpeed + (State == AnimationStates.Jumping ? Mathf.Abs(_moveDirection.x) * moveSpeed : 0));
+        dagger.Throw(this.LookDirection, throwSpeed + (State == AnimatorStates.Jumping ? Mathf.Abs(_moveDirection.x) * moveSpeed : 0));
     }
 
-    /// <summary>
-    /// Включает/Отключает функцию обработки вводных данных
-    /// </summary>
-    private void SetInputOn(InputMode mode) => inputOn = mode == InputMode.On ? true : false; 
-
     #endregion
+
+
+    private void Move(Vector2 direction)
+    {
+        float moveX = _moveDirection.x * moveSpeed;
+        physic.velocity = new Vector2(moveX, physic.velocity.y);
+        animator.SetFloat("speed", Mathf.Abs(moveX));
+    }
+
+    private void SpriteFlip(Vector2 direction)
+    {
+        if (direction.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else if (direction.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+    }
+
+    private void Jump()
+    {
+        physic.velocity = jumpForce * Vector2.up * _jumpPower;
+    }
 
 
     /// <summary>
@@ -281,23 +322,10 @@ public class Heroine : MonoBehaviour
         StopAllCoroutines();
     }
 
-    private void Move(Vector2 direction)
-    {
-        float moveX = _moveDirection.x * moveSpeed;
-        physic.velocity = new Vector2(moveX, physic.velocity.y);
-        animator.SetFloat("speed", Mathf.Abs(moveX));
-    }
-
     public void StopMove()
     {
         _moveDirection.x = 0;
         physic.velocity = new Vector2(0, physic.velocity.y);
         animator.SetFloat("speed", 0f);
     }
-
-    private void Jump()
-    {
-        physic.velocity = jumpForce * Vector2.up * _jumpPower;
-    }
-
 }

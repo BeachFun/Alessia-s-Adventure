@@ -207,7 +207,7 @@ MonoBehaviour:
   attackBDistance: 1
   attackCDistance: 1
   attackDDistance: 1
-  throwSpeed: 4
+  throwSpeed: 7
   isGrounded: 0
   checkRadius: 0.25
   layerMask:
