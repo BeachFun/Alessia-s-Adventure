@@ -33,25 +33,25 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected Collider2D collider;
 
 
-    protected bool isBusy;
-    protected Coroutine freezeRotation;
+    protected bool _isBusy;
+    protected Coroutine _freezeRotation;
 
 
     protected Bool IsBusy
     {
-        get => isBusy ? Bool.True : Bool.False;
-        set => isBusy = value == Bool.True ? true : false;
+        get => _isBusy ? Bool.True : Bool.False;
+        set => _isBusy = value == Bool.True ? true : false;
     }
 
 
     protected virtual void OnEnable()
     {
-        freezeRotation = StartCoroutine(FreezeRotationLoop());
+        _freezeRotation = StartCoroutine(FreezeRotationLoop());
     }
 
     protected virtual void OnDisable()
     {
-        StopCoroutine(freezeRotation);
+        StopCoroutine(_freezeRotation);
     }
 
 
@@ -59,10 +59,10 @@ public class Enemy : MonoBehaviour
     {
         hp = numAtk > def ? hp - (numAtk - def) : hp;
 
-        isBusy = true;
+        _isBusy = true;
         if (hp < 0) Death();
         else animator.SetTrigger("hit");
-        isBusy = false;
+        _isBusy = false;
     }
 
     protected virtual void Death()
@@ -79,8 +79,8 @@ public class Enemy : MonoBehaviour
     {
         while (true)
         {
-            physic.rotation = 0;
-            yield return new WaitForSeconds(.25f);
+            this.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
     }
 }

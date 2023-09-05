@@ -20,27 +20,18 @@ public class Morlock : Enemy
     [SerializeField] private float rayDistanceFarGroundCheck = 2f;
     [SerializeField] private MoveDirection moveDirection = MoveDirection.Left;
     [SerializeField] private float rotateSeconds;
-    [SerializeField] private bool isAggressiveWalk;
-
-    [Header("Other")]
-    [SerializeField] private bool isGround;
-
-    [Header("Morlock class Components")]
-    [SerializeField] private BoxCollider2D boxCollider2D;
 
     private Vector2 lookDirection;
+    private bool _isAggressiveWalk;
     private bool _movementOn = true;
     private bool _attackOn = true;
+    private bool _isGround;
     private MorlockState _state;
 
-    private void Start()
-    {
-        boxCollider2D = GetComponent<BoxCollider2D>();
-    }
 
     void FixedUpdate()
     {
-        if (!isBusy && isGround)
+        if (!_isBusy && _isGround)
         {
             if (!_attackOn && _state == MorlockState.Idle) _movementOn = true;
 
@@ -48,16 +39,16 @@ public class Morlock : Enemy
             RaycastHit2D hitBottom, hitFar; // поверхность под персонажем и чуть дальше персонажа
             Vector2 bottomBodyPoint, forwardBodyPoint;
 
-            bottomBodyPoint = new Vector2(this.transform.position.x, boxCollider2D.bounds.min.y);
+            bottomBodyPoint = new Vector2(this.transform.position.x, collider.bounds.min.y);
 
             if (moveDirection == MoveDirection.Left)
             {
-                forwardBodyPoint = new Vector2(boxCollider2D.bounds.min.x, this.transform.position.y);
+                forwardBodyPoint = new Vector2(collider.bounds.min.x, this.transform.position.y);
                 hitFar = Physics2D.Raycast(forwardBodyPoint, new Vector2(-0.7f, -1f), rayDistanceFarGroundCheck);
             }
             else
             {
-                forwardBodyPoint = new Vector2(boxCollider2D.bounds.max.x, this.transform.position.y);
+                forwardBodyPoint = new Vector2(collider.bounds.max.x, this.transform.position.y);
                 hitFar = Physics2D.Raycast(forwardBodyPoint, new Vector2(0.7f, -1f), rayDistanceFarGroundCheck);
             }
 
@@ -77,12 +68,12 @@ public class Morlock : Enemy
                 playerTransform = Physics2D.Raycast(forwardBodyPoint, lookDirection, aggressionDistance).transform;
                 if (playerTransform is null)
                 {
-                    isAggressiveWalk = false;
+                    _isAggressiveWalk = false;
                     animator.speed = 1f;
                 }
                 else if (playerTransform.tag == "Player")
                 {
-                    isAggressiveWalk = true;
+                    _isAggressiveWalk = true;
                     animator.speed = 2f;
                 }
             }
@@ -103,7 +94,7 @@ public class Morlock : Enemy
                     else
                         physic.velocity = new Vector2(moveSpeed * Time.fixedDeltaTime, 0);
 
-                    if (isAggressiveWalk)
+                    if (_isAggressiveWalk)
                         physic.velocity *= 2; // если увидел игрока, то ускоренное движение к игроку
 
                     animator.SetFloat("speed", physic.velocity.magnitude / Time.fixedDeltaTime);
@@ -116,7 +107,7 @@ public class Morlock : Enemy
     {
         if (collision.gameObject.layer == 6)
         {
-            isGround = true;
+            _isGround = true;
         }
     }
 
@@ -124,14 +115,14 @@ public class Morlock : Enemy
     {
         if (collision.gameObject.layer == 6)
         {
-            isGround = false;
+            _isGround = false;
         }
     }
 
 
     private IEnumerator Attack(Transform transform, Vector2 forwardPoint)
     {
-        isBusy = true;
+        _isBusy = true;
         _attackOn = false;
 
         animator.SetFloat("speed", 0);
@@ -142,10 +133,10 @@ public class Morlock : Enemy
         Transform playerTransform = Physics2D.Raycast(forwardPoint, lookDirection, attackDistance).transform;
         if (playerTransform is not null && playerTransform.tag == "Player")
         {
-            transform.GetComponent<HeroineController>().Hurt(atk);
+            transform.GetComponent<Heroine>().Hurt(atk);
         }
 
-        isBusy = false;
+        _isBusy = false;
 
         yield return new WaitForSeconds(timeBetweenAttacks);
 

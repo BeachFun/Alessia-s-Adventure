@@ -21,9 +21,6 @@ public class Bat : Enemy
     [SerializeField] private float shootSpeed = 3;
     [SerializeField] private EnergyBall energyBallPrefab;
 
-    [Header("Bat class Components")]
-    [SerializeField] private BoxCollider2D boxCollider2D;
-
     [Header("References")]
     [Tooltip("Нужно установить ссылку на игрока на сцене, а не на префам игрока")]
     [SerializeField] private Rigidbody2D playerRigidbody;
@@ -37,14 +34,11 @@ public class Bat : Enemy
 
     private void Start()
     {
-        boxCollider2D = GetComponent<BoxCollider2D>();
         Initialize();
     }
 
     void FixedUpdate()
     {
-        physic.rotation = 0;
-
         if (_state == BatState.Idle)
         {
             Vector2 currentPosition = this.transform.position;

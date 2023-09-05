@@ -13,9 +13,7 @@ public class PredatoryPlant : Enemy
 
     private void FixedUpdate()
     {
-        this.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
-
-        if (!isBusy)
+        if (!_isBusy)
         {
             Transform transform;
 

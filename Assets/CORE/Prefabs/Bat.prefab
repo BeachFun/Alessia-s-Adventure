@@ -202,11 +202,11 @@ MonoBehaviour:
   spriteRenderer: {fileID: 6875745587762059467}
   animator: {fileID: 3442777843677103704}
   physic: {fileID: 191504214546491134}
+  collider: {fileID: 8994908165812191569}
   finishPos: {x: 0, y: 0}
   barrierDistance: 1
   rotateSeconds: 1.7
   attackOn: 1
   shootSpeed: 150
   energyBallPrefab: {fileID: 8405258118171666879, guid: b2b6c80860edc87439451083624bacc0, type: 3}
-  boxCollider2D: {fileID: 8994908165812191569}
   playerRigidbody: {fileID: 0}
