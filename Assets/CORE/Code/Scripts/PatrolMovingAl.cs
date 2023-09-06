@@ -2,6 +2,8 @@ using System.Linq;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+
 public class PatrolMovingAl : MonoBehaviour
 {
     [SerializeField] private bool isOn = true;
@@ -75,14 +77,6 @@ public class PatrolMovingAl : MonoBehaviour
     {
         if (collision.gameObject.layer == 6) _isGround = false;
     }
-
-    //private void OnDrawGizmosSelected()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawRay(new Vector2(_collider.bounds.min.x, _collider.bounds.max.y), new Vector2(-0.7f, -1f));
-    //    Gizmos.DrawRay(new Vector2(_collider.bounds.max.x, _collider.bounds.max.y), new Vector2(0.7f, -1f));
-    //    Gizmos.DrawRay(new Vector2(this.transform.position.x, _collider.bounds.min.y), Vector2.down);
-    //}
 
     private Vector2 CalcGroundPoint()
     {
