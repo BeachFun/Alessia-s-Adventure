@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected Animator animator;
     [SerializeField] protected Rigidbody2D physic;
-    [SerializeField] protected Collider2D collider;
+    [SerializeField] protected Collider2D _collider;
 
 
     protected bool _isBusy;

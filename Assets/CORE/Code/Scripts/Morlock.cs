@@ -59,7 +59,7 @@ public class Morlock : Enemy
         Gizmos.color = Color.red;
 
         Vector2 from = new Vector2(0f, this.transform.position.y);
-        from.x = spriteRenderer.flipX ? collider.bounds.min.x : collider.bounds.max.x;
+        from.x = spriteRenderer.flipX ? _collider.bounds.min.x : _collider.bounds.max.x;
         Vector2 to = new Vector2(0, this.transform.position.y);
         to.x = spriteRenderer.flipX ? from.x - attackDistance : from.x + attackDistance;
 
@@ -71,7 +71,7 @@ public class Morlock : Enemy
         // TODO: Придумать более достойное название для метода
 
         _forwardBodyPoint = new Vector2(0f, this.transform.position.y);
-        _forwardBodyPoint.x = spriteRenderer.flipX ? collider.bounds.min.x : collider.bounds.max.x;
+        _forwardBodyPoint.x = spriteRenderer.flipX ? _collider.bounds.min.x : _collider.bounds.max.x;
 
         _lookDirection = spriteRenderer.flipX ? Vector2.left : Vector2.right;
 

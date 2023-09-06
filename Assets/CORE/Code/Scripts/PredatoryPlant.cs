@@ -19,7 +19,7 @@ public class PredatoryPlant : Enemy
 
         Vector2 origin = new Vector2(0, this.transform.position.y);
 
-        origin.x = collider.bounds.min.x;
+        origin.x = _collider.bounds.min.x;
         transform = Physics2D.Raycast(origin, Vector2.left, attackDistance).transform;
 
         if (transform is not null && transform.tag == "Player")
@@ -28,7 +28,7 @@ public class PredatoryPlant : Enemy
             animator.SetTrigger("left_attack");
         }
 
-        origin.x = collider.bounds.max.x;
+        origin.x = _collider.bounds.max.x;
         transform = Physics2D.Raycast(origin, Vector2.right, attackDistance).transform;
 
         if (transform is not null && transform.tag == "Player")
@@ -41,14 +41,14 @@ public class PredatoryPlant : Enemy
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(collider.bounds.min.x, this.transform.position.y), this.transform.position - new Vector3(attackDistance, 0f));
-        Gizmos.DrawLine(new Vector3(collider.bounds.max.x, this.transform.position.y), this.transform.position + new Vector3(attackDistance, 0f));
+        Gizmos.DrawLine(new Vector3(_collider.bounds.min.x, this.transform.position.y), this.transform.position - new Vector3(attackDistance, 0f));
+        Gizmos.DrawLine(new Vector3(_collider.bounds.max.x, this.transform.position.y), this.transform.position + new Vector3(attackDistance, 0f));
     }
 
     private void Attack()
     {
         Vector2 origin = new Vector2(0, this.transform.position.y);
-        origin.x = _raycastDirection == Vector3.left ? collider.bounds.min.x : collider.bounds.max.x;
+        origin.x = _raycastDirection == Vector3.left ? _collider.bounds.min.x : _collider.bounds.max.x;
 
         Transform playerTransform = Physics2D.Raycast(origin, _raycastDirection, attackDistance).transform;
         if (playerTransform is not null && playerTransform.tag == "Player")

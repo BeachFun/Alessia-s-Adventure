@@ -196,14 +196,13 @@ MonoBehaviour:
   hp: 10
   atk: 20
   def: 0
-  hurtSpeed: -1
   timeBetweenAttacks: 5
-  moveSpeed: 80
   spriteRenderer: {fileID: 6875745587762059467}
   animator: {fileID: 3442777843677103704}
   physic: {fileID: 191504214546491134}
-  collider: {fileID: 8994908165812191569}
+  _collider: {fileID: 8994908165812191569}
   finishPos: {x: 0, y: 0}
+  moveSpeed: 80
   barrierDistance: 1
   rotateSeconds: 1.7
   attackOn: 1
