@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6654119717843473843}
   - component: {fileID: 6305271739487784053}
   - component: {fileID: 7313403803357943038}
+  - component: {fileID: 2404080831225040221}
   m_Layer: 0
   m_Name: Morlock
   m_TagString: Enemy
@@ -196,18 +197,26 @@ MonoBehaviour:
   hp: 30
   atk: 10
   def: 0
-  hurtSpeed: 0.82
-  timeBetweenAttacks: 3
-  moveSpeed: 30
+  timeBetweenAttacks: 2
   spriteRenderer: {fileID: 379564168553164636}
   animator: {fileID: 1181370757079391568}
   physic: {fileID: 6305271739487784053}
   collider: {fileID: 6654119717843473843}
   aggressionDistance: 20
-  attackDistance: 0.5
-  rayDistanceGroundCheck: 1
-  rayDistanceFarGroundCheck: 2
-  moveDirection: 0
-  rotateSeconds: 2
-  isAggressiveWalk: 0
-  isGround: 0
+  attackDistance: 0.4
+  movingSystem: {fileID: 2404080831225040221}
+--- !u!114 &2404080831225040221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8903401469520007687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63dfa0f773c224a48ba70b935d52fcc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOn: 1
+  rotateSeconds: 3
+  moveSpeed: 40

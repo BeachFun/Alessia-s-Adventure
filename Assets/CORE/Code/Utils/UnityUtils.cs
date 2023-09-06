@@ -42,6 +42,11 @@ public class UnityUtils : MonoBehaviour
             default: return false;
         }
     }
+
+    public static bool ApproximatelyEqual(float a, float b, float tolerance)
+    {
+        return Mathf.Abs(a - b) <= tolerance;
+    }
 }
 
 public enum SnapAxis2D { None, All, X, Y }

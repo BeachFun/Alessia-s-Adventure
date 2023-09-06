@@ -13,29 +13,28 @@ public class PredatoryPlant : Enemy
 
     private void FixedUpdate()
     {
-        if (!_isBusy)
+        if (_isBusy) return;
+
+        Transform transform;
+
+        Vector2 origin = new Vector2(0, this.transform.position.y);
+
+        origin.x = collider.bounds.min.x;
+        transform = Physics2D.Raycast(origin, Vector2.left, attackDistance).transform;
+
+        if (transform is not null && transform.tag == "Player")
         {
-            Transform transform;
+            _raycastDirection = Vector3.left;
+            animator.SetTrigger("left_attack");
+        }
 
-            Vector2 origin = new Vector2(0, this.transform.position.y);
+        origin.x = collider.bounds.max.x;
+        transform = Physics2D.Raycast(origin, Vector2.right, attackDistance).transform;
 
-            origin.x = collider.bounds.min.x;
-            transform = Physics2D.Raycast(origin, Vector2.left, attackDistance).transform;
-
-            if (transform is not null && transform.tag == "Player")
-            {
-                _raycastDirection = Vector3.left;
-                animator.SetTrigger("left_attack");
-            }
-
-            origin.x = collider.bounds.max.x;
-            transform = Physics2D.Raycast(origin, Vector2.right, attackDistance).transform;
-
-            if (transform is not null && transform.tag == "Player")
-            {
-                _raycastDirection = Vector3.right;
-                animator.SetTrigger("right_attack");
-            }
+        if (transform is not null && transform.tag == "Player")
+        {
+            _raycastDirection = Vector3.right;
+            animator.SetTrigger("right_attack");
         }
     }
 

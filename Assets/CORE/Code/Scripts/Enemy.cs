@@ -20,11 +20,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected int def = 1;
 
     [Header("Enemy Settings")]
-    [Tooltip("Скорость нанесения урона (удара)")]
-    [SerializeField] protected float hurtSpeed = 1;
     [Tooltip("Время между атаками")]
     [SerializeField] protected float timeBetweenAttacks = 1;
-    [SerializeField] protected float moveSpeed = 0f;
 
     [Header("Enemy class Components")]
     [SerializeField] protected SpriteRenderer spriteRenderer;
@@ -59,10 +56,8 @@ public class Enemy : MonoBehaviour
     {
         hp = numAtk > def ? hp - (numAtk - def) : hp;
 
-        _isBusy = true;
         if (hp < 0) Death();
         else animator.SetTrigger("hit");
-        _isBusy = false;
     }
 
     protected virtual void Death()
@@ -84,5 +79,3 @@ public class Enemy : MonoBehaviour
         }
     }
 }
-
-public enum MoveDirection { Left, Right }

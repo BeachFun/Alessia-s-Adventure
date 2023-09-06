@@ -9,10 +9,12 @@ public class Bat : Enemy
     private enum BatState { Idle, Move, Attack, Rotation }
 
 
-    [Space][Header("Bat Settings")]
+    [Space]
+    [Header("Bat Settings")]
 
     [Header("Moving system")]
     [SerializeField] private Vector2 finishPos;
+    [SerializeField] private float moveSpeed;
     [SerializeField] private float barrierDistance = 1;
     [SerializeField] private float rotateSeconds;
 

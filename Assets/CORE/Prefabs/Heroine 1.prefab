@@ -199,7 +199,7 @@ MonoBehaviour:
   moveOn: 1
   moveSpeed: 4
   jumpForce: 6
-  jumpMultiplyStepByFixedFrame: 0.02
+  jumpMultiplyStepByFixedFrame: 0.015
   jumpMultiplyLimit: 2
   fallMultiplier: 0.75
   attackInJumpDistance: 1
@@ -214,8 +214,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   checkerOffset: {x: 0, y: -0.37, z: 0}
-  inputOn: 1
-  _state: 0
   spriteRenderer: {fileID: 4866195348730116073}
   animator: {fileID: 7721432171621253324}
   physic: {fileID: 7081216371628442493}
