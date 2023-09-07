@@ -13,13 +13,13 @@ public class PatrolMovingAl : MonoBehaviour
 
     private const float barrierDistance = .5f;
 
-    public bool isOn = true;
-    public MovementMode mode;
-    public MovementAlgoritm movementAlgoritm;
-    public Vector2 startPosition;
-    public Vector2 endPosition;
-    public float rotateSeconds;
-    public float moveSpeed = 0f;
+    [SerializeField] private bool isOn = true;
+    [SerializeField] private MovementMode mode;
+    [SerializeField] private MovementAlgoritm movementAlgoritm;
+    [SerializeField] private Vector2 startPosition;
+    [SerializeField] private Vector2 endPosition;
+    [SerializeField] private float rotateSeconds;
+    [SerializeField] private float moveSpeed = 0f;
 
     private bool _isGround;
     private bool _fastMoveOn;
@@ -44,7 +44,7 @@ public class PatrolMovingAl : MonoBehaviour
                 return true;
 
             return Physics2D.RaycastAll(currentPosition, _destination - currentPosition, barrierDistance)
-                .Where(e => e.transform.tag != this.tag)
+                .Where(e => e.transform.tag != this.tag && e.transform.tag != "Projectile")
                 .Count() > 0;
         }
     }
@@ -63,11 +63,12 @@ public class PatrolMovingAl : MonoBehaviour
         if (movementAlgoritm == MovementAlgoritm.StartToPosition) startPosition = _physic.position;
         if (movementAlgoritm != MovementAlgoritm.EdgeToEdge) _destination = endPosition;
     }
+
     private void FixedUpdate()
     {
-        if (!_isGround || !_isMovingOn || !isOn) return;
+        if (!_isMovingOn || !isOn) return;
 
-        if (movementAlgoritm == MovementAlgoritm.EdgeToEdge)
+        if (movementAlgoritm == MovementAlgoritm.EdgeToEdge && _isGround)
         {
             Vector2 groundPoint = CalcGroundPoint();
             Vector2 farGroundPoint = CalcFarGroundPoint();
@@ -92,7 +93,7 @@ public class PatrolMovingAl : MonoBehaviour
             }
             else
             {
-                Vector2 currentPosition = this.transform.position;
+                Vector2 currentPosition = _physic.position;
                 Vector2 moveDirection = (_destination - currentPosition).normalized;
 
                 _physic.velocity = moveDirection * moveSpeed * Time.fixedDeltaTime;
@@ -134,7 +135,7 @@ public class PatrolMovingAl : MonoBehaviour
             direction = new Vector2(0.7f, -1f);
         }
 
-        return Physics2D.RaycastAll(forwardBodyPoint, direction).Where(e => e.transform.tag != "Enemy").First().point;
+        return Physics2D.RaycastAll(forwardBodyPoint, direction).Where(e => e.transform.tag != this.tag).First().point;
     }
 
     private IEnumerator SlowRotate()
