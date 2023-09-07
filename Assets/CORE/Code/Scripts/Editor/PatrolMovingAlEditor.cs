@@ -18,20 +18,28 @@ public class PatrolMovingAlEditor : Editor
 
         movingAl.IsOn = EditorGUILayout.Toggle("Включен", movingAl.IsOn);
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Настройка");
-        movingAl.MovementMode = (PatrolMovingAl.Mode)EditorGUILayout.EnumPopup("Режим перемещения", movingAl.MovementMode);
+        EditorGUILayout.LabelField("Настройка", EditorStyles.boldLabel);
+        movingAl.MoveMode = (PatrolMovingAl.MovementMode)EditorGUILayout.EnumPopup("Режим перемещения", movingAl.MoveMode);
+        movingAl.MoveAlgoritm = (PatrolMovingAl.MovementAlgoritm)EditorGUILayout.EnumPopup("Вариант перемещения", movingAl.MoveAlgoritm);
 
-        if (movingAl.MovementMode == PatrolMovingAl.Mode.PointToPoint)
+        if (movingAl.MoveAlgoritm == PatrolMovingAl.MovementAlgoritm.EdgeToEdge &&
+            movingAl.MoveMode == PatrolMovingAl.MovementMode.Walking)
+        {
+            movingAl.MoveDirection = EditorGUILayout.Vector2Field("Направление движения", movingAl.MoveDirection);
+        }
+
+        if (movingAl.MoveAlgoritm == PatrolMovingAl.MovementAlgoritm.PositionToPosition)
         {
             movingAl.StartPosition = EditorGUILayout.Vector2Field("Начальная позиция", movingAl.StartPosition);
             movingAl.EndPosition = EditorGUILayout.Vector2Field("Конечная позиция", movingAl.EndPosition);
         }
 
-        if (movingAl.MovementMode == PatrolMovingAl.Mode.StartToPoint)
+        if (movingAl.MoveAlgoritm == PatrolMovingAl.MovementAlgoritm.StartToPosition)
         {
             movingAl.EndPosition = EditorGUILayout.Vector2Field("Конечная позиция", movingAl.EndPosition);
         }
 
+        EditorGUILayout.Space();
         movingAl.RotateSeconds = EditorGUILayout.FloatField("Время разворота", movingAl.RotateSeconds);
         movingAl.MoveSpeed = EditorGUILayout.FloatField("Скорость перемещения", movingAl.MoveSpeed);
 

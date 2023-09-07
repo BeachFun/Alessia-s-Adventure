@@ -6,27 +6,32 @@ using UnityEngine;
 
 public class PatrolMovingAl : MonoBehaviour
 {
-    public enum Mode { EdgeToEdge, StartToPoint, PointToPoint }
+    public enum MovementMode { Walking, Flying }
+    public enum MovementAlgoritm { EdgeToEdge, StartToPosition, PositionToPosition }
 
 
     private bool s_isOn = true;
-    private Mode s_mode;
+    private MovementMode m_mode;
+    private MovementAlgoritm s_movementAlgoritm;
+    private Vector2 s_moveDirection = Vector2.left;
     private Vector2 s_startPosition;
     private Vector2 s_endPosition;
     private float s_rotateSeconds;
     private float s_moveSpeed = 0f;
 
-    private SpriteRenderer _spriteRenderer;
-    private Rigidbody2D _physic;
-    private Collider2D _collider;
     private bool _isGround;
     private bool _fastMoveOn;
     private bool _isMovingOn = true;
-
+    private Vector2 _groundNormal;
+    private SpriteRenderer _spriteRenderer;
+    private Rigidbody2D _physic;
+    private Collider2D _collider;
 
     #region Свойства для инспектора
     public bool IsOn { get => s_isOn; set => s_isOn = value; }
-    public Mode MovementMode { get => s_mode; set => s_mode = value; }
+    public MovementMode MoveMode { get => m_mode; set => m_mode = value; }
+    public MovementAlgoritm MoveAlgoritm { get => s_movementAlgoritm; set => s_movementAlgoritm = value; }
+    public Vector2 MoveDirection { get => s_moveDirection; set => s_moveDirection = value; }
     public Vector2 StartPosition { get => s_startPosition; set => s_startPosition = value; }
     public Vector2 EndPosition { get => s_endPosition; set => s_endPosition = value; }
     public float RotateSeconds { get => s_rotateSeconds; set => s_rotateSeconds = value; }
@@ -45,6 +50,15 @@ public class PatrolMovingAl : MonoBehaviour
 
         _collider = GetComponentInChildren<Collider2D>();
         if (_collider is null) _collider = GetComponent<Collider2D>();
+
+        if (m_mode == MovementMode.Flying)
+        {
+            _physic.gravityScale = 0f;
+        }
+        else
+        {
+            _physic.gravityScale = 1f;
+        }
     }
 
     private void FixedUpdate()
@@ -60,10 +74,8 @@ public class PatrolMovingAl : MonoBehaviour
         }
         else
         {
-            if (_spriteRenderer.flipX)
-                _physic.velocity = new Vector2(-(s_moveSpeed * Time.fixedDeltaTime), 0);
-            else
-                _physic.velocity = new Vector2(s_moveSpeed * Time.fixedDeltaTime, 0);
+            Vector2 offset = CalcMoveDirection() * s_moveSpeed * Time.fixedDeltaTime;
+            _physic.MovePosition(_physic.position + offset);
 
             if (_fastMoveOn) _physic.velocity *= 2;
         }
@@ -72,6 +84,11 @@ public class PatrolMovingAl : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == 6) _isGround = true;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        _groundNormal = collision.contacts[0].normal;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -104,12 +121,21 @@ public class PatrolMovingAl : MonoBehaviour
         return Physics2D.RaycastAll(forwardBodyPoint, direction).Where(e => e.transform.tag != "Enemy").First().point;
     }
 
+    private Vector2 CalcMoveDirection()
+    {
+        return s_moveDirection - Vector2.Dot(s_moveDirection, _groundNormal) * _groundNormal;
+    }
+
     private IEnumerator SlowRotate()
     {
         _isMovingOn = false;
         _physic.velocity = Vector2.zero;
         yield return new WaitForSeconds(s_rotateSeconds / 1.5f);
+
         _spriteRenderer.flipX = !_spriteRenderer.flipX;
+        if (s_movementAlgoritm == MovementAlgoritm.EdgeToEdge)
+            s_moveDirection = s_moveDirection == Vector2.left ? Vector2.right : Vector2.left;
+
         yield return new WaitForSeconds(s_rotateSeconds / 3f);
         _isMovingOn = true;
     }
