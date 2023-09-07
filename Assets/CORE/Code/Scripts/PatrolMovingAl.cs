@@ -6,10 +6,15 @@ using UnityEngine;
 
 public class PatrolMovingAl : MonoBehaviour
 {
-    [SerializeField] private bool isOn = true;
-    [Header("Settings")]
-    [SerializeField] private float rotateSeconds;
-    [SerializeField] private float moveSpeed = 0f;
+    public enum Mode { EdgeToEdge, StartToPoint, PointToPoint }
+
+
+    private bool _isOn = true;
+    private Mode _mode;
+    private Vector2 _startPosition;
+    private Vector2 _endPosition;
+    private float _rotateSeconds;
+    private float _moveSpeed = 0f;
 
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _physic;
@@ -19,11 +24,14 @@ public class PatrolMovingAl : MonoBehaviour
     private bool _isMovingOn = true;
 
 
-    public bool IsOn
-    {
-        get => isOn;
-        set => isOn = value;
-    }
+    #region Свойства для инспектора
+    public bool IsOn { get => _isOn; set => _isOn = value; }
+    public Mode MovementMode { get => _mode; set => _mode = value; }
+    public Vector2 StartPosition { get => _startPosition; set => _startPosition = value; }
+    public Vector2 EndPosition { get => _endPosition; set => _endPosition = value; }
+    public float RotateSeconds { get => _rotateSeconds; set => _rotateSeconds = value; }
+    public float MoveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
+    #endregion
     public bool FastMoveOn
     {
         get => _fastMoveOn;
@@ -48,7 +56,7 @@ public class PatrolMovingAl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!_isGround || !_isMovingOn || !isOn) return;
+        if (!_isGround || !_isMovingOn || !_isOn) return;
 
         Vector2 groundPoint = CalcGroundPoint();
         Vector2 farGroundPoint = CalcFarGroundPoint();
@@ -60,9 +68,9 @@ public class PatrolMovingAl : MonoBehaviour
         else
         {
             if (_spriteRenderer.flipX)
-                _physic.velocity = new Vector2(-(moveSpeed * Time.fixedDeltaTime), 0);
+                _physic.velocity = new Vector2(-(_moveSpeed * Time.fixedDeltaTime), 0);
             else
-                _physic.velocity = new Vector2(moveSpeed * Time.fixedDeltaTime, 0);
+                _physic.velocity = new Vector2(_moveSpeed * Time.fixedDeltaTime, 0);
 
             if (_fastMoveOn) _physic.velocity *= 2;
         }
@@ -107,9 +115,9 @@ public class PatrolMovingAl : MonoBehaviour
     {
         _isMovingOn = false;
         _physic.velocity = Vector2.zero;
-        yield return new WaitForSeconds(rotateSeconds / 1.5f);
+        yield return new WaitForSeconds(_rotateSeconds / 1.5f);
         _spriteRenderer.flipX = !_spriteRenderer.flipX;
-        yield return new WaitForSeconds(rotateSeconds / 3f);
+        yield return new WaitForSeconds(_rotateSeconds / 3f);
         _isMovingOn = true;
     }
 }
