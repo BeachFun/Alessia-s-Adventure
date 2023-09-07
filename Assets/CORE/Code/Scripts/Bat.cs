@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(PatrolMovingAl))]
 
 public class Bat : Enemy
 {
@@ -12,125 +13,75 @@ public class Bat : Enemy
     [Space]
     [Header("Bat Settings")]
 
-    [Header("Moving system")]
-    [SerializeField] private Vector2 finishPos;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float barrierDistance = 1;
-    [SerializeField] private float rotateSeconds;
-
     [Header("Attack system")]
     [SerializeField] private bool attackOn;
     [SerializeField] private float shootSpeed = 3;
+    [SerializeField] protected float timeBetweenShoots = 1;
     [SerializeField] private EnergyBall energyBallPrefab;
+
+    [Header("Components")]
+    [SerializeField] private PatrolMovingAl movingSystem;
 
     [Header("References")]
     [Tooltip("Нужно установить ссылку на игрока на сцене, а не на префам игрока")]
     [SerializeField] private Rigidbody2D playerRigidbody;
 
-    private bool _isMoveBack;
-    private Vector2 _startPos;
-    private Vector2 _destination;
+    private Vector2 _playerDirection;
     private BatState _state;
     private bool _attackOn = true;
+    private bool _shootOn = true;
 
-
-    private void Start()
-    {
-        Initialize();
-    }
 
     void FixedUpdate()
     {
         if (_state == BatState.Idle)
         {
-            Vector2 currentPosition = this.transform.position;
-            Vector2 moveDirection = (_destination - currentPosition).normalized;
-            physic.velocity = moveDirection * moveSpeed * Time.fixedDeltaTime;
+            if (!attackOn) return;
 
-            //Transform barrierTransform = Physics2D.Raycast(currentPosition, moveDirection).transform;
-            //if (barrierTransform is not null)
-            //{
-            //    float distance = Vector2.Distance(currentPosition, barrierTransform.position);
-            //    if (distance < barrierDistance)
-            //    {
-            //        SlowRotate();
-            //        return;
-            //    }
-            //}
-
-            if (UnityUtils.Approximately(currentPosition, _destination))
-                SlowRotate();
-
-            if (attackOn & _attackOn)
+            if (_attackOn)
             {
-                Vector2 attackDirection = (playerRigidbody.position - physic.position).normalized;
-                Transform playerTransform = Physics2D.Raycast(physic.position + attackDirection, attackDirection).transform;
+
+            }
+
+            if (_shootOn)
+            {
+                _playerDirection = (playerRigidbody.position - physic.position).normalized;
+                Transform playerTransform = Physics2D.Raycast(physic.position + _playerDirection, _playerDirection).transform;
 
                 if (playerTransform is not null && playerTransform.tag == "Player")
                 {
-                    Attack(attackDirection);
+                    _state = BatState.Attack;
+                    _shootOn = false;
+                    movingSystem.IsOn = false;
+                    physic.velocity = Vector2.zero;
+                    animator.SetTrigger("attack1");
                 }
             }
         }
     }
 
-
-    private void Initialize()
+    private void Shoot()
     {
-        _startPos = this.transform.position;
-        _destination = finishPos;
-
-        Vector2 direction = (_destination - _startPos).normalized;
-        if (direction.x > 0) spriteRenderer.flipX = false;
-        else spriteRenderer.flipX = true;
-    }
-
-
-    private void SlowRotate()
-    {
-        _state = BatState.Rotation;
-        physic.velocity = Vector2.zero;
-
-        StartCoroutine(SlowRotateCoroutine());
-    }
-
-    private IEnumerator SlowRotateCoroutine()
-    {
-        yield return new WaitForSeconds(rotateSeconds / 1.5f);
-
-        _destination = _isMoveBack ? finishPos : _startPos;
-        _isMoveBack = !_isMoveBack;
-        spriteRenderer.flipX = _destination.x < this.transform.position.x ? true : false;
-
-        yield return new WaitForSeconds(rotateSeconds / 3f);
-
-        _state = BatState.Idle;
-    }
-
-    private void Attack(Vector2 direction)
-    {
-        _state = BatState.Attack;
-        _attackOn = false;
-        physic.velocity = Vector2.zero;
-
-        StartCoroutine(AttackCoroutine(direction));
-    }
-
-    private IEnumerator AttackCoroutine(Vector2 direction)
-    {
-        animator.SetTrigger("attack1");
-        float length = UnityUtils.AnimationPlayDuration(animator);
-
-        yield return new WaitForSeconds(length);
-
         EnergyBall energyBall = Instantiate(energyBallPrefab, this.transform.position, new Quaternion(0f, 0f, 0f, 0f));
         energyBall.power = atk;
-        energyBall.AddForce(direction, shootSpeed);
+        energyBall.AddForce(_playerDirection, shootSpeed);
 
         _state = BatState.Idle;
 
-        yield return new WaitForSeconds(timeBetweenAttacks);
+        StartCoroutine(ShootRecover());
+    }
 
-        _attackOn = true;
+    private IEnumerator ShootRecover()
+    {
+        movingSystem.IsOn = true;
+
+        yield return new WaitForSeconds(timeBetweenShoots);
+
+        _shootOn = true;
+    }
+
+    private void Attack()
+    {
+        
     }
 }
