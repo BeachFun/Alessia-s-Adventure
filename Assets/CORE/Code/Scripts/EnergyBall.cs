@@ -17,7 +17,7 @@ public class EnergyBall : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<HeroineController>().Hurt(power);
+            collision.gameObject.GetComponent<Heroine>().Hurt(power);
         }
         if (collision.gameObject.GetComponent<Bat>() is null)
         {

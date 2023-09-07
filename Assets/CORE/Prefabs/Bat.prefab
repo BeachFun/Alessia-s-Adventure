@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 191504214546491134}
   - component: {fileID: 8994908165812191569}
   - component: {fileID: 5759095768438808608}
+  - component: {fileID: 4089480249420401070}
   m_Layer: 0
   m_Name: Bat
   m_TagString: Enemy
@@ -196,17 +197,33 @@ MonoBehaviour:
   hp: 10
   atk: 20
   def: 0
-  hurtSpeed: -1
   timeBetweenAttacks: 5
-  moveSpeed: 80
   spriteRenderer: {fileID: 6875745587762059467}
   animator: {fileID: 3442777843677103704}
   physic: {fileID: 191504214546491134}
-  finishPos: {x: 0, y: 0}
-  barrierDistance: 1
-  rotateSeconds: 1.7
+  _collider: {fileID: 8994908165812191569}
   attackOn: 1
   shootSpeed: 150
+  timeBetweenShoots: 7
   energyBallPrefab: {fileID: 8405258118171666879, guid: b2b6c80860edc87439451083624bacc0, type: 3}
-  boxCollider2D: {fileID: 8994908165812191569}
+  movingSystem: {fileID: 4089480249420401070}
   playerRigidbody: {fileID: 0}
+--- !u!114 &4089480249420401070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820939710128056745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63dfa0f773c224a48ba70b935d52fcc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOn: 1
+  mode: 1
+  movementAlgoritm: 1
+  startPosition: {x: 0, y: 0}
+  endPosition: {x: 0, y: 20}
+  rotateSeconds: 3
+  moveSpeed: 80

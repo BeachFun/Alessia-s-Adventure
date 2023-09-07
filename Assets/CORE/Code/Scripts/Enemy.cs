@@ -9,6 +9,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public enum Bool { True, False}
+
+
     [Space][Header("Enemy Settings")]
 
     [Header("Characteristics")]
@@ -17,31 +20,35 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected int def = 1;
 
     [Header("Enemy Settings")]
-    [Tooltip("Скорость нанесения урона (удара)")]
-    [SerializeField] protected float hurtSpeed = 1;
     [Tooltip("Время между атаками")]
     [SerializeField] protected float timeBetweenAttacks = 1;
-    [SerializeField] protected float moveSpeed = 0f;
 
     [Header("Enemy class Components")]
     [SerializeField] protected SpriteRenderer spriteRenderer;
     [SerializeField] protected Animator animator;
     [SerializeField] protected Rigidbody2D physic;
-    [SerializeField] protected Collider2D collider;
+    [SerializeField] protected Collider2D _collider;
 
 
-    protected bool isBusy;
-    protected Coroutine freezeRotation;
+    protected bool _isBusy;
+    protected Coroutine _freezeRotation;
+
+
+    protected Bool IsBusy
+    {
+        get => _isBusy ? Bool.True : Bool.False;
+        set => _isBusy = value == Bool.True ? true : false;
+    }
 
 
     protected virtual void OnEnable()
     {
-        freezeRotation = StartCoroutine(FreezeRotationLoop());
+        _freezeRotation = StartCoroutine(FreezeRotationLoop());
     }
 
     protected virtual void OnDisable()
     {
-        StopCoroutine(freezeRotation);
+        StopCoroutine(_freezeRotation);
     }
 
 
@@ -49,10 +56,8 @@ public class Enemy : MonoBehaviour
     {
         hp = numAtk > def ? hp - (numAtk - def) : hp;
 
-        isBusy = true;
         if (hp < 0) Death();
         else animator.SetTrigger("hit");
-        isBusy = false;
     }
 
     protected virtual void Death()
@@ -69,10 +74,8 @@ public class Enemy : MonoBehaviour
     {
         while (true)
         {
-            physic.rotation = 0;
-            yield return new WaitForSeconds(.25f);
+            this.transform.rotation = new Quaternion(0f, 0f, 0f, 0f);
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
     }
 }
-
-public enum MoveDirection { Left, Right }

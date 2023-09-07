@@ -1,180 +1,112 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(PatrolMovingAl))]
 
 public class Morlock : Enemy
 {
-    private enum MorlockState { Idle, Walk, Rotate, Attack, Hit }
-
-
     [Space] [Header("Morlock Settings")]
 
     [Header("Attack system")]
     [SerializeField] private float aggressionDistance;
     [SerializeField] private float attackDistance;
 
-    [Header("Movement system")]
-    [SerializeField] private float rayDistanceGroundCheck = 1f;
-    [SerializeField] private float rayDistanceFarGroundCheck = 2f;
-    [SerializeField] private MoveDirection moveDirection = MoveDirection.Left;
-    [SerializeField] private float rotateSeconds;
-    [SerializeField] private bool isAggressiveWalk;
+    [Header("Components")]
+    [SerializeField] private PatrolMovingAl movingSystem;
 
-    [Header("Other")]
-    [SerializeField] private bool isGround;
-
-    [Header("Morlock class Components")]
-    [SerializeField] private BoxCollider2D boxCollider2D;
-
-    private Vector2 lookDirection;
-    private bool _movementOn = true;
     private bool _attackOn = true;
-    private MorlockState _state;
+    private Vector2 _lookDirection;
+    private Vector2 _forwardBodyPoint;
 
-    private void Start()
+
+    private void FixedUpdate()
     {
-        boxCollider2D = GetComponent<BoxCollider2D>();
-    }
+        if (_isBusy) return;
 
-    void FixedUpdate()
-    {
-        if (!isBusy && isGround)
-        {
-            if (!_attackOn && _state == MorlockState.Idle) _movementOn = true;
+        animator.SetFloat("speed", movingSystem.Speed);
 
-            // Cheking environment
-            RaycastHit2D hitBottom, hitFar; // поверхность под персонажем и чуть дальше персонажа
-            Vector2 bottomBodyPoint, forwardBodyPoint;
+        if (!_attackOn) return;
 
-            bottomBodyPoint = new Vector2(this.transform.position.x, boxCollider2D.bounds.min.y);
+        Transform playerTransform = FindTransform(attackDistance);
 
-            if (moveDirection == MoveDirection.Left)
-            {
-                forwardBodyPoint = new Vector2(boxCollider2D.bounds.min.x, this.transform.position.y);
-                hitFar = Physics2D.Raycast(forwardBodyPoint, new Vector2(-0.7f, -1f), rayDistanceFarGroundCheck);
-            }
-            else
-            {
-                forwardBodyPoint = new Vector2(boxCollider2D.bounds.max.x, this.transform.position.y);
-                hitFar = Physics2D.Raycast(forwardBodyPoint, new Vector2(0.7f, -1f), rayDistanceFarGroundCheck);
-            }
-
-
-            // Attacked, check player
-            lookDirection = moveDirection == MoveDirection.Left ? Vector2.left : Vector2.right;
-            Transform playerTransform = Physics2D.Raycast(forwardBodyPoint, lookDirection, attackDistance).transform;
-
-            if (playerTransform is not null && playerTransform.tag == "Player")
-            {
-                _movementOn = false;
-
-                if (_attackOn) StartCoroutine(Attack(playerTransform, forwardBodyPoint));
-            }
-            else
-            {
-                playerTransform = Physics2D.Raycast(forwardBodyPoint, lookDirection, aggressionDistance).transform;
-                if (playerTransform is null)
-                {
-                    isAggressiveWalk = false;
-                    animator.speed = 1f;
-                }
-                else if (playerTransform.tag == "Player")
-                {
-                    isAggressiveWalk = true;
-                    animator.speed = 2f;
-                }
-            }
-
-            // Moving
-            if (_movementOn)
-            {
-                hitBottom = Physics2D.Raycast(bottomBodyPoint, Vector2.down, rayDistanceGroundCheck);
-
-                if (hitFar.collider is null || !UnityUtils.Approximately(hitBottom.point, hitFar.point, SnapAxis2D.Y))
-                {
-                    StartCoroutine(SlowRotate());
-                }
-                else
-                {
-                    if (moveDirection == MoveDirection.Left)
-                        physic.velocity = new Vector2(-(moveSpeed * Time.fixedDeltaTime), 0);
-                    else
-                        physic.velocity = new Vector2(moveSpeed * Time.fixedDeltaTime, 0);
-
-                    if (isAggressiveWalk)
-                        physic.velocity *= 2; // если увидел игрока, то ускоренное движение к игроку
-
-                    animator.SetFloat("speed", physic.velocity.magnitude / Time.fixedDeltaTime);
-                }
-            }
-        }
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 6)
-        {
-            isGround = true;
-        }
-    }
-
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 6)
-        {
-            isGround = false;
-        }
-    }
-
-
-    private IEnumerator Attack(Transform transform, Vector2 forwardPoint)
-    {
-        isBusy = true;
-        _attackOn = false;
-
-        animator.SetFloat("speed", 0);
-        animator.SetTrigger("attack");
-
-        yield return new WaitForSeconds(hurtSpeed);
-
-        Transform playerTransform = Physics2D.Raycast(forwardPoint, lookDirection, attackDistance).transform;
         if (playerTransform is not null && playerTransform.tag == "Player")
         {
-            transform.GetComponent<HeroineController>().Hurt(atk);
-        }
-
-        isBusy = false;
-
-        yield return new WaitForSeconds(timeBetweenAttacks);
-
-        _attackOn = true;
-    }
-
-    private IEnumerator SlowRotate()
-    {
-        _state = MorlockState.Rotate;
-        _movementOn = false;
-
-        animator.SetFloat("speed", 0f);
-
-        yield return new WaitForSeconds(rotateSeconds / 1.5f);
-
-        if (moveDirection == MoveDirection.Left)
-        {
-            spriteRenderer.flipX = false;
-            moveDirection = MoveDirection.Right;
+            movingSystem.IsOn = false;
+            animator.SetFloat("speed", 0);
+            animator.SetTrigger("attack");
         }
         else
         {
-            spriteRenderer.flipX = true;
-            moveDirection = MoveDirection.Left;
+            playerTransform = FindTransform(aggressionDistance);
+
+            if (playerTransform is null)
+            {
+                movingSystem.FastMoveOn = false;
+                animator.speed = 1f;
+            }
+            else if (playerTransform.tag == "Player")
+            {
+                movingSystem.FastMoveOn = true;
+                animator.speed = 2f;
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+
+        Vector2 from = new Vector2(0f, this.transform.position.y);
+        from.x = spriteRenderer.flipX ? _collider.bounds.min.x : _collider.bounds.max.x;
+        Vector2 to = new Vector2(0, this.transform.position.y);
+        to.x = spriteRenderer.flipX ? from.x - attackDistance : from.x + attackDistance;
+
+        Gizmos.DrawLine(from, to);
+    }
+
+    private Transform FindTransform(float distance)
+    {
+        // TODO: Придумать более достойное название для метода
+
+        _forwardBodyPoint = new Vector2(0f, this.transform.position.y);
+        _forwardBodyPoint.x = spriteRenderer.flipX ? _collider.bounds.min.x : _collider.bounds.max.x;
+
+        _lookDirection = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+
+        IEnumerable<RaycastHit2D> hits = Physics2D.RaycastAll(_forwardBodyPoint, _lookDirection, distance)
+            .Where(e => e.transform.tag != this.tag);
+
+        if (hits.Count() == 0) return null;
+
+        RaycastHit2D hit = hits.First();
+
+        return hit.collider is not null ? hit.transform : null;
+    }
+
+    private void Attack()
+    {
+        _attackOn = false;
+
+        Transform playerTransform = Physics2D.RaycastAll(_forwardBodyPoint, _lookDirection, attackDistance)
+            .Where(e => e.transform.tag != this.tag)
+            .First().transform;
+
+        if (playerTransform is not null && playerTransform.tag == "Player")
+        {
+            playerTransform.GetComponent<Heroine>().Hurt(atk);
         }
 
-        yield return new WaitForSeconds(rotateSeconds / 3f);
+        StartCoroutine(AttackRecovery());
+    }
 
-        _movementOn = true;
-        _state = MorlockState.Idle;
+    private IEnumerator AttackRecovery()
+    {
+        yield return new WaitForSeconds(timeBetweenAttacks);
+
+        _attackOn = true;
+        movingSystem.IsOn = true;
     }
 }
