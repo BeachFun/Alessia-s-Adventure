@@ -14,34 +14,26 @@ public class PatrolMovingAlEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
-
-        movingAl.IsOn = EditorGUILayout.Toggle("Включен", movingAl.IsOn);
+        movingAl.isOn = EditorGUILayout.Toggle("Включен", movingAl.isOn);
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Настройка", EditorStyles.boldLabel);
-        movingAl.MoveMode = (PatrolMovingAl.MovementMode)EditorGUILayout.EnumPopup("Режим перемещения", movingAl.MoveMode);
-        movingAl.MoveAlgoritm = (PatrolMovingAl.MovementAlgoritm)EditorGUILayout.EnumPopup("Вариант перемещения", movingAl.MoveAlgoritm);
+        movingAl.mode = (PatrolMovingAl.MovementMode)EditorGUILayout.EnumPopup("Режим перемещения", movingAl.mode);
+        movingAl.movementAlgoritm = (PatrolMovingAl.MovementAlgoritm)EditorGUILayout.EnumPopup("Вариант перемещения", movingAl.movementAlgoritm);
 
-        if (movingAl.MoveAlgoritm == PatrolMovingAl.MovementAlgoritm.EdgeToEdge &&
-            movingAl.MoveMode == PatrolMovingAl.MovementMode.Walking)
+        if (movingAl.movementAlgoritm == PatrolMovingAl.MovementAlgoritm.PositionToPosition)
         {
-            movingAl.MoveDirection = EditorGUILayout.Vector2Field("Направление движения", movingAl.MoveDirection);
+            movingAl.startPosition = EditorGUILayout.Vector2Field("Начальная позиция", movingAl.startPosition);
+            movingAl.endPosition = EditorGUILayout.Vector2Field("Конечная позиция", movingAl.endPosition);
         }
 
-        if (movingAl.MoveAlgoritm == PatrolMovingAl.MovementAlgoritm.PositionToPosition)
+        if (movingAl.movementAlgoritm == PatrolMovingAl.MovementAlgoritm.StartToPosition)
         {
-            movingAl.StartPosition = EditorGUILayout.Vector2Field("Начальная позиция", movingAl.StartPosition);
-            movingAl.EndPosition = EditorGUILayout.Vector2Field("Конечная позиция", movingAl.EndPosition);
-        }
-
-        if (movingAl.MoveAlgoritm == PatrolMovingAl.MovementAlgoritm.StartToPosition)
-        {
-            movingAl.EndPosition = EditorGUILayout.Vector2Field("Конечная позиция", movingAl.EndPosition);
+            movingAl.endPosition = EditorGUILayout.Vector2Field("Конечная позиция", movingAl.endPosition);
         }
 
         EditorGUILayout.Space();
-        movingAl.RotateSeconds = EditorGUILayout.FloatField("Время разворота", movingAl.RotateSeconds);
-        movingAl.MoveSpeed = EditorGUILayout.FloatField("Скорость перемещения", movingAl.MoveSpeed);
+        movingAl.rotateSeconds = EditorGUILayout.FloatField("Время разворота", movingAl.rotateSeconds);
+        movingAl.moveSpeed = EditorGUILayout.FloatField("Скорость перемещения", movingAl.moveSpeed);
 
         if (GUI.changed) SetObjectDirty(movingAl.gameObject);
     }

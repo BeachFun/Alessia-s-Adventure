@@ -217,3 +217,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63dfa0f773c224a48ba70b935d52fcc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOn: 1
+  mode: 0
+  movementAlgoritm: 0
+  startPosition: {x: 0, y: 0}
+  endPosition: {x: 0, y: 0}
+  rotateSeconds: 3
+  moveSpeed: 40
