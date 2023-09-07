@@ -9,12 +9,12 @@ public class PatrolMovingAl : MonoBehaviour
     public enum Mode { EdgeToEdge, StartToPoint, PointToPoint }
 
 
-    private bool _isOn = true;
-    private Mode _mode;
-    private Vector2 _startPosition;
-    private Vector2 _endPosition;
-    private float _rotateSeconds;
-    private float _moveSpeed = 0f;
+    private bool s_isOn = true;
+    private Mode s_mode;
+    private Vector2 s_startPosition;
+    private Vector2 s_endPosition;
+    private float s_rotateSeconds;
+    private float s_moveSpeed = 0f;
 
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _physic;
@@ -25,22 +25,15 @@ public class PatrolMovingAl : MonoBehaviour
 
 
     #region Свойства для инспектора
-    public bool IsOn { get => _isOn; set => _isOn = value; }
-    public Mode MovementMode { get => _mode; set => _mode = value; }
-    public Vector2 StartPosition { get => _startPosition; set => _startPosition = value; }
-    public Vector2 EndPosition { get => _endPosition; set => _endPosition = value; }
-    public float RotateSeconds { get => _rotateSeconds; set => _rotateSeconds = value; }
-    public float MoveSpeed { get => _moveSpeed; set => _moveSpeed = value; }
+    public bool IsOn { get => s_isOn; set => s_isOn = value; }
+    public Mode MovementMode { get => s_mode; set => s_mode = value; }
+    public Vector2 StartPosition { get => s_startPosition; set => s_startPosition = value; }
+    public Vector2 EndPosition { get => s_endPosition; set => s_endPosition = value; }
+    public float RotateSeconds { get => s_rotateSeconds; set => s_rotateSeconds = value; }
+    public float MoveSpeed { get => s_moveSpeed; set => s_moveSpeed = value; }
     #endregion
-    public bool FastMoveOn
-    {
-        get => _fastMoveOn;
-        set => _fastMoveOn = value;
-    }
-    public float Speed
-    {
-        get => _physic.velocity.magnitude / Time.fixedDeltaTime;
-    }
+    public bool FastMoveOn { get => _fastMoveOn; set => _fastMoveOn = value; }
+    public float Speed { get => _physic.velocity.magnitude / Time.fixedDeltaTime; }
 
 
     private void Awake()
@@ -56,7 +49,7 @@ public class PatrolMovingAl : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!_isGround || !_isMovingOn || !_isOn) return;
+        if (!_isGround || !_isMovingOn || !s_isOn) return;
 
         Vector2 groundPoint = CalcGroundPoint();
         Vector2 farGroundPoint = CalcFarGroundPoint();
@@ -68,9 +61,9 @@ public class PatrolMovingAl : MonoBehaviour
         else
         {
             if (_spriteRenderer.flipX)
-                _physic.velocity = new Vector2(-(_moveSpeed * Time.fixedDeltaTime), 0);
+                _physic.velocity = new Vector2(-(s_moveSpeed * Time.fixedDeltaTime), 0);
             else
-                _physic.velocity = new Vector2(_moveSpeed * Time.fixedDeltaTime, 0);
+                _physic.velocity = new Vector2(s_moveSpeed * Time.fixedDeltaTime, 0);
 
             if (_fastMoveOn) _physic.velocity *= 2;
         }
@@ -115,9 +108,9 @@ public class PatrolMovingAl : MonoBehaviour
     {
         _isMovingOn = false;
         _physic.velocity = Vector2.zero;
-        yield return new WaitForSeconds(_rotateSeconds / 1.5f);
+        yield return new WaitForSeconds(s_rotateSeconds / 1.5f);
         _spriteRenderer.flipX = !_spriteRenderer.flipX;
-        yield return new WaitForSeconds(_rotateSeconds / 3f);
+        yield return new WaitForSeconds(s_rotateSeconds / 3f);
         _isMovingOn = true;
     }
 }
