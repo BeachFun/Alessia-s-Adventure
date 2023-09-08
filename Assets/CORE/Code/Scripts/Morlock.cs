@@ -13,6 +13,7 @@ public class Morlock : Enemy
     [Header("Attack system")]
     [SerializeField] private float aggressionDistance;
     [SerializeField] private float attackDistance;
+    [SerializeField] private Vector2 attackZoneSize;
 
     [Header("Components")]
     [SerializeField] private PatrolMovingAl movingSystem;
@@ -35,6 +36,7 @@ public class Morlock : Enemy
         if (playerTransform is not null && playerTransform.tag == "Player")
         {
             movingSystem.IsOn = false;
+            _attackOn = false;
             animator.SetFloat("speed", 0);
             animator.SetTrigger("attack");
         }
@@ -59,12 +61,10 @@ public class Morlock : Enemy
     {
         Gizmos.color = Color.red;
 
-        Vector2 from = new Vector2(0f, this.transform.position.y);
-        from.x = spriteRenderer.flipX ? _collider.bounds.min.x : _collider.bounds.max.x;
-        Vector2 to = new Vector2(0, this.transform.position.y);
-        to.x = spriteRenderer.flipX ? from.x - attackDistance : from.x + attackDistance;
+        Vector2 center = new Vector2(0f, this.transform.position.y);
+        center.x = spriteRenderer.flipX ? _collider.bounds.min.x - attackDistance : _collider.bounds.max.x + attackDistance;
 
-        Gizmos.DrawLine(from, to);
+        Gizmos.DrawWireCube(center, attackZoneSize);
     }
 
     private Transform FindTransform(float distance)
@@ -88,21 +88,19 @@ public class Morlock : Enemy
 
     private void Attack()
     {
-        _attackOn = false;
+        RaycastHit2D[] hits = Physics2D.BoxCastAll(physic.position, attackZoneSize, 0, _lookDirection, attackDistance)
+           .Where(e => e.transform.tag != this.tag)
+           .ToArray();
 
-        Transform playerTransform = Physics2D.RaycastAll(_forwardBodyPoint, _lookDirection, attackDistance)
-            .Where(e => e.transform.tag != this.tag)
-            .First().transform;
+        Transform playerTransform = hits.Length > 0 ? hits.Where(e => e.transform.tag == "Player").First().transform : null;
 
-        if (playerTransform is not null && playerTransform.tag == "Player")
-        {
+        if (playerTransform is not null)
             playerTransform.GetComponent<Heroine>().Hurt(atk);
-        }
 
-        StartCoroutine(AttackRecovery());
+        StartCoroutine(AttackRecoveryRoutine());
     }
 
-    private IEnumerator AttackRecovery()
+    private IEnumerator AttackRecoveryRoutine()
     {
         yield return new WaitForSeconds(timeBetweenAttacks);
 

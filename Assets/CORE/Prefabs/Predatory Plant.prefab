@@ -201,4 +201,6 @@ MonoBehaviour:
   animator: {fileID: 1639910714167217052}
   physic: {fileID: 7452756386537538050}
   _collider: {fileID: 2252529990343094667}
-  attackDistance: 0.85
+  attackOn: 1
+  attackDistance: 0.63
+  attackZoneSize: {x: 0.6, y: 1}

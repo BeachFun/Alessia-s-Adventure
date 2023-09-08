@@ -203,7 +203,8 @@ MonoBehaviour:
   physic: {fileID: 6305271739487784053}
   _collider: {fileID: 6654119717843473843}
   aggressionDistance: 20
-  attackDistance: 0.4
+  attackDistance: 0.15
+  attackZoneSize: {x: 0.3, y: 0.6}
   movingSystem: {fileID: 2404080831225040221}
 --- !u!114 &2404080831225040221
 MonoBehaviour:
