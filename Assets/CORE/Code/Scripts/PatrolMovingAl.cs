@@ -44,7 +44,7 @@ public class PatrolMovingAl : MonoBehaviour
                 return true;
 
             return Physics2D.RaycastAll(currentPosition, _destination - currentPosition, barrierDistance)
-                .Where(e => e.transform.tag != this.tag && e.transform.tag != "Projectile")
+                .Where(e => e.transform.tag != this.tag && e.transform.tag != "Projectile" && e.transform.tag != "Player")
                 .Count() > 0;
         }
     }
@@ -127,12 +127,12 @@ public class PatrolMovingAl : MonoBehaviour
         if (_spriteRenderer.flipX)
         {
             forwardBodyPoint = new Vector2(_collider.bounds.min.x, _collider.bounds.max.y);
-            direction = new Vector2(-0.7f, -1f);
+            direction = new Vector2(-0.3f, -1f);
         }
         else
         {
             forwardBodyPoint = new Vector2(_collider.bounds.max.x, _collider.bounds.max.y);
-            direction = new Vector2(0.7f, -1f);
+            direction = new Vector2(0.3f, -1f);
         }
 
         return Physics2D.RaycastAll(forwardBodyPoint, direction).Where(e => e.transform.tag != this.tag).First().point;
