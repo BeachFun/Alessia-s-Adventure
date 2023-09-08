@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 930539fe13ef3a84f86bc7f4cc6814b6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.32, y: 0.32}
@@ -203,7 +203,11 @@ MonoBehaviour:
   physic: {fileID: 191504214546491134}
   _collider: {fileID: 8994908165812191569}
   attackOn: 1
+  attackDistance: 0.13
+  attackZoneSize: {x: 0.26, y: 0.76}
+  shootOn: 1
   shootSpeed: 150
+  playerCheckDistance: 16
   timeBetweenShoots: 7
   energyBallPrefab: {fileID: 8405258118171666879, guid: b2b6c80860edc87439451083624bacc0, type: 3}
   movingSystem: {fileID: 4089480249420401070}
