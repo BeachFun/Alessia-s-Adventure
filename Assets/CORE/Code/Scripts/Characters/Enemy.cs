@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
 
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
     public enum Bool { True, False}
 

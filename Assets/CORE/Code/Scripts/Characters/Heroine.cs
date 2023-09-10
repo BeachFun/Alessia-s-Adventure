@@ -7,7 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
 
-public class Heroine : MonoBehaviour
+public class Heroine : Character
 {
     private enum AnimatorStates { Idle = 0, JumpReady = 10, Jumping = 11, AttackA = 20, AttackB = 21, AttackC = 22, AttackD = 23, Sliding = 30, Grab = 40, Dieth = 50 }
     private enum AttackType { A, B, C, D, InJump }
