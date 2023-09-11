@@ -57,3 +57,9 @@ public class VisionCone2D : MonoBehaviour
 
     public void VisionEnd() => shouldCheckVision = false;
 }
+
+public enum VisionMode
+{
+    Cone,
+    Known
+}
