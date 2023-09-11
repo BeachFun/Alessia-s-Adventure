@@ -6,7 +6,7 @@ using Action = System.Action;
 
 [RequireComponent(typeof(Animator))]
 
-public class AttackController : MonoBehaviour
+public class AttackController2D : MonoBehaviour
 {
     [SerializeField] private bool attackOn;
     [SerializeField] private bool isAttackAllOnZone;
