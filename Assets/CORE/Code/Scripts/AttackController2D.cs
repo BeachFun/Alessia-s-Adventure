@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Action = System.Action;
 
@@ -66,10 +65,12 @@ public class AttackController2D : MonoBehaviour
                 ActionBeforeAttack.Invoke();
                 _attackOn = false;
                 _attackZoneIndex = i;
-                _animator.SetTrigger(attackZones[i].AnimationName);
-                break;
+                Attack();
+                return;
             }
         }
+
+        _attackZoneIndex = -1;
     }
 
     private void OnDrawGizmos()
@@ -87,6 +88,11 @@ public class AttackController2D : MonoBehaviour
 
     public void Attack()
     {
+        if (_attackZoneIndex != -1) _animator.SetTrigger(attackZones[_attackZoneIndex].AnimationName);
+    }
+
+    private void Damage()
+    {
         Vector2 direction = IsRotating ? -_directionsToZones[_attackZoneIndex] : _directionsToZones[_attackZoneIndex];
 
         RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, attackZones[_attackZoneIndex].ZoneSize, 0, direction)
@@ -94,20 +100,20 @@ public class AttackController2D : MonoBehaviour
                 .ToArray();
 
         if (hits.Length > 0)
-            if (isAttackAllOnZone) AttackAllOnZone(hits);
-            else AttackOneOnZone(hits);
+            if (isAttackAllOnZone) DamageAllOnZone(hits);
+            else DamageOneOnZone(hits);
 
         StartCoroutine(AttackRecoverRoutine());
     }
 
-    private void AttackOneOnZone(RaycastHit2D[] hits)
+    private void DamageOneOnZone(RaycastHit2D[] hits)
     {
         Transform enemyTransform = hits[0].transform;
 
         enemyTransform.GetComponent<Character>().Hurt(attackDamage);
     }
 
-    private void AttackAllOnZone(RaycastHit2D[] hits)
+    private void DamageAllOnZone(RaycastHit2D[] hits)
     {
         Transform[] enemiesTransforms = hits.Select(e => e.transform).ToArray();
 

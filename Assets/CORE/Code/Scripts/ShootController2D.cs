@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Action = System.Action;
 
@@ -48,6 +47,7 @@ public class ShootController2D : MonoBehaviour
         {
             _vision.CheckVision();
             enemyTransform = _vision.DetectedObjects.Where(e => e.tag == enemyTag).First().transform;
+            _enemyDirection = (enemyTransform.position - this.transform.position).normalized;
         }
         else
         {
@@ -59,7 +59,7 @@ public class ShootController2D : MonoBehaviour
         {
             _shootOn = false;
             ActionBeforeShoot.Invoke();
-            _animator.SetTrigger(shootAnimationName);
+            Shoot();
         }
     }
 
@@ -68,7 +68,7 @@ public class ShootController2D : MonoBehaviour
         if (detectionMode == VisionMode.Cone)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawRay(transform.position + _enemyDirection * shootMinDistance, _enemyDirection);
+            Gizmos.DrawRay(transform.position + Vector3.left * shootMinDistance, Vector3.left);
         }
         else
         {
@@ -77,6 +77,11 @@ public class ShootController2D : MonoBehaviour
     }
 
     public void Shoot()
+    {
+        _animator.SetTrigger(shootAnimationName);
+    }
+
+    private void ReleaseProjectile()
     {
         Projectile2D projectile = Instantiate(this.projectile, this.transform.position, new Quaternion(0f, 0f, 0f, 0f));
         projectile.Power = shootDamage;
