@@ -32,6 +32,7 @@ public class VisionCone2D : MonoBehaviour
         _detectedObjects.Clear();
 
         if (detectMultipleObjects)
+        {
             for (float angle = -halfAngle; angle <= halfAngle; angle += 1.0f)
             {
                 Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction;
@@ -40,7 +41,9 @@ public class VisionCone2D : MonoBehaviour
 
                 if (hit.collider != null) _detectedObjects.Add(hit.collider.gameObject);
             }
+        }
         else
+        {
             for (float angle = -halfAngle; angle <= halfAngle; angle += 1.0f)
             {
                 Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction;
@@ -51,6 +54,7 @@ public class VisionCone2D : MonoBehaviour
 
                 if (hits.Count() > 0) _detectedObjects.AddRange(hits);
             }
+        }
     }
 
     public void VisionStart() => shouldCheckVision = true;
