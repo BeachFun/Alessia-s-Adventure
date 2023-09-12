@@ -2,73 +2,84 @@ using System.Linq;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CharacterController))]
 
 [System.Serializable]
-public class PatrolMovingAl : MonoBehaviour
+public class PatrolMovingAl : MovementController2D
 {
-    public enum MovementMode { Walking, Flying }
-    public enum MovementAlgoritm { EdgeToEdge, StartToPosition, PositionToPosition }
+    private const float obstacleDistance = .5f;
+
+    [SerializeField] private protected MovementAlgorithm movementAlgorithm;
+    [SerializeField] private protected bool isAvoidObstacles;
+    [SerializeField] private protected Vector2 startPosition;
+    [SerializeField] private protected Vector2 endPosition;
+    [SerializeField] private protected Vector2[] routePoints;
+    [SerializeField] private protected bool isMoveBack;
+    [SerializeField] private protected float rotateSeconds;
+    [SerializeField] private protected float moveSpeed = 0f;
+
+    private protected bool _fastMoveOn;
+    private protected bool _isMovingOn = true;
+    private protected int _routeIndex = 0;
+    private protected Vector2 _destination;
+    private protected SpriteRenderer _spriteRenderer; 
 
 
-    private const float barrierDistance = .5f;
-
-    [SerializeField] private bool isOn = true;
-    [SerializeField] private MovementMode mode;
-    [SerializeField] private MovementAlgoritm movementAlgoritm;
-    [SerializeField] private Vector2 startPosition;
-    [SerializeField] private Vector2 endPosition;
-    [SerializeField] private float rotateSeconds;
-    [SerializeField] private float moveSpeed = 0f;
-
-    private bool _isGround;
-    private bool _fastMoveOn;
-    private bool _isMovingOn = true;
-    private bool _isMoveToStart;
-    private Vector2 _destination;
-    private SpriteRenderer _spriteRenderer;
-    private Rigidbody2D _physic;
-    private Collider2D _collider;
-
-
-    public bool IsOn { get => isOn; set => isOn = value; }
-    public bool FastMoveOn { get => _fastMoveOn; set => _fastMoveOn = value; }
-    public float Speed { get => _physic.velocity.magnitude / Time.fixedDeltaTime; }
+    public bool FastMoveOn
+    {
+        get => _fastMoveOn;
+        set => _fastMoveOn = value;
+    }
+    public float Speed
+    {
+        get => _character.velocity.magnitude / Time.fixedDeltaTime;
+    }
     private bool IsReachedDestinationPosition
     {
         get
         {
-            Vector2 currentPosition = _physic.position;
+            Vector2 currentPosition = transform.position;
 
             if (UnityUtils.Approximately(currentPosition, _destination))
                 return true;
 
-            return Physics2D.RaycastAll(currentPosition, _destination - currentPosition, barrierDistance)
-                .Where(e => e.transform.tag != this.tag && e.transform.tag != "Projectile" && e.transform.tag != "Player")
-                .Count() > 0;
+            if (isAvoidObstacles)
+            {
+                return Physics2D.RaycastAll(currentPosition, _destination - currentPosition, obstacleDistance)
+                    .Where(e => e.transform.tag != this.tag && e.transform.tag != "Projectile" && e.transform.tag != "Player")
+                    .Count() > 0;
+            }
+
+            return false;
         }
     }
 
 
-    private void Awake()
+    private protected void Awake()
     {
-        _physic = GetComponent<Rigidbody2D>();
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        if (_spriteRenderer is null) _spriteRenderer = GetComponent<SpriteRenderer>();
-        _collider = GetComponentInChildren<Collider2D>();
-        if (_collider is null) _collider = GetComponent<Collider2D>();
+        if (movementAlgorithm == MovementAlgorithm.StartToPoint) startPosition = transform.position;
+        if (movementAlgorithm != MovementAlgorithm.EdgeToEdge) _destination = endPosition;
 
-        _physic.gravityScale = mode == MovementMode.Flying ? 0f : 1f;
-
-        if (movementAlgoritm == MovementAlgoritm.StartToPosition) startPosition = _physic.position;
-        if (movementAlgoritm != MovementAlgoritm.EdgeToEdge) _destination = endPosition;
+        if (isMoveBack) _routeIndex = routePoints.Length - 1;
     }
 
-    private void FixedUpdate()
+    private protected override void Start()
     {
-        if (!_isMovingOn || !isOn) return;
+        base.Start();
 
-        if (movementAlgoritm == MovementAlgoritm.EdgeToEdge && _isGround)
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        if (_spriteRenderer is null) _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        if (isPaused || !_isMovingOn) return;
+
+        Vector2 direction = Vector2.zero;
+
+        if (movementAlgorithm == MovementAlgorithm.EdgeToEdge)
         {
             Vector2 groundPoint = CalcGroundPoint();
             Vector2 farGroundPoint = CalcFarGroundPoint();
@@ -80,42 +91,58 @@ public class PatrolMovingAl : MonoBehaviour
             else
             {
                 if (_spriteRenderer.flipX)
-                    _physic.velocity = new Vector2(-(moveSpeed * Time.fixedDeltaTime), 0f);
+                    direction = new Vector2(-(moveSpeed * Time.fixedDeltaTime), 0f);
                 else
-                    _physic.velocity = new Vector2(moveSpeed * Time.fixedDeltaTime, 0f);
+                    direction = new Vector2((moveSpeed * Time.fixedDeltaTime), 0f);
             }
         }
         else
         {
             if (IsReachedDestinationPosition)
             {
-                StartCoroutine(SlowRotate());
+                if (movementAlgorithm == MovementAlgorithm.Route)
+                {
+                    bool isDidRotate = false;
+
+                    if (!isMoveBack && _routeIndex == routePoints.Length - 1)
+                    {
+                        isMoveBack = true;
+                        isDidRotate = true;
+                    }
+                    if (isMoveBack && _routeIndex == 0)
+                    {
+                        isMoveBack = false;
+                        isDidRotate = true;
+                    }
+
+                    _routeIndex += isMoveBack ? -1 : 1;
+
+                    _destination = routePoints[_routeIndex];
+
+                    if (isDidRotate) StartCoroutine(SlowRotate());
+                }
+                else
+                {
+                    StartCoroutine(SlowRotate());
+                }
             }
             else
             {
-                Vector2 currentPosition = _physic.position;
+                Vector2 currentPosition = transform.position;
                 Vector2 moveDirection = (_destination - currentPosition).normalized;
 
-                _physic.velocity = moveDirection * moveSpeed * Time.fixedDeltaTime;
+                direction = moveDirection * moveSpeed * Time.fixedDeltaTime;
             }
         }
 
-        if (_fastMoveOn) _physic.velocity *= 2;
-    }
+        if (_fastMoveOn) direction *= 2;
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 6) _isGround = true;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 6) _isGround = false;
+        base.Move(direction);
     }
 
     private Vector2 CalcGroundPoint()
     {
-        Vector2 bottomBodyPoint = new Vector2(this.transform.position.x, _collider.bounds.min.y);
+        Vector2 bottomBodyPoint = new Vector2(this.transform.position.x, _character.bounds.min.y);
 
         return Physics2D.RaycastAll(bottomBodyPoint, Vector2.down).Where(e => e.transform.tag != this.tag).First().point;
     }
@@ -126,12 +153,12 @@ public class PatrolMovingAl : MonoBehaviour
 
         if (_spriteRenderer.flipX)
         {
-            forwardBodyPoint = new Vector2(_collider.bounds.min.x, _collider.bounds.max.y);
+            forwardBodyPoint = new Vector2(_character.bounds.min.x, _character.bounds.max.y);
             direction = new Vector2(-0.3f, -1f);
         }
         else
         {
-            forwardBodyPoint = new Vector2(_collider.bounds.max.x, _collider.bounds.max.y);
+            forwardBodyPoint = new Vector2(_character.bounds.max.x, _character.bounds.max.y);
             direction = new Vector2(0.3f, -1f);
         }
 
@@ -141,17 +168,26 @@ public class PatrolMovingAl : MonoBehaviour
     private IEnumerator SlowRotate()
     {
         _isMovingOn = false;
-        _physic.velocity = Vector2.zero;
         yield return new WaitForSeconds(rotateSeconds / 1.5f);
 
         _spriteRenderer.flipX = !_spriteRenderer.flipX;
-        if (movementAlgoritm != MovementAlgoritm.EdgeToEdge)
+
+        if (movementAlgorithm == MovementAlgorithm.StartToPoint || 
+            movementAlgorithm == MovementAlgorithm.PointToPoint)
         {
-            _destination = _isMoveToStart ? endPosition : startPosition;
-            _isMoveToStart = !_isMoveToStart;
+            _destination = isMoveBack ? endPosition : startPosition;
+            isMoveBack = !isMoveBack;
         }
 
         yield return new WaitForSeconds(rotateSeconds / 3f);
         _isMovingOn = true;
     }
+}
+
+public enum MovementAlgorithm
+{
+    EdgeToEdge,
+    StartToPoint,
+    PointToPoint,
+    Route
 }

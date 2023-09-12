@@ -47,6 +47,11 @@ public class UnityUtils : MonoBehaviour
     {
         return Mathf.Abs(a - b) <= tolerance;
     }
+
+    public static Vector2 Opposite(Vector2 vector)
+    {
+        return new Vector2(-vector.x, -vector.y);
+    }
 }
 
 public enum SnapAxis2D { None, All, X, Y }

@@ -8,11 +8,15 @@ public class PatrolMovingAlEditor : Editor
     private PatrolMovingAl movingAl;
     private SerializedObject serializedMovingAl;
 
-    private SerializedProperty isOn;
-    private SerializedProperty mode;
-    private SerializedProperty movementAlgoritm;
+    private SerializedProperty isPaused;
+    private SerializedProperty useGravity;
+    private SerializedProperty jumpPower;
+    private SerializedProperty movementAlgorithm;
+    private SerializedProperty isAvoidObstacles;
     private SerializedProperty startPosition;
     private SerializedProperty endPosition;
+    private SerializedProperty routePoints;
+    private SerializedProperty isMoveBack;
     private SerializedProperty rotateSeconds;
     private SerializedProperty moveSpeed;
 
@@ -21,11 +25,15 @@ public class PatrolMovingAlEditor : Editor
         movingAl = (PatrolMovingAl)target;
         serializedMovingAl = new SerializedObject(movingAl);
 
-        isOn = serializedMovingAl.FindProperty("isOn");
-        mode = serializedMovingAl.FindProperty("mode");
-        movementAlgoritm = serializedMovingAl.FindProperty("movementAlgoritm");
+        isPaused = serializedMovingAl.FindProperty("isPaused");
+        useGravity = serializedMovingAl.FindProperty("useGravity");
+        jumpPower = serializedMovingAl.FindProperty("jumpPower");
+        movementAlgorithm = serializedMovingAl.FindProperty("movementAlgorithm");
+        isAvoidObstacles = serializedMovingAl.FindProperty("isAvoidObstacles");
         startPosition = serializedMovingAl.FindProperty("startPosition");
         endPosition = serializedMovingAl.FindProperty("endPosition");
+        routePoints = serializedMovingAl.FindProperty("routePoints");
+        isMoveBack = serializedMovingAl.FindProperty("isMoveBack");
         rotateSeconds = serializedMovingAl.FindProperty("rotateSeconds");
         moveSpeed = serializedMovingAl.FindProperty("moveSpeed");
     }
@@ -34,25 +42,37 @@ public class PatrolMovingAlEditor : Editor
     {
         serializedMovingAl.Update();
 
-        EditorGUILayout.PropertyField(isOn, new GUIContent("Включен"));
+        EditorGUILayout.PropertyField(isPaused, new GUIContent("Включен"));
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Настройка", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(mode, new GUIContent("Режим перемещения"));
-        EditorGUILayout.PropertyField(movementAlgoritm, new GUIContent("Вариант перемещения"));
+        EditorGUILayout.PropertyField(movementAlgorithm, new GUIContent("Способ перемещения"));
 
-        if (movementAlgoritm.enumValueIndex == (int)PatrolMovingAl.MovementAlgoritm.PositionToPosition)
+        if (movementAlgorithm.enumValueIndex == (int)MovementAlgorithm.PointToPoint)
         {
             EditorGUILayout.PropertyField(startPosition, new GUIContent("Начальная позиция"));
             EditorGUILayout.PropertyField(endPosition, new GUIContent("Конечная позиция"));
+            EditorGUILayout.PropertyField(isMoveBack, new GUIContent("К начальной точке"));
         }
-        else if (movementAlgoritm.enumValueIndex == (int)PatrolMovingAl.MovementAlgoritm.StartToPosition)
+        else if (movementAlgorithm.enumValueIndex == (int)MovementAlgorithm.StartToPoint)
         {
             EditorGUILayout.PropertyField(endPosition, new GUIContent("Конечная позиция"));
+        }
+        else if (movementAlgorithm.enumValueIndex == (int)MovementAlgorithm.Route)
+        {
+            EditorGUILayout.PropertyField(routePoints, new GUIContent("Точки маршрута"));
+            EditorGUILayout.PropertyField(isMoveBack, new GUIContent("Route reverse"));
+        }
+
+        if (movementAlgorithm.enumValueIndex != (int)MovementAlgorithm.EdgeToEdge)
+        {
+            EditorGUILayout.PropertyField(isAvoidObstacles, new GUIContent("Избегать препятствия"));
         }
 
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(rotateSeconds, new GUIContent("Время разворота"));
         EditorGUILayout.PropertyField(moveSpeed, new GUIContent("Скорость перемещения"));
+        EditorGUILayout.PropertyField(jumpPower, new GUIContent("Сила прыжка"));
+        EditorGUILayout.PropertyField(useGravity, new GUIContent("Гравитация"));
 
         if (serializedMovingAl.hasModifiedProperties)
         {
