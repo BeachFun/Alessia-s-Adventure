@@ -1,7 +1,6 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(MovementController2D))]
 
 public abstract class Character : MonoBehaviour
 {
@@ -10,12 +9,6 @@ public abstract class Character : MonoBehaviour
     [SerializeField] private protected int def = 1;
 
     private protected SpriteRenderer _spriteRenderer;
-    private protected MovementController2D _movement;
-
-    private protected virtual void Start()
-    {
-        _movement = GetComponent<MovementController2D>();
-    }
 
     public abstract void Attack();
 
