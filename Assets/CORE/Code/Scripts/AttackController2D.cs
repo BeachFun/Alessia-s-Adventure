@@ -75,6 +75,8 @@ public class AttackController2D : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (attackZones.Length == 0) return;
+
         Gizmos.color = Color.red;
 
         for (int i = 0; i < attackZones.Length; i++)
