@@ -1,110 +1,55 @@
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PatrolMovingAl))]
+[RequireComponent(typeof(VisionCone2D))]
 
 public class Morlock : Enemy
 {
-    [Space] [Header("Morlock Settings")]
+    private PatrolMovingAl _movingSystem;
+    private VisionCone2D _vision2D;
 
-    [Header("Attack system")]
-    [SerializeField] private float aggressionDistance;
-    [SerializeField] private float attackDistance;
-    [SerializeField] private Vector2 attackZoneSize;
 
-    [Header("Components")]
-    [SerializeField] private PatrolMovingAl movingSystem;
+    private protected override void Start()
+    {
+        base.Start();
 
-    private bool _attackOn = true;
-    private Vector2 _lookDirection;
-    private Vector2 _forwardBodyPoint;
+        _movingSystem = GetComponent<PatrolMovingAl>();
+        _vision2D = GetComponent<VisionCone2D>();
 
+        _attackSystem.ActionBeforeAttack += ActionBeforeAttackHandler;
+        _attackSystem.ActionAfterAttack += ActionAfterAttackHandler;
+    }
 
     private void FixedUpdate()
     {
-        if (_isBusy) return;
+        _vision2D.CheckVision();
 
-        animator.SetFloat("speed", movingSystem.Speed);
+        Transform playerTransform = null;
+        if (_vision2D.DetectedObjects.Count > 0) playerTransform = _vision2D.DetectedObjects[0].transform;
 
-        if (!_attackOn) return;
-
-        Transform playerTransform = FindTransform(attackDistance);
-
-        if (playerTransform is not null && playerTransform.tag == "Player")
+        if (playerTransform is null)
         {
-            movingSystem.IsOn = false;
-            _attackOn = false;
-            animator.SetFloat("speed", 0);
-            animator.SetTrigger("attack");
+            _movingSystem.FastMoveOn = false;
+            _animator.speed = 1f;
         }
-        else
+        else if (playerTransform.tag == playerTag)
         {
-            playerTransform = FindTransform(aggressionDistance);
-
-            if (playerTransform is null)
-            {
-                movingSystem.FastMoveOn = false;
-                animator.speed = 1f;
-            }
-            else if (playerTransform.tag == "Player")
-            {
-                movingSystem.FastMoveOn = true;
-                animator.speed = 2f;
-            }
+            _movingSystem.FastMoveOn = true;
+            _animator.speed = 2f;
         }
+
+        _animator.SetFloat("speed", _movingSystem.Speed);
     }
 
-    private void OnDrawGizmosSelected()
+    private void ActionBeforeAttackHandler()
     {
-        Gizmos.color = Color.red;
-
-        Vector2 center = new Vector2(0f, this.transform.position.y);
-        center.x = spriteRenderer.flipX ? _collider.bounds.min.x - attackDistance : _collider.bounds.max.x + attackDistance;
-
-        Gizmos.DrawWireCube(center, attackZoneSize);
+        _movingSystem.Pause = true;
+        _animator.SetFloat("speed", 0);
     }
 
-    private Transform FindTransform(float distance)
+    private void ActionAfterAttackHandler()
     {
-        // TODO: Придумать более достойное название для метода
-
-        _forwardBodyPoint = new Vector2(0f, this.transform.position.y);
-        _forwardBodyPoint.x = spriteRenderer.flipX ? _collider.bounds.min.x : _collider.bounds.max.x;
-
-        _lookDirection = spriteRenderer.flipX ? Vector2.left : Vector2.right;
-
-        IEnumerable<RaycastHit2D> hits = Physics2D.RaycastAll(_forwardBodyPoint, _lookDirection, distance)
-            .Where(e => e.transform.tag != this.tag);
-
-        if (hits.Count() == 0) return null;
-
-        RaycastHit2D hit = hits.First();
-
-        return hit.collider is not null ? hit.transform : null;
-    }
-
-    private void Attack()
-    {
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(physic.position, attackZoneSize, 0, _lookDirection, attackDistance)
-           .Where(e => e.transform.tag != this.tag)
-           .ToArray();
-
-        Transform playerTransform = hits.Length > 0 ? hits.Where(e => e.transform.tag == "Player").First().transform : null;
-
-        if (playerTransform is not null)
-            playerTransform.GetComponent<Heroine>().Hurt(atk);
-
-        StartCoroutine(AttackRecoveryRoutine());
-    }
-
-    private IEnumerator AttackRecoveryRoutine()
-    {
-        yield return new WaitForSeconds(timeBetweenAttacks);
-
-        _attackOn = true;
-        movingSystem.IsOn = true;
+        _movingSystem.Pause = false;
     }
 }
