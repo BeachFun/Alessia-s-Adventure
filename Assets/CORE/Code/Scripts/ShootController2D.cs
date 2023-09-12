@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine;
 using Action = System.Action;
 
+[RequireComponent(typeof(Animator))]
+
 public class ShootController2D : MonoBehaviour
 {
     [SerializeField] private bool shootOn;
