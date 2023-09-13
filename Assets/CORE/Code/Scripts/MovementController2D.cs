@@ -3,12 +3,13 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 
 [System.Serializable]
-public class MovementController2D : MonoBehaviour
+public class MovementController2D : MonoBehaviour, IJumpable
 {
     private protected const float gravity = 9.8f;
 
     [SerializeField] private protected bool isPaused = true;
     [SerializeField] private protected bool useGravity = true;
+    [SerializeField] private protected float jumpForce = 0;
 
     private protected Vector2 _verticalVelocity;
     private protected CharacterController _character;
@@ -53,5 +54,13 @@ public class MovementController2D : MonoBehaviour
     public void Move(Vector2 mv)
     {
         if (!isPaused) _character.Move(mv);
+    }
+
+    public void Jump()
+    {
+        if (_character.isGrounded && useGravity)
+        {
+            _verticalVelocity.y += jumpForce;
+        }
     }
 }
