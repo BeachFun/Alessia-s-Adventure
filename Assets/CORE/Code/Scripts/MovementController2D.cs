@@ -20,6 +20,10 @@ public class MovementController2D : MonoBehaviour, IJumpable
         get => isPaused;
         set => isPaused = value;
     }
+    public float JumpForce
+    {
+        get => jumpForce;
+    }
 
 
     private protected virtual void Start()
@@ -29,7 +33,7 @@ public class MovementController2D : MonoBehaviour, IJumpable
 
     private protected virtual void FixedUpdate()
     {
-        if (isPaused) return;
+        if (Pause) return;
 
         if (useGravity)
         {
@@ -56,11 +60,11 @@ public class MovementController2D : MonoBehaviour, IJumpable
         if (!isPaused) _character.Move(mv);
     }
 
-    public void Jump()
+    public virtual void Jump()
     {
         if (_character.isGrounded && useGravity)
         {
-            _verticalVelocity.y += jumpForce;
+            _verticalVelocity.y += JumpForce;
         }
     }
 }
