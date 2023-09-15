@@ -1,6 +1,6 @@
 ﻿public interface IDifferentJumpable : IJumpable
 {
-    float JumpPower { get; }
+    float MinJumpPower { get; }
     float MaxJumpPower { get; }
     float PowerStep { get; }
 
