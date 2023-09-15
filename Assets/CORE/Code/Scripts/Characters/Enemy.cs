@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(MovementController2D))]
-[RequireComponent(typeof(AttackController2D))]
+[RequireComponent(typeof(AutoAttackController2D))]
 
 public class Enemy : Character
 {
@@ -11,7 +11,7 @@ public class Enemy : Character
     private protected bool _isBusy;
     private protected Animator _animator;
     private protected MovementController2D _movement;
-    private protected AttackController2D _attackSystem;
+    private protected AutoAttackController2D _attackSystem;
 
     private protected Bool IsBusy
     {
@@ -24,7 +24,7 @@ public class Enemy : Character
     {
         _animator = GetComponent<Animator>();
         _movement = GetComponent<MovementController2D>();
-        _attackSystem = GetComponent<AttackController2D>();
+        _attackSystem = GetComponent<AutoAttackController2D>();
     }
 
     public override void Attack()
