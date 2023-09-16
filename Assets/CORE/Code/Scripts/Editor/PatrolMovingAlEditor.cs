@@ -71,7 +71,12 @@ public class PatrolMovingAlEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(rotateSeconds, new GUIContent("Время разворота"));
         EditorGUILayout.PropertyField(moveSpeed, new GUIContent("Скорость перемещения"));
-        EditorGUILayout.PropertyField(jumpForce, new GUIContent("Сила прыжка"));
+
+        if (useGravity.boolValue)
+        {
+            EditorGUILayout.PropertyField(jumpForce, new GUIContent("Сила прыжка"));
+        }
+
         EditorGUILayout.PropertyField(useGravity, new GUIContent("Гравитация"));
 
         if (serializedMovingAl.hasModifiedProperties)
