@@ -10,6 +10,7 @@ public class MovementController2D : MonoBehaviour, IJumpable
     [SerializeField] private protected bool isPaused = true;
     [SerializeField] private protected bool useGravity = true;
     [SerializeField] private protected float jumpForce = 0;
+    [SerializeField] private protected float fallSpeedMultiplier = 1f;
 
     private protected Vector2 _verticalVelocity;
     private protected CharacterController _character;
@@ -31,6 +32,9 @@ public class MovementController2D : MonoBehaviour, IJumpable
         _character = GetComponent<CharacterController>();
     }
 
+    /// <summary>
+    /// Создает эффект гравитации и реализует механику прыжка. Реагирует на паузу скрипта
+    /// </summary>
     private protected virtual void FixedUpdate()
     {
         if (Pause) return;
@@ -46,7 +50,14 @@ public class MovementController2D : MonoBehaviour, IJumpable
                 _verticalVelocity.y = 0f;
             }
 
-            _character.Move(_verticalVelocity * Time.fixedDeltaTime);
+            if (_verticalVelocity.y < 0f)
+            {
+                _character.Move(_verticalVelocity * Time.fixedDeltaTime * fallSpeedMultiplier);
+            }
+            else
+            {
+                _character.Move(_verticalVelocity * Time.fixedDeltaTime);
+            }
         }
     }
 
@@ -55,7 +66,10 @@ public class MovementController2D : MonoBehaviour, IJumpable
         transform.position = position;
     }
 
-    public void Move(Vector2 mv)
+    /// <summary>
+    /// Передвижение на расстояние без учета скорости
+    /// </summary>
+    public virtual void Move(Vector2 mv)
     {
         if (!isPaused) _character.Move(mv);
     }
