@@ -1,37 +1,25 @@
 using System.Linq;
-using System.Collections;
 using UnityEngine;
 using Action = System.Action;
 
 [RequireComponent(typeof(Animator))]
 
-public class ShootController2D : MonoBehaviour
+public class AutoShootController2D : ShootSystem2D
 {
-    [SerializeField] private bool shootOn;
-    [SerializeField] private int shootDamage;
     [SerializeField] private float shootMinDistance;
     [SerializeField] private float shootMaxDistance;
-    [SerializeField] private float timeBetweenShoots;
-    [SerializeField] private float shootSpeed;
-    [SerializeField] private string shootAnimationName;
     [SerializeField] private string enemyTag;
     [SerializeField] private VisionMode detectionMode = VisionMode.Known;
-    [SerializeField] private Projectile2D projectile;
     [SerializeField] private Transform enemyTransform;
 
-    private bool _shootOn;
-    private Vector3 _enemyDirection;
-    private Animator _animator;
     private VisionCone2D _vision;
-
-    public bool ShootOn { get => shootOn; set => shootOn = value; }
+    private protected Animator _animator;
 
 
     public event Action ActionBeforeShoot;
-    public event Action ActionAfterShoot;
 
 
-    private void Start()
+    private protected void Start()
     {
         _animator = GetComponent<Animator>();
 
@@ -81,23 +69,5 @@ public class ShootController2D : MonoBehaviour
     public void Shoot()
     {
         _animator.SetTrigger(shootAnimationName);
-    }
-
-    private void ReleaseProjectile()
-    {
-        Projectile2D projectile = Instantiate(this.projectile, this.transform.position, new Quaternion(0f, 0f, 0f, 0f));
-        projectile.Power = shootDamage;
-        projectile.AddForce(_enemyDirection, shootSpeed);
-
-        StartCoroutine(ShootRecoverRoutine());
-    }
-
-    private IEnumerator ShootRecoverRoutine()
-    {
-        ActionAfterShoot.Invoke();
-
-        yield return new WaitForSeconds(timeBetweenShoots);
-
-        _shootOn = true;
     }
 }
