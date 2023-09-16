@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Action = System.Action;
 
+[System.Serializable]
 public class ShootSystem2D : MonoBehaviour
 {
     [SerializeField] private protected bool shootOn;

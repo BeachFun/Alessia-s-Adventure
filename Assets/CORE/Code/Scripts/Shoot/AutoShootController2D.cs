@@ -4,6 +4,7 @@ using Action = System.Action;
 
 [RequireComponent(typeof(Animator))]
 
+[System.Serializable]
 public class AutoShootController2D : ShootSystem2D
 {
     [SerializeField] private float shootMinDistance;
