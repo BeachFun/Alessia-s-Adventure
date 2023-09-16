@@ -1,34 +1,30 @@
-using System.Linq;
 using UnityEngine;
-using Action = System.Action;
 
 [RequireComponent(typeof(Animator))]
 
 public class ComboAttackSystem2D : AttackSystem2D
 {
-    [SerializeField] private AttackData[] attackData;
+    // Запечатывание поля
     [SerializeField] private bool isLooping;
+    [SerializeField] private string AnimatorPropertyName = "comboAttackStates";
 
     private bool _isNextCombo;
-    private int _attackIndex;
-
-    private protected Animator animator;
+    private protected Animator _animator;
 
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
     }
 
     public void Attack()
     {
-        if (!_attackOn) return;
+        if (!AttackOn || !_attackOn) return;
         _attackOn = false;
 
-        _attackIndex = 0;
         _attackZoneIndex = 0;
 
-        animator.SetInteger("comboAttackStates", (int)attackData[_attackIndex].Id);
+        _animator.SetInteger(AnimatorPropertyName, (int)attackData[_attackZoneIndex].Id);
     }
 
     public void NextAttack()
@@ -43,13 +39,13 @@ public class ComboAttackSystem2D : AttackSystem2D
         {
             if (isLooping)
             {
-                _attackIndex = _attackIndex + 1 > attackData.Length - 1 ? 0 : _attackIndex + 1;
-                animator.SetInteger("comboAttackStates", (int)attackData[_attackIndex].Id);
+                _attackZoneIndex = _attackZoneIndex + 1 > attackData.Length - 1 ? 0 : _attackZoneIndex + 1;
+                _animator.SetInteger(AnimatorPropertyName, (int)attackData[_attackZoneIndex].Id);
             }
-            else if (_attackIndex + 1 <= attackData.Length - 1)
+            else if (_attackZoneIndex + 1 <= attackData.Length - 1)
             {
-                _attackIndex++;
-                animator.SetInteger("comboAttackStates", (int)attackData[_attackIndex].Id);
+                _attackZoneIndex++;
+                _animator.SetInteger(AnimatorPropertyName, (int)attackData[_attackZoneIndex].Id);
             }
         }
 

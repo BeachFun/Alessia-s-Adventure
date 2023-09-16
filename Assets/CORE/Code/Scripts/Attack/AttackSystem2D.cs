@@ -5,10 +5,11 @@ using Action = System.Action;
 
 public class AttackSystem2D : MonoBehaviour
 {
+    [SerializeField] private protected bool attackOn;
     [SerializeField] private protected int attackDamage;
     [SerializeField] private protected float timeBetweenAttacks;
     [SerializeField] private protected string enemyTag;
-    [SerializeField] private protected AttackZonesData[] attackZones;
+    [SerializeField] private protected BoxAttackData[] attackData;
     [SerializeField] private protected bool isAttackAllOnZone;
 
     private protected bool _attackOn;
@@ -16,6 +17,11 @@ public class AttackSystem2D : MonoBehaviour
     private protected int _attackZoneIndex;
 
 
+    public bool AttackOn
+    {
+        get => _attackOn;
+        set => _attackOn = value;
+    }
     public bool IsRotated
     {
         get => _isRotated;
@@ -23,7 +29,7 @@ public class AttackSystem2D : MonoBehaviour
     }
     public int CountZones
     {
-        get => attackZones.Length;
+        get => attackData.Length;
     }
 
 
@@ -32,22 +38,22 @@ public class AttackSystem2D : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (attackZones.Length == 0) return;
+        if (attackData.Length == 0) return;
 
         Gizmos.color = Color.red;
 
-        for (int i = 0; i < attackZones.Length; i++)
+        for (int i = 0; i < attackData.Length; i++)
         {
             Vector3 center = transform.position;
-            center.x += IsRotated ? -(attackZones[i].Distance / 2) : (attackZones[i].Distance / 2);
+            center.x += IsRotated ? -(attackData[i].Distance / 2) : (attackData[i].Distance / 2);
 
-            Gizmos.DrawWireCube(center, attackZones[i].ZoneSize);
+            Gizmos.DrawWireCube(center, attackData[i].ZoneSize);
         }
     }
 
     public virtual void Attack(int indexZone)
     {
-        if (!_attackOn) return;
+        if (!AttackOn || !_attackOn) return;
         _attackOn = false;
 
         _attackZoneIndex = indexZone;
@@ -71,7 +77,7 @@ public class AttackSystem2D : MonoBehaviour
     {
         Vector2 direction = IsRotated ? Vector2.left : Vector2.right;
 
-        return Physics2D.BoxCastAll(transform.position, attackZones[indexZone].ZoneSize, 0, direction)
+        return Physics2D.BoxCastAll(transform.position, attackData[indexZone].ZoneSize, 0, direction)
                 .Where(e => e.transform.tag == enemyTag)
                 .ToArray();
     }

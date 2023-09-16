@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 using Action = System.Action;
 
@@ -6,11 +5,7 @@ using Action = System.Action;
 
 public class AutoAttackController2D : AttackSystem2D
 {
-    [SerializeField] private bool attackOn;
-
     private Animator _animator;
-
-    public bool AttackOn { get => attackOn; set => attackOn = value; }
 
     public event Action ActionBeforeAttack;
 
@@ -23,7 +18,7 @@ public class AutoAttackController2D : AttackSystem2D
     {
         if (!AttackOn || !_attackOn) return;
 
-        for (int i = 0; i < attackZones.Length; i++)
+        for (int i = 0; i < attackData.Length; i++)
         {
             Vector2 direction = IsRotated ? Vector2.left : Vector2.right;
 
@@ -46,6 +41,6 @@ public class AutoAttackController2D : AttackSystem2D
     {
         if (!_attackOn) return;
 
-        if (_attackZoneIndex != -1) _animator.SetTrigger(attackZones[_attackZoneIndex].NameAnimatorProperty);
+        if (_attackZoneIndex != -1) _animator.SetTrigger(attackData[_attackZoneIndex].NameAnimatorProperty);
     }
 }
