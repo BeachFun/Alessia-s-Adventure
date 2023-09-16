@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(CircleCollider2D))]
 [RequireComponent(typeof(Rigidbody2D))]
 
+[System.Serializable]
 public class EnergyBall : Projectile2D
 {
     private void OnTriggerEnter2D(Collider2D collision)

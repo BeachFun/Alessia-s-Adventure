@@ -3,14 +3,14 @@
   <Class Name="Character" Collapsed="true">
     <Position X="6" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAgACAAAIAAAAAAgQEAAIAAAAAAAABAAAAAgAA=</HashCode>
+      <HashCode>AAAAAAAgAAAAAIAAAAAAgAEAAIAAAAAAAABAAAAAgAA=</HashCode>
       <FileName>Assets\CORE\Code\Scripts\Characters\Character.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Enemy" Collapsed="true">
     <Position X="7.25" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAACgAAAAAAAAAAARAAIAAAAAAIAAAAAAAgAA=</HashCode>
+      <HashCode>AAAAAIAAACgAAAAAAAAAAQRAAIAAAAAAIAAAAAAAgAA=</HashCode>
       <FileName>Assets\CORE\Code\Scripts\Characters\Enemy.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -22,24 +22,14 @@
           <NewMemberFileName>Assets\CORE\Code\Scripts\Characters\Heroine.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
-      <Enum Name="Heroine.AttackType" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Assets\CORE\Code\Scripts\Characters\Heroine.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
       <Enum Name="Heroine.InputMode" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Assets\CORE\Code\Scripts\Characters\Heroine.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-      <Enum Name="Heroine.AnimationStates" Collapsed="true">
         <TypeIdentifier>
           <NewMemberFileName>Assets\CORE\Code\Scripts\Characters\Heroine.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>BAQEoIBAEoIoBCAABAAACAABAMyGIGBMAMZQBEEAiAA=</HashCode>
+      <HashCode>BAQAAQBAEiCsACAAAAAACAABAMAAAAAAAAQABAAAiAg=</HashCode>
       <FileName>Assets\CORE\Code\Scripts\Characters\Heroine.cs</FileName>
     </TypeIdentifier>
   </Class>

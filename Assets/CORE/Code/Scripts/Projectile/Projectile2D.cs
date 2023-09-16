@@ -2,6 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 
+[System.Serializable]
 public class Projectile2D : MonoBehaviour
 {
     public int Power;

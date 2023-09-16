@@ -3,13 +3,14 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 
 [System.Serializable]
-public class MovementController2D : MonoBehaviour
+public class MovementController2D : MonoBehaviour, IJumpable
 {
     private protected const float gravity = 9.8f;
 
     [SerializeField] private protected bool isPaused = true;
     [SerializeField] private protected bool useGravity = true;
-    [SerializeField] private protected float jumpForce = 3f;
+    [SerializeField] private protected float jumpForce = 0;
+    [SerializeField] private protected float fallSpeedMultiplier = 1f;
 
     private protected Vector2 _verticalVelocity;
     private protected CharacterController _character;
@@ -20,6 +21,10 @@ public class MovementController2D : MonoBehaviour
         get => isPaused;
         set => isPaused = value;
     }
+    public float JumpForce
+    {
+        get => jumpForce;
+    }
 
 
     private protected virtual void Start()
@@ -27,9 +32,12 @@ public class MovementController2D : MonoBehaviour
         _character = GetComponent<CharacterController>();
     }
 
+    /// <summary>
+    /// Создает эффект гравитации и реализует механику прыжка. Реагирует на паузу скрипта
+    /// </summary>
     private protected virtual void FixedUpdate()
     {
-        if (isPaused) return;
+        if (Pause) return;
 
         if (useGravity)
         {
@@ -42,7 +50,14 @@ public class MovementController2D : MonoBehaviour
                 _verticalVelocity.y = 0f;
             }
 
-            _character.Move(_verticalVelocity * Time.fixedDeltaTime);
+            if (_verticalVelocity.y < 0f)
+            {
+                _character.Move(_verticalVelocity * Time.fixedDeltaTime * fallSpeedMultiplier);
+            }
+            else
+            {
+                _character.Move(_verticalVelocity * Time.fixedDeltaTime);
+            }
         }
     }
 
@@ -51,16 +66,19 @@ public class MovementController2D : MonoBehaviour
         transform.position = position;
     }
 
-    public void Move(Vector2 mv)
+    /// <summary>
+    /// Передвижение на расстояние без учета скорости
+    /// </summary>
+    public virtual void Move(Vector2 mv)
     {
         if (!isPaused) _character.Move(mv);
     }
 
-    public void Jump()
+    public virtual void Jump()
     {
         if (_character.isGrounded && useGravity)
         {
-            _verticalVelocity.y += jumpForce;
+            _verticalVelocity.y += JumpForce;
         }
     }
 }

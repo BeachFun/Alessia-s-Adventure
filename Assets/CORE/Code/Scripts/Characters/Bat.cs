@@ -2,12 +2,12 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PatrolMovingAl))]
-[RequireComponent(typeof(ShootController2D))]
+[RequireComponent(typeof(AutoShootController2D))]
 
 public class Bat : Enemy
 {
     private PatrolMovingAl _movingSystem;
-    private ShootController2D _shootSystem;
+    private AutoShootController2D _shootSystem;
 
 
     private protected override void Start()
@@ -15,7 +15,7 @@ public class Bat : Enemy
         base.Start();
 
         _movingSystem = GetComponent<PatrolMovingAl>();
-        _shootSystem = GetComponent<ShootController2D>();
+        _shootSystem = GetComponent<AutoShootController2D>();
 
         _attackSystem.ActionBeforeAttack += ActionBeforeAttackHandler;
         _attackSystem.ActionAfterAttack += ActionAfterAttackHandler;

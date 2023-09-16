@@ -28,15 +28,15 @@ public class Morlock : Enemy
         Transform playerTransform = null;
         if (_vision2D.DetectedObjects.Count > 0) playerTransform = _vision2D.DetectedObjects[0].transform;
 
-        if (playerTransform is null)
-        {
-            _movingSystem.FastMoveOn = false;
-            _animator.speed = 1f;
-        }
-        else if (playerTransform.tag == playerTag)
+        if (playerTransform is not null && playerTransform.tag == playerTag)
         {
             _movingSystem.FastMoveOn = true;
             _animator.speed = 2f;
+        }
+        else
+        {
+            _movingSystem.FastMoveOn = false;
+            _animator.speed = 1f;
         }
 
         _animator.SetFloat("speed", _movingSystem.Speed);

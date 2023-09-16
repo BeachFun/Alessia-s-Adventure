@@ -10,7 +10,7 @@ public class PatrolMovingAlEditor : Editor
 
     private SerializedProperty isPaused;
     private SerializedProperty useGravity;
-    private SerializedProperty jumpPower;
+    private SerializedProperty jumpForce;
     private SerializedProperty movementAlgorithm;
     private SerializedProperty isAvoidObstacles;
     private SerializedProperty startPosition;
@@ -27,7 +27,7 @@ public class PatrolMovingAlEditor : Editor
 
         isPaused = serializedMovingAl.FindProperty("isPaused");
         useGravity = serializedMovingAl.FindProperty("useGravity");
-        jumpPower = serializedMovingAl.FindProperty("jumpPower");
+        jumpForce = serializedMovingAl.FindProperty("jumpForce");
         movementAlgorithm = serializedMovingAl.FindProperty("movementAlgorithm");
         isAvoidObstacles = serializedMovingAl.FindProperty("isAvoidObstacles");
         startPosition = serializedMovingAl.FindProperty("startPosition");
@@ -71,7 +71,12 @@ public class PatrolMovingAlEditor : Editor
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(rotateSeconds, new GUIContent("Время разворота"));
         EditorGUILayout.PropertyField(moveSpeed, new GUIContent("Скорость перемещения"));
-        EditorGUILayout.PropertyField(jumpPower, new GUIContent("Сила прыжка"));
+
+        if (useGravity.boolValue)
+        {
+            EditorGUILayout.PropertyField(jumpForce, new GUIContent("Сила прыжка"));
+        }
+
         EditorGUILayout.PropertyField(useGravity, new GUIContent("Гравитация"));
 
         if (serializedMovingAl.hasModifiedProperties)

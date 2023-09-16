@@ -10,6 +10,11 @@ public abstract class Character : MonoBehaviour
 
     private protected SpriteRenderer _spriteRenderer;
 
+    private protected virtual void Start()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     public abstract void Attack();
 
     public abstract void Hurt(int damage);
