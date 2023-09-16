@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-internal struct AttackZonesData
+internal struct BoxAttackData
 {
     [SerializeField] private float distance;
     [SerializeField] private Vector2 zoneSize;
+    [SerializeField] private int id;
     [SerializeField] private string nameAnimatorProperty;
     //[SerializeField] private AnimatorPropertyType propertyType;
 
@@ -18,6 +19,12 @@ internal struct AttackZonesData
     {
         get => zoneSize;
         set => zoneSize = value;
+    }
+
+    public int Id
+    {
+        get => id;
+        set => id = value;
     }
 
     public string NameAnimatorProperty
