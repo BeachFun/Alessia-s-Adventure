@@ -38,7 +38,7 @@ public class AttackSystem2D : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (attackData.Length == 0) return;
+        if (attackData is null || attackData.Length == 0) return;
 
         Gizmos.color = Color.red;
 
