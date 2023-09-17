@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Rigidbody2D))]
 
+[System.Serializable]
 public class Dagger : MonoBehaviour
 {
     [SerializeField] private int damage;
