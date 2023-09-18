@@ -42,7 +42,7 @@ public class PatrolMovingAlEditor : Editor
     {
         serializedMovingAl.Update();
 
-        EditorGUILayout.PropertyField(isPaused, new GUIContent("Включен"));
+        EditorGUILayout.PropertyField(isPaused, new GUIContent("Приостановить", "Приостановить движение"));
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Настройка", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(movementAlgorithm, new GUIContent("Способ перемещения"));
