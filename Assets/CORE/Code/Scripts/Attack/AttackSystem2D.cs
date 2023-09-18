@@ -12,7 +12,7 @@ public class AttackSystem2D : MonoBehaviour
     [SerializeField] private protected BoxAttackData[] attackData;
     [SerializeField] private protected bool isAttackAllOnZone;
 
-    private protected bool _attackOn;
+    private protected bool _attackOn = true;
     private protected bool _isRotated;
     private protected int _attackZoneIndex;
 
@@ -36,7 +36,7 @@ public class AttackSystem2D : MonoBehaviour
     public event Action ActionAfterAttack;
 
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         if (attackData is null || attackData.Length == 0) return;
 
@@ -98,7 +98,7 @@ public class AttackSystem2D : MonoBehaviour
 
     private IEnumerator AttackRecoverRoutine()
     {
-        ActionAfterAttack.Invoke();
+        ActionAfterAttack?.Invoke();
 
         yield return new WaitForSeconds(timeBetweenAttacks);
 

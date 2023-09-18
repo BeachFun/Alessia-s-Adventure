@@ -26,7 +26,7 @@ public class AutoAttackController2D : AttackSystem2D
 
             if (hits.Length > 0)
             {
-                ActionBeforeAttack.Invoke();
+                ActionBeforeAttack?.Invoke();
                 _attackOn = false;
                 _attackZoneIndex = i;
                 Attack();
@@ -42,5 +42,11 @@ public class AutoAttackController2D : AttackSystem2D
         if (!_attackOn) return;
 
         if (_attackZoneIndex != -1) _animator.SetTrigger(attackData[_attackZoneIndex].NameAnimatorProperty);
+    }
+
+    // Метод для системы Mecanim. Вызывать в момент удара.
+    private protected void Damage2()
+    {
+        base.Damage();
     }
 }

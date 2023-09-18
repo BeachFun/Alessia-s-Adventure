@@ -1,19 +1,24 @@
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
 
 [System.Serializable]
-public class MovementController2D : MonoBehaviour, IJumpable
+public class MovementController2D : MonoBehaviour, IForceReceiver2D, IJumpable
 {
-    private protected const float gravity = 9.8f;
-
-    [SerializeField] private protected bool isPaused = true;
-    [SerializeField] private protected bool useGravity = true;
+    [SerializeField] private protected bool isPaused;
+    [SerializeField] private protected float moveSpeed;
     [SerializeField] private protected float jumpForce = 0;
     [SerializeField] private protected float fallSpeedMultiplier = 1f;
+    [Header("Ground Check")]
+    [SerializeField] private float checkRadius;
+    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private Vector3 checkerOffset;
 
-    private protected Vector2 _verticalVelocity;
-    private protected CharacterController _character;
+
+    private protected bool _isGrounded;
+    private protected Rigidbody2D _physic;
+    private protected Collider2D _collider;
 
 
     public bool Pause
@@ -25,60 +30,79 @@ public class MovementController2D : MonoBehaviour, IJumpable
     {
         get => jumpForce;
     }
-
+    public bool IsGrounded
+    {
+        get => _isGrounded;
+    }
+    public bool UseGravity
+    {
+        get => _physic.gravityScale != 0;
+    }
 
     private protected virtual void Start()
     {
-        _character = GetComponent<CharacterController>();
+        _physic = GetComponent<Rigidbody2D>();
+        _collider = GetComponent<Collider2D>();
     }
 
-    /// <summary>
-    /// Создает эффект гравитации и реализует механику прыжка. Реагирует на паузу скрипта
-    /// </summary>
-    private protected virtual void FixedUpdate()
+    private protected virtual void Update()
     {
-        if (Pause) return;
-
-        if (useGravity)
-        {
-            if (!_character.isGrounded)
-            {
-                _verticalVelocity.y -= gravity * Time.fixedDeltaTime;
-            }
-            else
-            {
-                _verticalVelocity.y = 0f;
-            }
-
-            if (_verticalVelocity.y < 0f)
-            {
-                _character.Move(_verticalVelocity * Time.fixedDeltaTime * fallSpeedMultiplier);
-            }
-            else
-            {
-                _character.Move(_verticalVelocity * Time.fixedDeltaTime);
-            }
-        }
+        _isGrounded = Physics2D.OverlapCircle(transform.position + checkerOffset, checkRadius, layerMask);
     }
 
-    public void TeleportTo(Vector2 position)
+    private void OnDrawGizmosSelected()
     {
-        transform.position = position;
+        Gizmos.color = Color.gray;
+
+        Gizmos.DrawWireSphere(transform.position + checkerOffset, checkRadius);
     }
 
-    /// <summary>
-    /// Передвижение на расстояние без учета скорости
-    /// </summary>
-    public virtual void Move(Vector2 mv)
-    {
-        if (!isPaused) _character.Move(mv);
-    }
 
     public virtual void Jump()
     {
-        if (_character.isGrounded && useGravity)
+        if (IsGrounded && UseGravity)
         {
-            _verticalVelocity.y += JumpForce;
+            _physic.velocity += Vector2.up * JumpForce;
         }
+    }
+
+
+    public void TeleportTo(Vector2 position)
+    {
+        if (!isPaused) transform.position = position;
+    }
+
+    public virtual void MoveTo(Vector2 mv)
+    {
+        if (!isPaused) _physic.position += mv;
+    }
+
+    public void Move(Vector2 direction)
+    {
+        if (!isPaused)
+        {
+            float moveX = direction.x != 0f ? direction.x * moveSpeed : _physic.velocity.x;
+            float moveY = direction.y != 0f ? direction.y * moveSpeed : _physic.velocity.y;
+
+            _physic.velocity = new Vector2(moveX, moveY);
+        }
+    }
+
+    public void AddForce(Vector2 force, ForceMode2D mode)
+    {
+        if (!isPaused) _physic.AddForce(force * moveSpeed, mode);
+    }
+
+    public void AddForceAtPosition(Vector2 force, Vector2 position, ForceMode2D mode)
+    {
+        if (!isPaused) _physic.AddForceAtPosition(force * moveSpeed, position, mode);
+    }
+
+
+    public void StopMovement(SnapAxis2D axis)
+    {
+        if (axis == SnapAxis2D.X) _physic.velocity = new Vector2(0f, _physic.velocity.y);
+        if (axis == SnapAxis2D.Y) _physic.velocity = new Vector2(_physic.velocity.x, 0f);
+        if (axis == SnapAxis2D.All) _physic.velocity = Vector2.zero;
     }
 }

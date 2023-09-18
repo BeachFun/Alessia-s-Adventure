@@ -96,7 +96,7 @@ AnimationClip:
     intParameter: 1
     messageOptions: 0
   - time: 0.25
-    functionName: TrhrowAttack
+    functionName: ReleaseProjectile
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

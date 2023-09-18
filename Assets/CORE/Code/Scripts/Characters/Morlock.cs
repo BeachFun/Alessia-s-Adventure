@@ -21,8 +21,16 @@ public class Morlock : Enemy
         _attackSystem.ActionAfterAttack += ActionAfterAttackHandler;
     }
 
-    private void FixedUpdate()
+    private void OnDestroy()
     {
+        _attackSystem.ActionBeforeAttack -= ActionBeforeAttackHandler;
+        _attackSystem.ActionAfterAttack -= ActionAfterAttackHandler;
+    }
+
+    private protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
         _vision2D.CheckVision();
 
         Transform playerTransform = null;

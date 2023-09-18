@@ -23,6 +23,14 @@ public class Bat : Enemy
         _shootSystem.ActionAfterShoot += ActionAfterShootHandler;
     }
 
+    private void OnDestroy()
+    {
+        _attackSystem.ActionBeforeAttack -= ActionBeforeAttackHandler;
+        _attackSystem.ActionAfterAttack -= ActionAfterAttackHandler;
+        _shootSystem.ActionBeforeShoot -= ActionBeforeShootHandler;
+        _shootSystem.ActionAfterShoot -= ActionAfterShootHandler;
+    }
+
     public void Shoot()
     {
         _shootSystem.Shoot();
