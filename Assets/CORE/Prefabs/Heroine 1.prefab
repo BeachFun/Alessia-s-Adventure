@@ -11,9 +11,13 @@ GameObject:
   - component: {fileID: 5499383012209758304}
   - component: {fileID: 4866195348730116073}
   - component: {fileID: 7721432171621253324}
-  - component: {fileID: 7081216371628442493}
-  - component: {fileID: 603721709302718443}
+  - component: {fileID: 1107466242777665905}
+  - component: {fileID: 8325772237476588940}
   - component: {fileID: 5329786292577908999}
+  - component: {fileID: 5691638910239800582}
+  - component: {fileID: 1579035728863751380}
+  - component: {fileID: 2643819762920906215}
+  - component: {fileID: 7415172353201033157}
   m_Layer: 0
   m_Name: Heroine 1
   m_TagString: Player
@@ -109,7 +113,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!50 &7081216371628442493
+--- !u!50 &1107466242777665905
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -125,18 +129,18 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 195955d317184f243a7bf15e4d34a30f, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &603721709302718443
+--- !u!61 &8325772237476588940
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,7 +183,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 1.15}
+  m_Size: {x: 0.6875, y: 1.125}
   m_EdgeRadius: 0
 --- !u!114 &5329786292577908999
 MonoBehaviour:
@@ -194,27 +198,106 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 100
-  atk: 10
   def: 3
-  moveOn: 1
-  moveSpeed: 4
-  jumpForce: 6
-  jumpMultiplyStepByFixedFrame: 0.015
-  jumpMultiplyLimit: 2
-  fallMultiplier: 0.75
-  attackInJumpDistance: 1
-  attackADistance: 1
-  attackBDistance: 1
-  attackCDistance: 1
-  attackDDistance: 1
-  throwSpeed: 7
-  isGrounded: 0
+  _inputOn: 1
+  _state: 0
+--- !u!114 &5691638910239800582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837770208990168602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7d0a8bbc70d8a6448f96683095c4ede, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPaused: 0
+  moveSpeed: 200
+  jumpForce: 7
+  fallSpeedMultiplier: -0.4
   checkRadius: 0.25
   layerMask:
     serializedVersion: 2
     m_Bits: 64
   checkerOffset: {x: 0, y: -0.37, z: 0}
-  spriteRenderer: {fileID: 4866195348730116073}
-  animator: {fileID: 7721432171621253324}
-  physic: {fileID: 7081216371628442493}
-  daggerPrefab: {fileID: 1455689628942184488, guid: bd224162c2947c642b12910758efd5d5, type: 3}
+  minJumpPower: 1
+  maxJumpPower: 1.5
+  powerStep: 0.08
+--- !u!114 &1579035728863751380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837770208990168602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c40fe81f5115d04eb09416aa82ae564, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackOn: 1
+  attackDamage: 10
+  timeBetweenAttacks: 0
+  enemyTag: Enemy
+  attackData:
+  - distance: 1.3
+    zoneSize: {x: 0.6, y: 1}
+    id: 0
+    nameAnimatorProperty: attackInJump
+  isAttackAllOnZone: 1
+--- !u!114 &2643819762920906215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837770208990168602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c5e360dc5ae3b2478e09d18e0727d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackOn: 1
+  attackDamage: 10
+  timeBetweenAttacks: 0
+  enemyTag: Enemy
+  attackData:
+  - distance: 1.3
+    zoneSize: {x: 0.6, y: 1}
+    id: 1
+    nameAnimatorProperty: 
+  - distance: 1.3
+    zoneSize: {x: 0.6, y: 0.3}
+    id: 2
+    nameAnimatorProperty: 
+  - distance: 1.5
+    zoneSize: {x: 0.8, y: 1}
+    id: 3
+    nameAnimatorProperty: 
+  - distance: 1.7
+    zoneSize: {x: 1, y: 1}
+    id: 4
+    nameAnimatorProperty: 
+  isAttackAllOnZone: 1
+  isLooping: 1
+  AnimatorPropertyName: comboAttackState
+--- !u!114 &7415172353201033157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837770208990168602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ea8afd7094e4c44ab0feb7dda6d390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootOn: 1
+  shootDamage: 20
+  timeBetweenShoots: 0
+  shootSpeed: 40
+  shootAnimationName: throwAttack
+  projectile: {fileID: 1455689628942184488, guid: bd224162c2947c642b12910758efd5d5, type: 3}

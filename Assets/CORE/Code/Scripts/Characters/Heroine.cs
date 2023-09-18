@@ -21,9 +21,9 @@ public class Heroine : Character
     private enum InputMode { On, Off }
 
 
-    private bool _inputOn = true;
+    [SerializeField] private bool _inputOn = true;
     private Vector2 _horizonatalVelocity;
-    private AnimatorStates _state = AnimatorStates.Idle;
+    [SerializeField] private AnimatorStates _state = AnimatorStates.Idle;
 
     private protected Animator _animator;
     private protected AttackSystem2D _attackController;
@@ -70,6 +70,14 @@ public class Heroine : Character
         _comboAttackController = GetComponent<ComboAttackSystem2D>();
         _shootController = GetComponent<ShootSystem2D>();
         _movementController = GetComponent<HeroMovementController2D>();
+
+        _comboAttackController.ComboEnded += ActionAfterComboAttack;
+        _shootController.ActionAfterShoot += ResumeMove;
+    }
+
+    private void OnDestroy()
+    {
+        _comboAttackController.ComboEnded -= ActionAfterComboAttack;
     }
 
     private void Update()
@@ -98,7 +106,7 @@ public class Heroine : Character
             if (Input.GetKeyDown(KeyCode.F))
             {
                 StopMove();
-                _animator.SetTrigger("throwAttack");
+                ThrowAttack();
             }
         }
 
@@ -135,8 +143,6 @@ public class Heroine : Character
 
     private void FixedUpdate()
     {
-        if (!_inputOn) return;
-
         if (_state == AnimatorStates.JumpReady)
         {
             MovementInputHandler();
@@ -158,7 +164,15 @@ public class Heroine : Character
     {
         _horizonatalVelocity.x = Input.GetAxisRaw("Horizontal");
 
-        _movementController.Move(_horizonatalVelocity * Time.deltaTime);
+        if (_horizonatalVelocity.x == 0)
+        {
+            _movementController.StopMovement(SnapAxis2D.X);
+        }
+        else
+        {
+            _movementController.Move(_horizonatalVelocity * Time.fixedDeltaTime);
+        }
+
         _animator.SetFloat("speed", Mathf.Abs(_horizonatalVelocity.x));
 
         SpriteFlip(_horizonatalVelocity);
@@ -184,10 +198,23 @@ public class Heroine : Character
         Debug.Log(hp);
     }
 
+    public override void Dieth()
+    {
+        State = AnimatorStates.Dieth;
+    }
+
+
     public void StopMove()
     {
         _animator.SetFloat("speed", 0f);
+
         _movementController.Pause = true;
+        _movementController.StopMovement(SnapAxis2D.X);
+    }
+
+    public void ResumeMove()
+    {
+        _movementController.Pause = false;
     }
 
     public override void Attack()
@@ -214,7 +241,7 @@ public class Heroine : Character
     {
         if (!(State == AnimatorStates.Idle || State == AnimatorStates.Jumping)) return;
 
-        _shootController.ReleaseProjectile(LookDirection, 1 + (State == AnimatorStates.Jumping ? Mathf.Abs(_horizonatalVelocity.x) : 0f));
+        _shootController.Throw(LookDirection, 1 + (State == AnimatorStates.Jumping ? Mathf.Abs(_horizonatalVelocity.x) : 0f));
     }
 
     private void SpriteFlip(Vector2 direction)
@@ -227,5 +254,14 @@ public class Heroine : Character
         {
             _spriteRenderer.flipX = false;
         }
+
+        _attackController.IsRotated = _spriteRenderer.flipX;
+        _comboAttackController.IsRotated = _spriteRenderer.flipX;
+    }
+
+    private void ActionAfterComboAttack()
+    {
+        State = AnimatorStates.Idle;
+        ResumeMove();
     }
 }
