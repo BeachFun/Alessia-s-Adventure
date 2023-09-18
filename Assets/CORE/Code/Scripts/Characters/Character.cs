@@ -21,7 +21,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void Dieth()
     {
-        Destroy(this);
+        Destroy(this.gameObject);
     }
 
     public virtual void Flip()
