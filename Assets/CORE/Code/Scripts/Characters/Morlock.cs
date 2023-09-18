@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class Morlock : Enemy
 {
+    [SerializeField] private protected string playerTag = "Player";
+
     private PatrolMovingAl _movingSystem;
     private VisionCone2D _vision2D;
 

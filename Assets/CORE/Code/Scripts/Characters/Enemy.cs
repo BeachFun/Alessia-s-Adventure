@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    [SerializeField] private protected string playerTag = "Player";
-
     private protected bool _isBusy;
     private protected Animator _animator;
     private protected MovementController2D _movement;
@@ -20,11 +18,18 @@ public class Enemy : Character
     }
 
 
-    private protected virtual void Start()
+    private protected override void Start()
     {
+        base.Start();
+
         _animator = GetComponent<Animator>();
         _movement = GetComponent<MovementController2D>();
         _attackSystem = GetComponent<AutoAttackController2D>();
+    }
+
+    private protected virtual void FixedUpdate()
+    {
+        _attackSystem.IsRotated = _spriteRenderer.flipX;
     }
 
     public override void Attack()
@@ -36,8 +41,15 @@ public class Enemy : Character
     {
         hp = damage > def ? hp - (damage - def) : hp;
 
-        if (hp < 0) Dieth();
+        if (hp <= 0) Dieth();
         else _animator.SetTrigger("hit");
+    }
+
+    public override void Flip()
+    {
+        base.Flip();
+
+        _attackSystem.IsRotated = _spriteRenderer.flipX;
     }
 }
 
