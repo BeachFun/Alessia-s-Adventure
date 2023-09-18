@@ -35,8 +35,10 @@ public class HeroMovementController2D : MovementController2D, IDifferentJumpable
     /// <summary>
     /// Реализует динамическое изменение силы прыжка. Реагирует на паузу скрипта.
     /// </summary>
-    private protected void FixedUpdate()
+    private protected override void FixedUpdate()
     {
+        base.FixedUpdate();
+
         if (Pause) return;
 
         if (_isJumpPowerChanging)

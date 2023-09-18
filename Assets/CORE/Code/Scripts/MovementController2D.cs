@@ -50,6 +50,15 @@ public class MovementController2D : MonoBehaviour, IForceReceiver2D, IJumpable
         _isGrounded = Physics2D.OverlapCircle(transform.position + checkerOffset, checkRadius, layerMask);
     }
 
+    private protected virtual void FixedUpdate()
+    {
+        if (_physic.velocity.y < -0.1f)
+        {
+            _physic.velocity += fallSpeedMultiplier * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up;
+            Debug.Log($"{_physic.velocity} {fallSpeedMultiplier * Physics2D.gravity.y * Time.fixedDeltaTime * Vector2.up}");
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.gray;
