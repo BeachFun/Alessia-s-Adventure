@@ -27,7 +27,6 @@ public class AutoAttackController2D : AttackSystem2D
             if (hits.Length > 0)
             {
                 ActionBeforeAttack?.Invoke();
-                _attackOn = false;
                 _attackZoneIndex = i;
                 Attack();
                 return;
@@ -40,6 +39,7 @@ public class AutoAttackController2D : AttackSystem2D
     public void Attack()
     {
         if (!_attackOn) return;
+        _attackOn = false;
 
         if (_attackZoneIndex != -1) _animator.SetTrigger(attackData[_attackZoneIndex].NameAnimatorProperty);
     }

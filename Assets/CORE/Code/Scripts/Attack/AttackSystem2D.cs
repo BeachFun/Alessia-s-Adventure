@@ -77,7 +77,7 @@ public class AttackSystem2D : MonoBehaviour
     {
         Vector2 direction = IsRotated ? Vector2.left : Vector2.right;
 
-        return Physics2D.BoxCastAll(transform.position, attackData[indexZone].ZoneSize, 0, direction)
+        return Physics2D.BoxCastAll(transform.position, attackData[indexZone].ZoneSize, 0, direction, attackData[indexZone].Distance)
                 .Where(e => e.transform.tag == enemyTag)
                 .ToArray();
     }
