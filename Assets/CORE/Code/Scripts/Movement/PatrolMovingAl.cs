@@ -2,8 +2,6 @@ using System.Linq;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
-
 [System.Serializable]
 public class PatrolMovingAl : MovementController2D
 {
@@ -16,7 +14,6 @@ public class PatrolMovingAl : MovementController2D
     [SerializeField] private protected Vector2[] routePoints;
     [SerializeField] private protected bool isMoveBack;
     [SerializeField] private protected float rotateSeconds;
-    [SerializeField] private protected float moveSpeed = 0f;
 
     private protected bool _fastMoveOn;
     private protected bool _isMovingOn = true;
@@ -32,7 +29,7 @@ public class PatrolMovingAl : MovementController2D
     }
     public float Speed
     {
-        get => _character.velocity.magnitude / Time.fixedDeltaTime;
+        get => _physic.velocity.magnitude / Time.fixedDeltaTime;
     }
     private bool IsReachedDestinationPosition
     {
@@ -142,7 +139,7 @@ public class PatrolMovingAl : MovementController2D
 
     private Vector2 CalcGroundPoint()
     {
-        Vector2 bottomBodyPoint = new Vector2(this.transform.position.x, _character.bounds.min.y);
+        Vector2 bottomBodyPoint = new Vector2(this.transform.position.x, _collider.bounds.min.y);
 
         return Physics2D.RaycastAll(bottomBodyPoint, Vector2.down).Where(e => e.transform.tag != this.tag).First().point;
     }
@@ -153,12 +150,12 @@ public class PatrolMovingAl : MovementController2D
 
         if (_spriteRenderer.flipX)
         {
-            forwardBodyPoint = new Vector2(_character.bounds.min.x, _character.bounds.max.y);
+            forwardBodyPoint = new Vector2(_collider.bounds.min.x, _collider.bounds.max.y);
             direction = new Vector2(-0.3f, -1f);
         }
         else
         {
-            forwardBodyPoint = new Vector2(_character.bounds.max.x, _character.bounds.max.y);
+            forwardBodyPoint = new Vector2(_collider.bounds.max.x, _collider.bounds.max.y);
             direction = new Vector2(0.3f, -1f);
         }
 
@@ -167,6 +164,8 @@ public class PatrolMovingAl : MovementController2D
 
     private IEnumerator SlowRotate()
     {
+        base.StopMovement(SnapAxis2D.All);
+
         _isMovingOn = false;
         yield return new WaitForSeconds(rotateSeconds / 1.5f);
 
