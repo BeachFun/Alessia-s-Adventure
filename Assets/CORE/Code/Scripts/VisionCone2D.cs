@@ -14,7 +14,7 @@ public class VisionCone2D : MonoBehaviour
 
     private List<GameObject> _detectedObjects = new List<GameObject>();
 
-    public bool IsRatated
+    public bool IsRotated
     {
         get => isRotated;
         set => isRotated = value;
@@ -36,7 +36,7 @@ public class VisionCone2D : MonoBehaviour
 
         for (float angle = -halfAngle; angle <= halfAngle; angle += 1.0f)
         {
-            Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction * (IsRatated ? -1 : 1);
+            Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction * (IsRotated ? -1 : 1);
             Gizmos.DrawRay(eyesTransform.position, rayDirection);
         }
     }
@@ -53,7 +53,7 @@ public class VisionCone2D : MonoBehaviour
         {
             for (float angle = -halfAngle; angle <= halfAngle; angle += 1.0f)
             {
-                Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction * (IsRatated ? -1 : 1);
+                Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction * (IsRotated ? -1 : 1);
 
                 RaycastHit2D hit = Physics2D.Raycast(eyesTransform.position, rayDirection, maxDistance, targetLayer);
 
@@ -64,7 +64,7 @@ public class VisionCone2D : MonoBehaviour
         {
             for (float angle = -halfAngle; angle <= halfAngle; angle += 1.0f)
             {
-                Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction * (IsRatated ? -1 : 1);
+                Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction * (IsRotated ? -1 : 1);
 
                 IEnumerable<GameObject> hits = Physics2D.RaycastAll(eyesTransform.position, rayDirection, maxDistance, targetLayer)
                     .Where(e => e.collider != null)
