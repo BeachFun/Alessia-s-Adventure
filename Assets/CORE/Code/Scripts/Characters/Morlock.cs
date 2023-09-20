@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -35,7 +34,7 @@ public class Morlock : Enemy
     {
         base.FixedUpdate();
 
-        _vision2D.IsRatated = _spriteRenderer.flipX;
+        _vision2D.IsRotated = _spriteRenderer.flipX;
         _vision2D.CheckVision();
 
         Transform playerTransform = null;
