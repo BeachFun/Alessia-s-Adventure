@@ -176,10 +176,10 @@ public class PatrolMovingAl : MovementController2D
 
     private IEnumerator SlowRotate()
     {
+        base.StopMovement(SnapAxis2D.All);
+
         if (IsRotating)
         {
-            base.StopMovement(SnapAxis2D.All);
-
             _isMovingOn = false;
             yield return new WaitForSeconds(rotateSeconds / 1.5f);
 
