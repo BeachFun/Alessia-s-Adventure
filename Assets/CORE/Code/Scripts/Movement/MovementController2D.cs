@@ -24,7 +24,11 @@ public class MovementController2D : MonoBehaviour, IForceReceiver2D, IJumpable
     public bool Pause
     {
         get => isPaused;
-        set => isPaused = value;
+        set
+        {
+            isPaused = value;
+            StopMovement(SnapAxis2D.All);
+        }
     }
     public float JumpForce
     {
@@ -87,13 +91,12 @@ public class MovementController2D : MonoBehaviour, IForceReceiver2D, IJumpable
 
     public void Move(Vector2 direction)
     {
-        if (!isPaused)
-        {
-            float moveX = direction.x != 0f ? direction.x * moveSpeed : _physic.velocity.x;
-            float moveY = direction.y != 0f ? direction.y * moveSpeed : _physic.velocity.y;
+        if (isPaused) return;
 
-            _physic.velocity = new Vector2(moveX, moveY);
-        }
+        float moveX = direction.x != 0f ? direction.x * moveSpeed : _physic.velocity.x;
+        float moveY = direction.y != 0f ? direction.y * moveSpeed : _physic.velocity.y;
+
+        _physic.velocity = new Vector2(moveX, moveY);
     }
 
     public void AddForce(Vector2 force, ForceMode2D mode)
