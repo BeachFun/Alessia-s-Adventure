@@ -19,9 +19,14 @@ public class PatrolMovingAl : MovementController2D
     private protected bool _isMovingOn = true;
     private protected int _routeIndex = 0;
     private protected Vector2 _destination;
-    private protected SpriteRenderer _spriteRenderer; 
+    private protected SpriteRenderer _spriteRenderer;
 
 
+    public bool IsRotating
+    {
+        get;
+        set;
+    } = true;
     public bool FastMoveOn
     {
         get => _fastMoveOn;
@@ -78,10 +83,11 @@ public class PatrolMovingAl : MovementController2D
 
         if (movementAlgorithm == MovementAlgorithm.EdgeToEdge)
         {
-            Vector2 groundPoint = CalcGroundPoint();
-            Vector2 farGroundPoint = CalcFarGroundPoint();
+            Vector2? groundPoint = CalcGroundPoint();
+            Vector2? farGroundPoint = CalcFarGroundPoint();
 
-            if (!UnityUtils.ApproximatelyEqual(groundPoint.y, farGroundPoint.y, 0.15f))
+            if (groundPoint is null || farGroundPoint is null || 
+                !UnityUtils.ApproximatelyEqual(groundPoint.Value.y, farGroundPoint.Value.y, 0.15f))
             {
                 StartCoroutine(SlowRotate());
             }
@@ -137,14 +143,17 @@ public class PatrolMovingAl : MovementController2D
         base.Move(direction);
     }
 
-    private Vector2 CalcGroundPoint()
+    private Vector2? CalcGroundPoint()
     {
         Vector2 bottomBodyPoint = new Vector2(this.transform.position.x, _collider.bounds.min.y);
 
-        return Physics2D.RaycastAll(bottomBodyPoint, Vector2.down).Where(e => e.transform.tag != this.tag).First().point;
+        RaycastHit2D[] hits = Physics2D.RaycastAll(bottomBodyPoint, Vector2.down).Where(e => e.transform.tag != this.tag).ToArray();
+
+        if (hits.Length > 0) return hits.First().point;
+        else return null;
     }
 
-    private Vector2 CalcFarGroundPoint()
+    private Vector2? CalcFarGroundPoint()
     {
         Vector2 forwardBodyPoint, direction;
 
@@ -159,27 +168,33 @@ public class PatrolMovingAl : MovementController2D
             direction = new Vector2(0.3f, -1f);
         }
 
-        return Physics2D.RaycastAll(forwardBodyPoint, direction).Where(e => e.transform.tag != this.tag).First().point;
+        RaycastHit2D[] hits = Physics2D.RaycastAll(forwardBodyPoint, direction).Where(e => e.transform.tag != this.tag).ToArray();
+
+        if (hits.Length > 0) return hits.First().point;
+        else return null;
     }
 
     private IEnumerator SlowRotate()
     {
-        base.StopMovement(SnapAxis2D.All);
-
-        _isMovingOn = false;
-        yield return new WaitForSeconds(rotateSeconds / 1.5f);
-
-        _spriteRenderer.flipX = !_spriteRenderer.flipX;
-
-        if (movementAlgorithm == MovementAlgorithm.StartToPoint || 
-            movementAlgorithm == MovementAlgorithm.PointToPoint)
+        if (IsRotating)
         {
-            _destination = isMoveBack ? endPosition : startPosition;
-            isMoveBack = !isMoveBack;
-        }
+            base.StopMovement(SnapAxis2D.All);
 
-        yield return new WaitForSeconds(rotateSeconds / 3f);
-        _isMovingOn = true;
+            _isMovingOn = false;
+            yield return new WaitForSeconds(rotateSeconds / 1.5f);
+
+            _spriteRenderer.flipX = !_spriteRenderer.flipX;
+
+            if (movementAlgorithm == MovementAlgorithm.StartToPoint ||
+                movementAlgorithm == MovementAlgorithm.PointToPoint)
+            {
+                _destination = isMoveBack ? endPosition : startPosition;
+                isMoveBack = !isMoveBack;
+            }
+
+            yield return new WaitForSeconds(rotateSeconds / 3f);
+            _isMovingOn = true;
+        }
     }
 }
 
