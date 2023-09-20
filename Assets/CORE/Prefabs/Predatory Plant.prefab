@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1115228126425464141}
   - component: {fileID: 7598904175793026618}
   - component: {fileID: 3149665745777619264}
-  - component: {fileID: 4238496093377372118}
+  - component: {fileID: 6892881664462942190}
   m_Layer: 0
   m_Name: Predatory Plant
   m_TagString: Enemy
@@ -223,7 +223,7 @@ MonoBehaviour:
     id: 0
     nameAnimatorProperty: left_attack
   isAttackAllOnZone: 0
---- !u!114 &4238496093377372118
+--- !u!114 &6892881664462942190
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,10 +232,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4150626833935404340}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3eb263354513cb24b81f631d03fa4c77, type: 3}
+  m_Script: {fileID: 11500000, guid: 7388defa7b46105498e2e733cac722cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPaused: 1
+  isPaused: 0
   moveSpeed: 0
   jumpForce: 0
   fallSpeedMultiplier: 1

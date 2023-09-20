@@ -210,7 +210,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6837770208990168602}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7d0a8bbc70d8a6448f96683095c4ede, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c79ba7ed8f05a34abd944e62fd7ad0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
@@ -224,7 +224,7 @@ MonoBehaviour:
   checkerOffset: {x: 0, y: -0.37, z: 0}
   minJumpPower: 1
   maxJumpPower: 1.5
-  powerStep: 0.08
+  powerStep: 0.1
 --- !u!114 &1579035728863751380
 MonoBehaviour:
   m_ObjectHideFlags: 0
