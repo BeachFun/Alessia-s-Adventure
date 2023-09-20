@@ -16,7 +16,7 @@ public class ShootSystem2D : MonoBehaviour
 
     private protected bool _shootOn = true;
     private protected Vector3 _enemyDirection;
-    private protected float _speedMultiply;
+    private protected float _speedMultiply = 1f;
     private protected Animator _animator;
 
 
