@@ -31,10 +31,14 @@ public class AttackSystem2D : MonoBehaviour
     {
         get => attackData.Length;
     }
+    public string EnemyTag
+    {
+        get => enemyTag;
+    }
 
 
     public event Action ActionAfterAttack;
-
+    public event Action ActionAfterRecoverAttack;
 
     private void OnDrawGizmosSelected()
     {
@@ -101,6 +105,8 @@ public class AttackSystem2D : MonoBehaviour
         ActionAfterAttack?.Invoke();
 
         yield return new WaitForSeconds(timeBetweenAttacks);
+
+        ActionAfterRecoverAttack?.Invoke();
 
         _attackOn = true;
     }
