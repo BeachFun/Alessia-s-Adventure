@@ -12,7 +12,7 @@ public class AttackSystem2D : MonoBehaviour
     [SerializeField] private protected BoxAttackData[] attackData;
     [SerializeField] private protected bool isAttackAllOnZone;
 
-    private protected bool _attackOn;
+    private protected bool _attackOn = true;
     private protected bool _isRotated;
     private protected int _attackZoneIndex;
 
@@ -31,14 +31,18 @@ public class AttackSystem2D : MonoBehaviour
     {
         get => attackData.Length;
     }
+    public string EnemyTag
+    {
+        get => enemyTag;
+    }
 
 
     public event Action ActionAfterAttack;
+    public event Action ActionAfterRecoverAttack;
 
-
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        if (attackData.Length == 0) return;
+        if (attackData is null || attackData.Length == 0) return;
 
         Gizmos.color = Color.red;
 
@@ -77,7 +81,7 @@ public class AttackSystem2D : MonoBehaviour
     {
         Vector2 direction = IsRotated ? Vector2.left : Vector2.right;
 
-        return Physics2D.BoxCastAll(transform.position, attackData[indexZone].ZoneSize, 0, direction)
+        return Physics2D.BoxCastAll(transform.position, attackData[indexZone].ZoneSize, 0, direction, attackData[indexZone].Distance)
                 .Where(e => e.transform.tag == enemyTag)
                 .ToArray();
     }
@@ -98,9 +102,11 @@ public class AttackSystem2D : MonoBehaviour
 
     private IEnumerator AttackRecoverRoutine()
     {
-        ActionAfterAttack.Invoke();
+        ActionAfterAttack?.Invoke();
 
         yield return new WaitForSeconds(timeBetweenAttacks);
+
+        ActionAfterRecoverAttack?.Invoke();
 
         _attackOn = true;
     }

@@ -2,8 +2,6 @@ using System.Linq;
 using UnityEngine;
 using Action = System.Action;
 
-[RequireComponent(typeof(Animator))]
-
 [System.Serializable]
 public class AutoShootController2D : ShootSystem2D
 {
@@ -14,15 +12,14 @@ public class AutoShootController2D : ShootSystem2D
     [SerializeField] private Transform enemyTransform;
 
     private VisionCone2D _vision;
-    private protected Animator _animator;
 
 
     public event Action ActionBeforeShoot;
 
 
-    private protected void Start()
+    private protected override void Start()
     {
-        _animator = GetComponent<Animator>();
+        base.Start();
 
         _vision = GetComponentInChildren<VisionCone2D>();
         if (_vision is null) _vision = GetComponent<VisionCone2D>();
@@ -32,25 +29,24 @@ public class AutoShootController2D : ShootSystem2D
     {
         if (!ShootOn || !_shootOn) return;
 
-        Transform enemyTransform;
+        Transform detectedTransform = null;
 
         if (detectionMode == VisionMode.Cone)
         {
             _vision.CheckVision();
-            enemyTransform = _vision.DetectedObjects.Where(e => e.tag == enemyTag).First().transform;
-            _enemyDirection = (enemyTransform.position - this.transform.position).normalized;
+            detectedTransform = _vision.DetectedObjects.Where(e => e.tag == enemyTag).First().transform;
+            _enemyDirection = (detectedTransform.position - this.transform.position).normalized;
         }
-        else
+        else if (this.enemyTransform != null)
         {
             _enemyDirection = (this.enemyTransform.position - this.transform.position).normalized;
-            enemyTransform = Physics2D.Raycast(transform.position + _enemyDirection * shootMinDistance, _enemyDirection, shootMaxDistance).transform;
+            detectedTransform = Physics2D.Raycast(transform.position + _enemyDirection * shootMinDistance, _enemyDirection, shootMaxDistance).transform;
         }
 
-        if (enemyTransform is not null && enemyTransform.tag == enemyTag)
+        if (detectedTransform is not null && detectedTransform.tag == enemyTag)
         {
-            _shootOn = false;
-            ActionBeforeShoot.Invoke();
-            Shoot();
+            ActionBeforeShoot?.Invoke();
+            Throw(_enemyDirection, _speedMultiply);
         }
     }
 
@@ -69,6 +65,6 @@ public class AutoShootController2D : ShootSystem2D
 
     public void Shoot()
     {
-        _animator.SetTrigger(shootAnimationName);
+        Throw(_enemyDirection, _speedMultiply);
     }
 }

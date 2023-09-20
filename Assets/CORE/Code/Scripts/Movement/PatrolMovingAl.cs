@@ -2,8 +2,6 @@ using System.Linq;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
-
 [System.Serializable]
 public class PatrolMovingAl : MovementController2D
 {
@@ -16,15 +14,19 @@ public class PatrolMovingAl : MovementController2D
     [SerializeField] private protected Vector2[] routePoints;
     [SerializeField] private protected bool isMoveBack;
     [SerializeField] private protected float rotateSeconds;
-    [SerializeField] private protected float moveSpeed = 0f;
 
     private protected bool _fastMoveOn;
     private protected bool _isMovingOn = true;
     private protected int _routeIndex = 0;
     private protected Vector2 _destination;
-    private protected SpriteRenderer _spriteRenderer; 
+    private protected SpriteRenderer _spriteRenderer;
 
 
+    public bool IsRotating
+    {
+        get;
+        set;
+    } = true;
     public bool FastMoveOn
     {
         get => _fastMoveOn;
@@ -32,7 +34,7 @@ public class PatrolMovingAl : MovementController2D
     }
     public float Speed
     {
-        get => _character.velocity.magnitude / Time.fixedDeltaTime;
+        get => _physic.velocity.magnitude / Time.fixedDeltaTime;
     }
     private bool IsReachedDestinationPosition
     {
@@ -81,10 +83,11 @@ public class PatrolMovingAl : MovementController2D
 
         if (movementAlgorithm == MovementAlgorithm.EdgeToEdge)
         {
-            Vector2 groundPoint = CalcGroundPoint();
-            Vector2 farGroundPoint = CalcFarGroundPoint();
+            Vector2? groundPoint = CalcGroundPoint();
+            Vector2? farGroundPoint = CalcFarGroundPoint();
 
-            if (!UnityUtils.ApproximatelyEqual(groundPoint.y, farGroundPoint.y, 0.15f))
+            if (groundPoint is null || farGroundPoint is null || 
+                !UnityUtils.ApproximatelyEqual(groundPoint.Value.y, farGroundPoint.Value.y, 0.15f))
             {
                 StartCoroutine(SlowRotate());
             }
@@ -140,47 +143,58 @@ public class PatrolMovingAl : MovementController2D
         base.Move(direction);
     }
 
-    private Vector2 CalcGroundPoint()
+    private Vector2? CalcGroundPoint()
     {
-        Vector2 bottomBodyPoint = new Vector2(this.transform.position.x, _character.bounds.min.y);
+        Vector2 bottomBodyPoint = new Vector2(this.transform.position.x, _collider.bounds.min.y);
 
-        return Physics2D.RaycastAll(bottomBodyPoint, Vector2.down).Where(e => e.transform.tag != this.tag).First().point;
+        RaycastHit2D[] hits = Physics2D.RaycastAll(bottomBodyPoint, Vector2.down).Where(e => e.transform.tag != this.tag).ToArray();
+
+        if (hits.Length > 0) return hits.First().point;
+        else return null;
     }
 
-    private Vector2 CalcFarGroundPoint()
+    private Vector2? CalcFarGroundPoint()
     {
         Vector2 forwardBodyPoint, direction;
 
         if (_spriteRenderer.flipX)
         {
-            forwardBodyPoint = new Vector2(_character.bounds.min.x, _character.bounds.max.y);
+            forwardBodyPoint = new Vector2(_collider.bounds.min.x, _collider.bounds.max.y);
             direction = new Vector2(-0.3f, -1f);
         }
         else
         {
-            forwardBodyPoint = new Vector2(_character.bounds.max.x, _character.bounds.max.y);
+            forwardBodyPoint = new Vector2(_collider.bounds.max.x, _collider.bounds.max.y);
             direction = new Vector2(0.3f, -1f);
         }
 
-        return Physics2D.RaycastAll(forwardBodyPoint, direction).Where(e => e.transform.tag != this.tag).First().point;
+        RaycastHit2D[] hits = Physics2D.RaycastAll(forwardBodyPoint, direction).Where(e => e.transform.tag != this.tag).ToArray();
+
+        if (hits.Length > 0) return hits.First().point;
+        else return null;
     }
 
     private IEnumerator SlowRotate()
     {
-        _isMovingOn = false;
-        yield return new WaitForSeconds(rotateSeconds / 1.5f);
+        base.StopMovement(SnapAxis2D.All);
 
-        _spriteRenderer.flipX = !_spriteRenderer.flipX;
-
-        if (movementAlgorithm == MovementAlgorithm.StartToPoint || 
-            movementAlgorithm == MovementAlgorithm.PointToPoint)
+        if (IsRotating)
         {
-            _destination = isMoveBack ? endPosition : startPosition;
-            isMoveBack = !isMoveBack;
-        }
+            _isMovingOn = false;
+            yield return new WaitForSeconds(rotateSeconds / 1.5f);
 
-        yield return new WaitForSeconds(rotateSeconds / 3f);
-        _isMovingOn = true;
+            _spriteRenderer.flipX = !_spriteRenderer.flipX;
+
+            if (movementAlgorithm == MovementAlgorithm.StartToPoint ||
+                movementAlgorithm == MovementAlgorithm.PointToPoint)
+            {
+                _destination = isMoveBack ? endPosition : startPosition;
+                isMoveBack = !isMoveBack;
+            }
+
+            yield return new WaitForSeconds(rotateSeconds / 3f);
+            _isMovingOn = true;
+        }
     }
 }
 

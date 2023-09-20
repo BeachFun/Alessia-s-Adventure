@@ -1,4 +1,5 @@
 using UnityEngine;
+using Action = System.Action;
 
 [RequireComponent(typeof(Animator))]
 
@@ -10,6 +11,9 @@ public class ComboAttackSystem2D : AttackSystem2D
 
     private bool _isNextCombo;
     private protected Animator _animator;
+
+
+    public event Action ComboEnded;
 
 
     private void Start()
@@ -24,7 +28,7 @@ public class ComboAttackSystem2D : AttackSystem2D
 
         _attackZoneIndex = 0;
 
-        _animator.SetInteger(AnimatorPropertyName, (int)attackData[_attackZoneIndex].Id);
+        _animator.SetInteger(AnimatorPropertyName, attackData[_attackZoneIndex].Id);
     }
 
     public void NextAttack()
@@ -40,15 +44,22 @@ public class ComboAttackSystem2D : AttackSystem2D
             if (isLooping)
             {
                 _attackZoneIndex = _attackZoneIndex + 1 > attackData.Length - 1 ? 0 : _attackZoneIndex + 1;
-                _animator.SetInteger(AnimatorPropertyName, (int)attackData[_attackZoneIndex].Id);
+                _animator.SetInteger(AnimatorPropertyName, attackData[_attackZoneIndex].Id);
             }
             else if (_attackZoneIndex + 1 <= attackData.Length - 1)
             {
                 _attackZoneIndex++;
-                _animator.SetInteger(AnimatorPropertyName, (int)attackData[_attackZoneIndex].Id);
+                _animator.SetInteger(AnimatorPropertyName, attackData[_attackZoneIndex].Id);
             }
         }
+        else ComboEnded?.Invoke();
 
         _isNextCombo = false;
+    }
+
+    // Метод для системы Mecanim. Вызывать в момент удара.
+    private protected void Damage2()
+    {
+        base.Damage();
     }
 }

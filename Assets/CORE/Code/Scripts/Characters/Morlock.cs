@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -6,6 +7,8 @@ using UnityEngine;
 
 public class Morlock : Enemy
 {
+    [SerializeField] private protected string playerTag = "Player";
+
     private PatrolMovingAl _movingSystem;
     private VisionCone2D _vision2D;
 
@@ -21,29 +24,45 @@ public class Morlock : Enemy
         _attackSystem.ActionAfterAttack += ActionAfterAttackHandler;
     }
 
-    private void FixedUpdate()
+    private void OnDestroy()
     {
+        _attackSystem.ActionBeforeAttack -= ActionBeforeAttackHandler;
+        _attackSystem.ActionAfterAttack -= ActionAfterAttackHandler;
+    }
+
+    private protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        _vision2D.IsRotated = _spriteRenderer.flipX;
         _vision2D.CheckVision();
 
         Transform playerTransform = null;
-        if (_vision2D.DetectedObjects.Count > 0) playerTransform = _vision2D.DetectedObjects[0].transform;
+        if (_vision2D.DetectedObjects.Any(e => e.tag == playerTag))
+        {
+            playerTransform = _vision2D.DetectedObjects.First(e => e.tag == playerTag).transform;
+        }
 
-        if (playerTransform is not null && playerTransform.tag == playerTag)
+        if (playerTransform is not null)
         {
             _movingSystem.FastMoveOn = true;
+            _movingSystem.IsRotating = false;
             _animator.speed = 2f;
         }
         else
         {
             _movingSystem.FastMoveOn = false;
+            _movingSystem.IsRotating = true;
             _animator.speed = 1f;
         }
 
         _animator.SetFloat("speed", _movingSystem.Speed);
     }
 
+
     private void ActionBeforeAttackHandler()
     {
+        _movingSystem.StopMovement(SnapAxis2D.X);
         _movingSystem.Pause = true;
         _animator.SetFloat("speed", 0);
     }

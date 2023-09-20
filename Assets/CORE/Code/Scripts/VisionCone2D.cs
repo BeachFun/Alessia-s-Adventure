@@ -9,10 +9,16 @@ public class VisionCone2D : MonoBehaviour
     [SerializeField] private LayerMask targetLayer;
     [SerializeField] private Transform eyesTransform;
     [SerializeField] private bool detectMultipleObjects = false;
+    [SerializeField] private bool isRotated = false;
     [SerializeField] private bool shouldCheckVision = false;
 
-    private List<GameObject> _detectedObjects;
+    private List<GameObject> _detectedObjects = new List<GameObject>();
 
+    public bool IsRotated
+    {
+        get => isRotated;
+        set => isRotated = value;
+    }
     public List<GameObject> DetectedObjects
     {
         get => _detectedObjects;
@@ -23,6 +29,18 @@ public class VisionCone2D : MonoBehaviour
         if (shouldCheckVision) CheckVision();
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Vector2 direction = eyesTransform.right;
+        float halfAngle = visionAngle / 2.0f;
+
+        for (float angle = -halfAngle; angle <= halfAngle; angle += 1.0f)
+        {
+            Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction * (IsRotated ? -1 : 1);
+            Gizmos.DrawRay(eyesTransform.position, rayDirection);
+        }
+    }
+
     public void CheckVision()
     {
         // Настройте лучи для проверки видимости в соответствии с параметрами зрения
@@ -31,11 +49,11 @@ public class VisionCone2D : MonoBehaviour
 
         _detectedObjects.Clear();
 
-        if (detectMultipleObjects)
+        if (!detectMultipleObjects)
         {
             for (float angle = -halfAngle; angle <= halfAngle; angle += 1.0f)
             {
-                Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction;
+                Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction * (IsRotated ? -1 : 1);
 
                 RaycastHit2D hit = Physics2D.Raycast(eyesTransform.position, rayDirection, maxDistance, targetLayer);
 
@@ -46,7 +64,7 @@ public class VisionCone2D : MonoBehaviour
         {
             for (float angle = -halfAngle; angle <= halfAngle; angle += 1.0f)
             {
-                Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction;
+                Vector2 rayDirection = Quaternion.Euler(0, 0, angle) * direction * (IsRotated ? -1 : 1);
 
                 IEnumerable<GameObject> hits = Physics2D.RaycastAll(eyesTransform.position, rayDirection, maxDistance, targetLayer)
                     .Where(e => e.collider != null)

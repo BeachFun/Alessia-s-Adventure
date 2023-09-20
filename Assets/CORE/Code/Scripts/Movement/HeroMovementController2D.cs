@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class HeroMovementController2D : MovementController2D, IDifferentJumpable
 {
-    [SerializeField] private protected float moveSpeed = 0f;
+    [Header("Jump Settings")]
     [SerializeField] private protected float minJumpPower = 1f;
     [SerializeField] private protected float maxJumpPower = 1.5f;
     [SerializeField] private protected float powerStep = 0.05f;
@@ -11,10 +11,7 @@ public class HeroMovementController2D : MovementController2D, IDifferentJumpable
     private bool _isJumpPowerIncreasing;
     private float _jumpPower;
 
-    public bool IsGrounded
-    {
-        get => _character.isGrounded;
-    }
+
     public float JumpPower
     {
         get => _jumpPower;
@@ -55,14 +52,6 @@ public class HeroMovementController2D : MovementController2D, IDifferentJumpable
         }
     }
 
-    /// <summary>
-    /// ѕередвижение на рассто€ние с учетом скорости
-    /// </summary>
-    public override void Move(Vector2 mv)
-    {
-        base.Move(mv * moveSpeed);
-    }
-
     public virtual void JumpPowerDown()
     {
         JumpPower = JumpPower - powerStep <= 1f ? 1f : JumpPower - powerStep;
@@ -75,9 +64,9 @@ public class HeroMovementController2D : MovementController2D, IDifferentJumpable
 
     public override void Jump()
     {
-        if (_character.isGrounded && useGravity)
+        if (IsGrounded && UseGravity)
         {
-            _verticalVelocity.y += JumpForce * JumpPower;
+            _physic.velocity = Vector2.up * JumpForce * JumpPower;
             JumpPower = minJumpPower;
         }
     }
