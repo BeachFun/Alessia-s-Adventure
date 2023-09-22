@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,15 @@ public class InventoryManager : IGameManager
 
     private Dictionary<string, int> _items;
 
+
+    public Dictionary<string, int> Data
+    {
+        get => _items.ToDictionary(e => e.Key, e => e.Value);
+    }
+    public List<string> ItemList
+    {
+        get => new List<string>(_items.Keys);
+    }
 
     public IEnumerator Startup()
     {
@@ -24,11 +34,6 @@ public class InventoryManager : IGameManager
     public void UpdateData(Dictionary<string, int> items)
     {
         _items = items;
-    }
-
-    public Dictionary<string, int> GetData()
-    {
-        return _items;
     }
 
     private void DisplayItems()
@@ -51,18 +56,7 @@ public class InventoryManager : IGameManager
         DisplayItems();
     }
 
-    public List<string> GetItemList()
-    {
-        List<string> list = new List<string>(_items.Keys);
-        return list;
-    }
-
-    public int GetItemCount(string name)
-    {
-        if (_items.ContainsKey(name))
-            return _items[name];
-        return 0;
-    }
+    public int GetItemCount(string name) => _items.ContainsKey(name) ? _items[name] : 0;
 
     public bool EquipItem(string name)
     {
