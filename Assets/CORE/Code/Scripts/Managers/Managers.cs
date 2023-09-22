@@ -2,48 +2,32 @@
 using System.Collections;
 using System.Collections.Generic;
 
-//[RequireComponent(typeof(SettingsManager))]
-//[RequireComponent(typeof(PlayerManager))]
-//[RequireComponent(typeof(GameManager))]
-//[RequireComponent(typeof(DataManager))]
-//[RequireComponent(typeof(UIManager))]
+[RequireComponent(typeof(InventoryManager))]
 
 /// <summary>
 /// Управляющий/контроллер всеми диспетчерами.
 /// </summary>
 public class Managers : MonoBehaviour
 {
-	// TODO: превратить класс в локатор служб или создать отдельный от класса локатор служб
+    // TODO: превратить класс в локатор служб или создать отдельный от класса локатор служб
 
-	//public static SettingsManager Settings { get; private set; }
-	//public static PlayerManager Player { get; private set; }
-	//public static GameManager Game { get; private set; }
-	//public static DataManager Data { get; private set; }
-	//public static UIManager UI { get; private set; }
+    public static InventoryManager Inventory { get; private set; }
 
 
-	private List<IGameManager> _startSequence;
+    private List<IGameManager> _startSequence;
 
 
 	void Awake()
 	{
-		//DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
-		// Инициализация менеджеров
-		//Settings = GetComponent<SettingsManager>();
-		//Player = GetComponent<PlayerManager>();
-		//Game = GetComponent<GameManager>();
-		//Data = GetComponent<DataManager>();
-		//UI = GetComponent<UIManager>();
+        // Инициализация менеджеров
+        Inventory = new InventoryManager();
 
-		//_startSequence = new List<IGameManager>();
-		//_startSequence.Add(Data);
-		//_startSequence.Add(Settings);
-		//_startSequence.Add(Player);
-		//_startSequence.Add(Game);
-		//_startSequence.Add(UI);
+        _startSequence = new List<IGameManager>();
+        _startSequence.Add(Inventory);
 
-		StartCoroutine(StartupManagers());
+        StartCoroutine(StartupManagers());
 	}
 
 	/// <summary>
