@@ -3,7 +3,7 @@ guid: 7b98e6bc6b8ddaf41acc635a11dc0076
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -25,7 +25,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 48
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -65,6 +65,7 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 1
   swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -76,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -88,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -100,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -112,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -124,6 +129,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -2450,117 +2456,117 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      main_lev_build_5: 124005849
-      main_lev_build_14: -1552246354
-      main_lev_build_27: -1989540803
+      main_lev_build_0: -1533326366
       main_lev_build_1: 1567190743
-      main_lev_build_98: -1728686162
-      main_lev_build_80: 415355226
-      main_lev_build_58: 1622969454
-      main_lev_build_31: -628472373
-      main_lev_build_83: 1379248116
+      main_lev_build_10: -626393993
+      main_lev_build_100: 619974969
+      main_lev_build_101: -1092688562
+      main_lev_build_102: 105349978
+      main_lev_build_103: 1342364517
+      main_lev_build_104: 1241058170
+      main_lev_build_105: 2049857
+      main_lev_build_106: 2106621667
+      main_lev_build_107: 1398589839
+      main_lev_build_108: -86066801
+      main_lev_build_109: -1692473445
+      main_lev_build_11: -759985175
+      main_lev_build_12: -1455556481
+      main_lev_build_13: 1728774194
+      main_lev_build_14: -1552246354
+      main_lev_build_15: -2120295661
+      main_lev_build_16: -1490355901
+      main_lev_build_17: -705098072
+      main_lev_build_18: 701325292
+      main_lev_build_19: -2065448324
+      main_lev_build_2: -2116016271
+      main_lev_build_20: -1336871233
+      main_lev_build_21: 2052784621
+      main_lev_build_22: 1459436438
+      main_lev_build_23: 1742330868
+      main_lev_build_24: -1938760302
+      main_lev_build_25: 1213774915
+      main_lev_build_26: 938868879
+      main_lev_build_27: -1989540803
+      main_lev_build_28: 2086176071
       main_lev_build_29: 156579997
       main_lev_build_3: 1822489683
-      main_lev_build_88: 1559069536
-      main_lev_build_87: 168765045
-      main_lev_build_11: -759985175
-      main_lev_build_21: 2052784621
-      main_lev_build_52: -1559365697
-      main_lev_build_86: -104795527
-      main_lev_build_26: 938868879
-      main_lev_build_70: -1333566199
-      main_lev_build_54: -1525151153
-      main_lev_build_68: -1608341303
-      main_lev_build_95: 539576543
-      main_lev_build_97: 860808695
-      main_lev_build_35: -1267938880
-      main_lev_build_92: -1497279555
-      main_lev_build_81: -22333047
-      main_lev_build_40: -1251193909
-      main_lev_build_55: 80831425
-      main_lev_build_20: -1336871233
-      main_lev_build_48: -602470973
-      main_lev_build_67: 541247045
-      main_lev_build_66: 1910976635
-      main_lev_build_8: 528651724
-      main_lev_build_93: 799206647
-      main_lev_build_106: 2106621667
-      main_lev_build_0: -1533326366
       main_lev_build_30: -2133704295
-      main_lev_build_46: 322059085
-      main_lev_build_76: -1710701549
-      main_lev_build_17: -705098072
-      main_lev_build_38: -1086045479
-      main_lev_build_59: -1203250570
-      main_lev_build_69: 1865121207
-      main_lev_build_103: 1342364517
-      main_lev_build_53: -831403203
-      main_lev_build_63: -1309408398
-      main_lev_build_23: 1742330868
-      main_lev_build_109: -1692473445
-      main_lev_build_12: -1455556481
-      main_lev_build_49: 1243440218
-      main_lev_build_57: -1596000915
-      main_lev_build_72: 1071105835
-      main_lev_build_51: -1808674895
-      main_lev_build_99: 118120997
-      main_lev_build_102: 105349978
-      main_lev_build_100: 619974969
-      main_lev_build_107: 1398589839
-      main_lev_build_36: -1562787327
-      main_lev_build_50: -86190335
-      main_lev_build_82: 660209125
-      main_lev_build_7: -1171957906
-      main_lev_build_94: -1255580064
-      main_lev_build_4: 902942299
+      main_lev_build_31: -628472373
       main_lev_build_32: -816258804
-      main_lev_build_42: -1189391722
-      main_lev_build_71: 129213068
-      main_lev_build_44: 1330645929
-      main_lev_build_25: 1213774915
-      main_lev_build_75: -284207094
-      main_lev_build_43: 1078336845
-      main_lev_build_64: 686240969
-      main_lev_build_15: -2120295661
-      main_lev_build_47: -970314679
-      main_lev_build_73: 2020690868
-      main_lev_build_96: -1821549731
-      main_lev_build_78: 352289809
-      main_lev_build_91: -2046350834
-      main_lev_build_90: -1114480968
-      main_lev_build_105: 2049857
-      main_lev_build_89: -682678826
-      main_lev_build_24: -1938760302
-      main_lev_build_79: -1943374825
-      main_lev_build_34: 1839490447
-      main_lev_build_39: 1459518352
-      main_lev_build_108: -86066801
-      main_lev_build_60: 385871667
-      main_lev_build_9: -1863073161
-      main_lev_build_65: -1747316118
-      main_lev_build_41: 446358692
-      main_lev_build_61: 1923772592
-      main_lev_build_104: 1241058170
-      main_lev_build_45: 1581867282
-      main_lev_build_6: -1185667301
-      main_lev_build_62: 604643372
-      main_lev_build_2: -2116016271
       main_lev_build_33: 436684230
-      main_lev_build_85: -375472848
-      main_lev_build_19: -2065448324
-      main_lev_build_74: 1332822226
-      main_lev_build_28: 2086176071
-      main_lev_build_84: -158050283
-      main_lev_build_22: 1459436438
-      main_lev_build_13: 1728774194
-      main_lev_build_18: 701325292
+      main_lev_build_34: 1839490447
+      main_lev_build_35: -1267938880
+      main_lev_build_36: -1562787327
       main_lev_build_37: 2037491038
-      main_lev_build_101: -1092688562
-      main_lev_build_16: -1490355901
-      main_lev_build_10: -626393993
+      main_lev_build_38: -1086045479
+      main_lev_build_39: 1459518352
+      main_lev_build_4: 902942299
+      main_lev_build_40: -1251193909
+      main_lev_build_41: 446358692
+      main_lev_build_42: -1189391722
+      main_lev_build_43: 1078336845
+      main_lev_build_44: 1330645929
+      main_lev_build_45: 1581867282
+      main_lev_build_46: 322059085
+      main_lev_build_47: -970314679
+      main_lev_build_48: -602470973
+      main_lev_build_49: 1243440218
+      main_lev_build_5: 124005849
+      main_lev_build_50: -86190335
+      main_lev_build_51: -1808674895
+      main_lev_build_52: -1559365697
+      main_lev_build_53: -831403203
+      main_lev_build_54: -1525151153
+      main_lev_build_55: 80831425
       main_lev_build_56: -661309048
+      main_lev_build_57: -1596000915
+      main_lev_build_58: 1622969454
+      main_lev_build_59: -1203250570
+      main_lev_build_6: -1185667301
+      main_lev_build_60: 385871667
+      main_lev_build_61: 1923772592
+      main_lev_build_62: 604643372
+      main_lev_build_63: -1309408398
+      main_lev_build_64: 686240969
+      main_lev_build_65: -1747316118
+      main_lev_build_66: 1910976635
+      main_lev_build_67: 541247045
+      main_lev_build_68: -1608341303
+      main_lev_build_69: 1865121207
+      main_lev_build_7: -1171957906
+      main_lev_build_70: -1333566199
+      main_lev_build_71: 129213068
+      main_lev_build_72: 1071105835
+      main_lev_build_73: 2020690868
+      main_lev_build_74: 1332822226
+      main_lev_build_75: -284207094
+      main_lev_build_76: -1710701549
       main_lev_build_77: -1720359440
-  spritePackingTag: 
+      main_lev_build_78: 352289809
+      main_lev_build_79: -1943374825
+      main_lev_build_8: 528651724
+      main_lev_build_80: 415355226
+      main_lev_build_81: -22333047
+      main_lev_build_82: 660209125
+      main_lev_build_83: 1379248116
+      main_lev_build_84: -158050283
+      main_lev_build_85: -375472848
+      main_lev_build_86: -104795527
+      main_lev_build_87: 168765045
+      main_lev_build_88: 1559069536
+      main_lev_build_89: -682678826
+      main_lev_build_9: -1863073161
+      main_lev_build_90: -1114480968
+      main_lev_build_91: -2046350834
+      main_lev_build_92: -1497279555
+      main_lev_build_93: 799206647
+      main_lev_build_94: -1255580064
+      main_lev_build_95: 539576543
+      main_lev_build_96: -1821549731
+      main_lev_build_97: 860808695
+      main_lev_build_98: -1728686162
+      main_lev_build_99: 118120997
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
   assetBundleName: 
