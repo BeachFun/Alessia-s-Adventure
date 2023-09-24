@@ -21,8 +21,6 @@ public class LevelsMapUIController : MonoBehaviour
     private void Start()
     {
         LocationChangeHandler();
-
-        locationImage.sprite = locationSprites[_currentLocation];
     }
 
     public void BackToMain()
@@ -59,6 +57,8 @@ public class LevelsMapUIController : MonoBehaviour
 
     private void LocationChangeHandler()
     {
+        locationImage.sprite = locationSprites[_currentLocation];
+
         buttonLeft.gameObject.SetActive(_currentLocation > 0);
         buttonRight.gameObject.SetActive(_currentLocation < locationSprites.Length - 1);
 
