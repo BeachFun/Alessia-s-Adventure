@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(HeroMovementController2D))]
 [RequireComponent(typeof(ShootSystem2D))]
 
-public class Heroine : Character
+public class Player : Character
 {
     private enum AnimatorStates
     {

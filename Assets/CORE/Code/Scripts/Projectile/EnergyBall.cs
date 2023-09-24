@@ -10,7 +10,7 @@ public class EnergyBall : Projectile2D
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<Heroine>().Hurt(Damage);
+            collision.gameObject.GetComponent<Player>().Hurt(Damage);
         }
         if (collision.gameObject.GetComponent<Bat>() is null)
         {
