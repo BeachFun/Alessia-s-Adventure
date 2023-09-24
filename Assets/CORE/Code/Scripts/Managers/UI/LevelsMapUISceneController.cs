@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LevelsMapUIController : MonoBehaviour
+public class LevelsMapUISceneController : MonoBehaviour
 {
     [SerializeField] private string mainSceneName;
     [SerializeField] private string[] levelsNames;
