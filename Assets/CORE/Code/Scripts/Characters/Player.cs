@@ -20,6 +20,7 @@ public class Player : Character
     }
     private enum InputMode { On, Off }
 
+    [SerializeField] private int daggerCount = 5;
     [Header("Energy System")]
     [SerializeField] private float maxEnergy = 100;
     [SerializeField] private float energy = 50;
@@ -45,7 +46,16 @@ public class Player : Character
         private set
         {
             hp = value;
-            Messenger.Broadcast(GameEvents.PLAYER_HEALTH_CHANGED);
+            Messenger<int>.Broadcast(GameEvents.PLAYER_HEALTH_CHANGED, value);
+        }
+    }
+    public int DaggerCount
+    {
+        get => daggerCount;
+        private set
+        {
+            daggerCount = value;
+            Messenger<int>.Broadcast(GameEvents.PLAYER_DAGGER_CHANGED, value);
         }
     }
     public float Energy
@@ -54,7 +64,7 @@ public class Player : Character
         private set
         {
             energy = value;
-            Messenger.Broadcast(GameEvents.PLAYER_ENERGY_CHANGED);
+            Messenger<float, float>.Broadcast(GameEvents.PLAYER_ENERGY_CHANGED, value, MaxEnergy);
         }
     }
     public float MaxEnergy
@@ -90,6 +100,11 @@ public class Player : Character
     }
 
 
+    private void Awake()
+    {
+        Messenger.AddListener(GameEvents.GAME_INDICATORS_STARTED, GameIndicatorsStartedHandler);
+    }
+
     private protected override void Start()
     {
         base.Start();
@@ -106,6 +121,8 @@ public class Player : Character
 
     private void OnDestroy()
     {
+        Messenger.RemoveListener(GameEvents.GAME_INDICATORS_STARTED, GameIndicatorsStartedHandler);
+
         _comboAttackController.ComboEnded -= ActionAfterComboAttack;
         _shootController.ActionAfterShoot -= ResumeMove;
     }
@@ -284,8 +301,9 @@ public class Player : Character
     // Бросает меч в направлении куда смотрит
     public void ThrowAttack()
     {
-        if (Energy < throwEnergy) return;
+        if (DaggerCount == 0 || Energy < throwEnergy) return;
         Energy -= throwEnergy;
+        DaggerCount--;
 
         if (!(State == AnimatorStates.Idle || State == AnimatorStates.Jumping)) return;
 
@@ -311,5 +329,13 @@ public class Player : Character
     {
         State = AnimatorStates.Idle;
         ResumeMove();
+    }
+
+    private void GameIndicatorsStartedHandler()
+    {
+        // For initialized GUI indicators
+        DaggerCount = DaggerCount;
+        Energy = Energy;
+        HP = HP;
     }
 }
