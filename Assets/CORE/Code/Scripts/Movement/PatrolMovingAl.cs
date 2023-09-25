@@ -131,6 +131,18 @@ public class PatrolMovingAl : MovementController2D
             }
             else
             {
+                if (movementAlgorithm == MovementAlgorithm.Route)
+                {
+                    if (direction.x < 0)
+                    {
+                        _spriteRenderer.flipX = true;
+                    }
+                    else if (direction.x > 0)
+                    {
+                        _spriteRenderer.flipX = false;
+                    }
+                }
+
                 Vector2 currentPosition = transform.position;
                 Vector2 moveDirection = (_destination - currentPosition).normalized;
 

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LevelsMapUIController : MonoBehaviour
+public class LevelsMapUISceneController : MonoBehaviour
 {
     [SerializeField] private string mainSceneName;
     [SerializeField] private string[] levelsNames;
@@ -21,8 +21,6 @@ public class LevelsMapUIController : MonoBehaviour
     private void Start()
     {
         LocationChangeHandler();
-
-        locationImage.sprite = locationSprites[_currentLocation];
     }
 
     public void BackToMain()
@@ -59,6 +57,8 @@ public class LevelsMapUIController : MonoBehaviour
 
     private void LocationChangeHandler()
     {
+        locationImage.sprite = locationSprites[_currentLocation];
+
         buttonLeft.gameObject.SetActive(_currentLocation > 0);
         buttonRight.gameObject.SetActive(_currentLocation < locationSprites.Length - 1);
 
