@@ -1,5 +1,8 @@
 ﻿internal class GameEvents
 {
+    public static string ON_PAUSE_STATE_CHANGED { get; private set; } = "ON_PAUSE_STATE_CHANGED";
+
+
     public static string GAME_INDICATORS_STARTED { get; private set; } = "GAME_INDICATORS_STARTED";
 
 

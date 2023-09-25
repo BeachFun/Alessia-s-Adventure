@@ -1,30 +1,30 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Автономный компонент, который ставит игру на паузу
-/// PROG MISTERIO | 23:23 12.08.2023
+/// PROG MISTERIO | 19:05 25.09.2023
 /// </summary>
 public class Pauser : MonoBehaviour
 {
-	private bool paused = false;
+    private const float PauseTimeScale = 0f;
+    private const float NormalTimeScale = 1f;
 
-	public bool Paused
-	{
-		get => paused;
-		set => paused = value;
-	}
+    private bool isPaused = false;
 
-	void FixedUpdate()
-	{
-		if (Input.GetKeyUp(KeyCode.Escape))
-		{
-			paused = !paused;
-		}
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) // Изменили клавишу паузы на Esc
+        {
+            TogglePause(); // Вызывает метод для переключения состояния паузы
+        }
+    }
 
-		if (paused)
-			Time.timeScale = 0;
-		else
-			Time.timeScale = 1;
-	}
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+        Time.timeScale = isPaused ? PauseTimeScale : NormalTimeScale; // Изменили состояние времени
+
+        // Вызываем событие для уведомления других компонентов о смене состояния паузы
+        Messenger<bool>.Broadcast(GameEvents.ON_PAUSE_STATE_CHANGED, isPaused);
+    }
 }
