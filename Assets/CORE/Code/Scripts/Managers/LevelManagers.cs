@@ -7,17 +7,17 @@ using System.Collections.Generic;
 /// <summary>
 /// Управляющий/контроллер всеми диспетчерами.
 /// </summary>
-public class Managers : MonoBehaviour
+public class LevelManagers : MonoBehaviour
 {
-    // TODO: превратить класс в локатор служб или создать отдельный от класса локатор служб
+	public ManagerStatus Status { get; private set; }
 
-    public static InventoryManager Inventory { get; private set; }
-
-
-    private List<IGameManager> _startSequence;
+	public static InventoryManager Inventory { get; private set; }
 
 
-	void Awake()
+	private List<IGameManager> _startSequence;
+
+
+	private void Awake()
 	{
         //DontDestroyOnLoad(gameObject);
 
@@ -30,11 +30,18 @@ public class Managers : MonoBehaviour
         StartCoroutine(StartupManagers());
 	}
 
-	/// <summary>
-	/// Запуск всех менеджеров, привязанных к этому контроллеру
-	/// </summary>
-	/// <returns>Перечислитель</returns>
-	public IEnumerator StartupManagers()
+    private void OnDestroy()
+    {
+		Inventory = null;
+
+		Status = ManagerStatus.Shutdown;
+	}
+
+    /// <summary>
+    /// Запуск всех менеджеров, привязанных к этому контроллеру
+    /// </summary>
+    /// <returns>Перечислитель</returns>
+    public IEnumerator StartupManagers()
 	{
 		Debug.Log("Запуск менеджеров...");
 
@@ -69,6 +76,7 @@ public class Managers : MonoBehaviour
 			yield return null;
 		}
 
+		Status = ManagerStatus.Started;
 		Debug.Log("All managers started up");
 	}
 }
