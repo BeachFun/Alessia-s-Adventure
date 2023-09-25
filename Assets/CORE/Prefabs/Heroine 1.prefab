@@ -199,8 +199,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   def: 3
-  _inputOn: 1
-  _state: 0
+  daggerCount: 5
+  maxEnergy: 100
+  energy: 50
+  energyRecoverySpeed: 10
+  attackEnergy: 10
+  throwEnergy: 10
 --- !u!114 &5691638910239800582
 MonoBehaviour:
   m_ObjectHideFlags: 0
