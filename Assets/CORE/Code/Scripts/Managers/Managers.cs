@@ -1,33 +1,20 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-
-[RequireComponent(typeof(InventoryManager))]
+using UnityEngine;
 
 /// <summary>
 /// Управляющий/контроллер всеми диспетчерами.
 /// </summary>
-public class Managers : MonoBehaviour
+public abstract class Managers : MonoBehaviour
 {
-    // TODO: превратить класс в локатор служб или создать отдельный от класса локатор служб
+    public ManagerStatus Status { get; private protected set; }
 
-    public static InventoryManager Inventory { get; private set; }
-
-
-    private List<IGameManager> _startSequence;
+    private protected List<IGameManager> _startSequence;
 
 
-	void Awake()
+	private protected virtual void OnDestroy()
 	{
-        //DontDestroyOnLoad(gameObject);
-
-        // Инициализация менеджеров
-        Inventory = new InventoryManager();
-
-        _startSequence = new List<IGameManager>();
-        _startSequence.Add(Inventory);
-
-        StartCoroutine(StartupManagers());
+		Status = ManagerStatus.Shutdown;
 	}
 
 	/// <summary>
@@ -55,7 +42,7 @@ public class Managers : MonoBehaviour
 
 			foreach (IGameManager manager in _startSequence)
 			{
-				if (manager.status == ManagerStatus.Started)
+				if (manager.Status == ManagerStatus.Started)
 				{
 					numReady++;
 				}
@@ -69,6 +56,8 @@ public class Managers : MonoBehaviour
 			yield return null;
 		}
 
+		Status = ManagerStatus.Started;
+		Messenger.Broadcast(GameEvents.ALL_MANAGERS_STARTED);
 		Debug.Log("All managers started up");
 	}
 }

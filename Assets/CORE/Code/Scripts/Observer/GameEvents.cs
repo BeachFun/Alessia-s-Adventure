@@ -1,5 +1,12 @@
 ﻿internal class GameEvents
 {
+    public static string ALL_MANAGERS_STARTED { get; private set; } = "ALL_MANAGERS_STARTED";
+
+
+
+    public static string LEVEL_IS_SELECTED_FOR_STARTED { get; private set; } = "LEVEL_IS_SELECTED_FOR_STARTED";
+
+
     public static string ON_PAUSE_STATE_CHANGED { get; private set; } = "ON_PAUSE_STATE_CHANGED";
 
 

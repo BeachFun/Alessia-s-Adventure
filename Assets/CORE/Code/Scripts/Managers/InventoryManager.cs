@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InventoryManager : IGameManager
 {
-    public ManagerStatus status { get; private set; }
+    public ManagerStatus Status { get; private set; }
     public string equippedItem { get; private set; }
 
     private Dictionary<string, int> _items;
@@ -28,7 +28,7 @@ public class InventoryManager : IGameManager
 
         UpdateData(new Dictionary<string, int>());
 
-        status = ManagerStatus.Started;
+        Status = ManagerStatus.Started;
     }
 
     public void UpdateData(Dictionary<string, int> items)
