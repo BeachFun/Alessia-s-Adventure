@@ -21,6 +21,13 @@ public class LevelsMapUISceneController : MonoBehaviour
     private void Start()
     {
         LocationChangeHandler();
+
+        Messenger<int>.AddListener(GameEvents.LEVEL_IS_SELECTED_FOR_STARTED, OpenLevel);
+    }
+
+    private void OnDestroy()
+    {
+        Messenger<int>.RemoveListener(GameEvents.LEVEL_IS_SELECTED_FOR_STARTED, OpenLevel);
     }
 
     public void BackToMain()
@@ -30,7 +37,7 @@ public class LevelsMapUISceneController : MonoBehaviour
 
     public void OpenLevel(int levelNumber)
     {
-        if (levelNumber > levelsNames.Length || levelNumber < 1) return;
+        if (levelNumber > levelsNames.Length || levelNumber < 0) return;
 
         SceneManager.LoadScene(levelsNames[levelNumber]);
     }
