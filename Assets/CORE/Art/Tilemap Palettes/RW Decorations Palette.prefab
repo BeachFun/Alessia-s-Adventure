@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 583868350578666789}
   - component: {fileID: 3908714009260568036}
   m_Layer: 0
-  m_Name: Rocky World Decorations
+  m_Name: RW Decorations Palette
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

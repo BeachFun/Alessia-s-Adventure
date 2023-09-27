@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2646715634863302152}
   - component: {fileID: 7726780349788183608}
   m_Layer: 0
-  m_Name: Rocky World Palette
+  m_Name: RW Main Lev Palette
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
