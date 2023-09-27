@@ -2,7 +2,7 @@
 
 public interface IGameManager
 {
-	ManagerStatus status {get;}
+	ManagerStatus Status {get;}
 
     IEnumerator Startup();
 }

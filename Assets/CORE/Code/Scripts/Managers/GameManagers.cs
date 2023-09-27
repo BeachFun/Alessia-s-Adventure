@@ -1,20 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(InventoryManager))]
+[RequireComponent(typeof(GameProgressManager))]
 
-public class LevelManagers : Managers
+public class GameManagers : Managers
 {
-	public static InventoryManager Inventory { get; private set; }
+	public static GameProgressManager GameProgress { get; private set; }
 
 
 	private void Awake()
 	{
+        DontDestroyOnLoad(gameObject);
+
         // Инициализация менеджеров
-        Inventory = GetComponent<InventoryManager>();
+        GameProgress = GetComponent<GameProgressManager>();
 
         _startSequence = new List<IGameManager>();
-        _startSequence.Add(Inventory);
+        _startSequence.Add(GameProgress);
 
         StartCoroutine(StartupManagers());
 	}
@@ -23,6 +25,6 @@ public class LevelManagers : Managers
     {
         base.OnDestroy();
 
-        Status = ManagerStatus.Shutdown;
+        GameProgress = null;
 	}
 }
