@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 545125916465759662}
   - component: {fileID: 5123915344884061887}
   m_Layer: 0
-  m_Name: RW Cround 1 Others Palette
+  m_Name: RW Ground 1 Others Palette
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -297,7 +297,7 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!114 &1529984796375851072
+--- !u!114 &894661306084900637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
