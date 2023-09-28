@@ -501,7 +501,7 @@ GameObject:
   - component: {fileID: 2943567179252998291}
   - component: {fileID: 1162044804539605901}
   m_Layer: 0
-  m_Name: RW Flora Tiles
+  m_Name: RW Flora Palette
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -535,7 +535,7 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &1272566502527636654
+--- !u!114 &6784286899305618237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
