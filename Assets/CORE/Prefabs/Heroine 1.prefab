@@ -219,8 +219,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPaused: 0
   moveSpeed: 200
-  jumpForce: 7
-  fallSpeedMultiplier: -0.4
+  jumpForce: 6
+  fallSpeedMultiplier: -0.2
   checkRadius: 0.25
   layerMask:
     serializedVersion: 2
