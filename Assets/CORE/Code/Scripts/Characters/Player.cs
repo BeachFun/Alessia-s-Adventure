@@ -20,6 +20,7 @@ public class Player : Character
     }
     private enum InputMode { On, Off }
 
+
     [SerializeField] private int daggerCount = 5;
     [Header("Energy System")]
     [SerializeField] private float maxEnergy = 100;
