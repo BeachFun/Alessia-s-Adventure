@@ -91,10 +91,14 @@ public class MovementController2D : MonoBehaviour, IForceReceiver2D, IJumpable
 
     public void Move(Vector2 direction)
     {
+        Move(direction, true);
+    }
+    public void Move(Vector2 direction, bool isSpeedUse)
+    {
         if (isPaused) return;
 
-        float moveX = direction.x != 0f ? direction.x * moveSpeed : _physic.velocity.x;
-        float moveY = direction.y != 0f ? direction.y * moveSpeed : _physic.velocity.y;
+        float moveX = direction.x != 0f ? direction.x * (isSpeedUse ? moveSpeed : 1f) : _physic.velocity.x;
+        float moveY = direction.y != 0f ? direction.y * (isSpeedUse ? moveSpeed : 1f) : _physic.velocity.y;
 
         _physic.velocity = new Vector2(moveX, moveY);
     }

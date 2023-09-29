@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -29,11 +31,16 @@ public class Player : Character
     [SerializeField] private float energyRecoverySpeed = 5;
     [SerializeField] private int attackEnergy = 10;
     [SerializeField] private int throwEnergy = 10;
+    [Header("Sliding System")]
+    [SerializeField] private float minSlidingTime = 0.7f;
+    [SerializeField] private float slidingSpeed = 8f;
 
     private bool _inputOn = true;
+    private float _height;
     private Vector2 _horizonatalVelocity;
     private AnimatorStates _state = AnimatorStates.Idle;
 
+    private Collider2D _collider;
     private protected Animator _animator;
     private protected AttackSystem2D _attackController;
     private protected ComboAttackSystem2D _comboAttackController;
@@ -73,7 +80,7 @@ public class Player : Character
         get => maxEnergy;
     }
 
-    private AnimatorStates State
+    private AnimatorStates CurrentState
     {
         get => _state;
         set
@@ -110,11 +117,14 @@ public class Player : Character
     {
         base.Start();
 
+        _collider = GetComponent<Collider2D>();
         _animator = GetComponent<Animator>();
         _attackController = GetComponent<AttackSystem2D>();
         _comboAttackController = GetComponent<ComboAttackSystem2D>();
         _shootController = GetComponent<ShootSystem2D>();
         _movementController = GetComponent<HeroMovementController2D>();
+
+        _height = _collider.bounds.max.y - _collider.bounds.min.y;
 
         _comboAttackController.ComboEnded += ActionAfterComboAttack;
         _shootController.ActionAfterShoot += ResumeMove;
@@ -132,16 +142,23 @@ public class Player : Character
     {
         if (!_inputOn) return;
 
-        if (!_movementController.IsGrounded) State = AnimatorStates.Jumping;
+        if (!_movementController.IsGrounded) CurrentState = AnimatorStates.Jumping;
 
-        if (State == AnimatorStates.Idle)
+        if (CurrentState == AnimatorStates.Idle)
         {
             MovementInputHandler();
+
+            if (Input.GetKeyDown(KeyCode.LeftShift) && Mathf.Abs(_horizonatalVelocity.x) > .3f)
+            {
+                StartCoroutine(SlidingRountine());
+                CurrentState = AnimatorStates.Sliding;
+                return;
+            }
 
             if (Input.GetKey(KeyCode.Space) && _movementController.IsGrounded)
             {
                 StopMove();
-                State = AnimatorStates.JumpReady;
+                CurrentState = AnimatorStates.JumpReady;
                 return;
             }
 
@@ -158,13 +175,13 @@ public class Player : Character
             }
         }
 
-        if (State == AnimatorStates.Jumping)
+        if (CurrentState == AnimatorStates.Jumping)
         {
             MovementInputHandler();
 
             if (_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Jump_Mid" && _movementController.IsGrounded)
             {
-                State = AnimatorStates.Idle;
+                CurrentState = AnimatorStates.Idle;
                 return;
             }
 
@@ -180,7 +197,7 @@ public class Player : Character
             }
         }
 
-        if (State == AnimatorStates.Combo)
+        if (CurrentState == AnimatorStates.Combo)
         {
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
@@ -192,9 +209,9 @@ public class Player : Character
     private void FixedUpdate()
     {
         // Energy Recovery
-        if (_state == AnimatorStates.Idle || 
-            _state == AnimatorStates.Jumping || 
-            _state == AnimatorStates.Grab)
+        if (CurrentState == AnimatorStates.Idle ||
+            CurrentState == AnimatorStates.Jumping ||
+            CurrentState == AnimatorStates.Grab)
         {
             if (Energy < MaxEnergy)
             {
@@ -203,13 +220,13 @@ public class Player : Character
             }
         }
 
-        if (_state == AnimatorStates.JumpReady)
+        if (CurrentState == AnimatorStates.JumpReady)
         {
             MovementInputHandler();
 
             if (!Input.GetKey(KeyCode.Space) || !_movementController.IsGrounded)
             {
-                State = AnimatorStates.Jumping;
+                CurrentState = AnimatorStates.Jumping;
                 _movementController.Pause = false;
                 _movementController.Jump();
             }
@@ -217,6 +234,11 @@ public class Player : Character
             {
                 _movementController.JumpPowerUp();
             }
+        }
+
+        if (CurrentState == AnimatorStates.Sliding)
+        {
+            _movementController.Move(LookDirection * slidingSpeed, false);
         }
     }
 
@@ -239,15 +261,12 @@ public class Player : Character
     }
 
 
-    /// <summary>
-    /// Получение урона
-    /// </summary>
     public override void Hurt(int attackDamage)
     {
         if (hp - (attackDamage - def) <= 0)
         {
             hp = 0;
-            State = AnimatorStates.Dieth;
+            CurrentState = AnimatorStates.Dieth;
         }
         else
         {
@@ -260,7 +279,7 @@ public class Player : Character
 
     public override void Dieth()
     {
-        State = AnimatorStates.Dieth;
+        CurrentState = AnimatorStates.Dieth;
     }
 
 
@@ -282,18 +301,18 @@ public class Player : Character
         if (Energy < attackEnergy) return;
         Energy -= attackEnergy;
 
-        if (State == AnimatorStates.Idle)
+        if (CurrentState == AnimatorStates.Idle)
         {
             StopMove();
-            State = AnimatorStates.Combo;
+            CurrentState = AnimatorStates.Combo;
             _comboAttackController.Attack();
             return;
         }
-        if (State == AnimatorStates.Combo)
+        if (CurrentState == AnimatorStates.Combo)
         {
             _comboAttackController.NextAttack();
         }
-        if (State == AnimatorStates.Jumping)
+        if (CurrentState == AnimatorStates.Jumping)
         {
             _animator.SetTrigger("attackInJump");
         }
@@ -306,9 +325,9 @@ public class Player : Character
         Energy -= throwEnergy;
         DaggerCount--;
 
-        if (!(State == AnimatorStates.Idle || State == AnimatorStates.Jumping)) return;
+        if (!(CurrentState == AnimatorStates.Idle || CurrentState == AnimatorStates.Jumping)) return;
 
-        _shootController.Throw(LookDirection, 1 + (State == AnimatorStates.Jumping ? Mathf.Abs(_horizonatalVelocity.x) : 0f));
+        _shootController.Throw(LookDirection, 1 + (CurrentState == AnimatorStates.Jumping ? Mathf.Abs(_horizonatalVelocity.x) : 0f));
     }
 
     private void SpriteFlip(Vector2 direction)
@@ -328,7 +347,7 @@ public class Player : Character
 
     private void ActionAfterComboAttack()
     {
-        State = AnimatorStates.Idle;
+        CurrentState = AnimatorStates.Idle;
         ResumeMove();
     }
 
@@ -338,5 +357,23 @@ public class Player : Character
         DaggerCount = DaggerCount;
         Energy = Energy;
         HP = HP;
+    }
+
+    private IEnumerator SlidingRountine()
+    {
+        yield return new WaitForSeconds(minSlidingTime);
+
+        while (CurrentState == AnimatorStates.Sliding)
+        {
+            Vector2 origin = new(transform.position.x, _collider.bounds.min.y);
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(origin, Vector2.up, _height)
+                .Where(e => e.collider.tag != this.tag)
+                .ToArray();
+
+            if (hits.Length == 0) CurrentState = AnimatorStates.Idle;
+
+            yield return new WaitForSeconds(Time.fixedDeltaTime);
+        }
     }
 }
