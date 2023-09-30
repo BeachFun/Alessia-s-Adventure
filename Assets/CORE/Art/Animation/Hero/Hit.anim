@@ -84,7 +84,7 @@ AnimationClip:
     intParameter: 1
     messageOptions: 0
   - time: 0.083333336
-    functionName: set_State
+    functionName: set_CurrentState
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
