@@ -198,6 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 100
+  maxHP: 100
   def: 3
   daggerCount: 5
   maxEnergy: 100
@@ -206,6 +207,7 @@ MonoBehaviour:
   attackEnergy: 10
   throwEnergy: 10
   minSlidingTime: 0.6
+  slidingSpeed: 8
 --- !u!114 &5691638910239800582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  moveSpeed: 200
+  moveSpeed: 260
   jumpForce: 6
   fallSpeedMultiplier: -0.2
   checkRadius: 0.3
