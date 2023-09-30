@@ -6,6 +6,7 @@ public abstract class Character : MonoBehaviour
 {
     [Header("Characteristics")]
     [SerializeField] private protected int hp = 5;
+    [SerializeField] private protected int maxHP = 5;
     [SerializeField] private protected int def = 1;
 
     private protected SpriteRenderer _spriteRenderer;

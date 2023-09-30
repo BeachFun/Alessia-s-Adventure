@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.537, y: -0.163, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 30
+  maxHP: 30
   def: 0
 --- !u!114 &3149665745777619264
 MonoBehaviour:
@@ -214,12 +215,12 @@ MonoBehaviour:
   timeBetweenAttacks: 5
   enemyTag: Player
   attackData:
-  - distance: 1.28
-    zoneSize: {x: 0.64, y: 1.28}
+  - distance: 1.536
+    zoneSize: {x: 0.768, y: 1.536}
     id: 0
     nameAnimatorProperty: right_attack
-  - distance: -1.28
-    zoneSize: {x: 0.64, y: 1.28}
+  - distance: -1.536
+    zoneSize: {x: 0.768, y: 1.536}
     id: 0
     nameAnimatorProperty: left_attack
   isAttackAllOnZone: 0

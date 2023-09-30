@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 20
+  maxHP: 20
   def: 0
   playerTag: Player
 --- !u!114 &3057417320484904109

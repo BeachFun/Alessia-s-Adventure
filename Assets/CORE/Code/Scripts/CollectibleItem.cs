@@ -6,9 +6,9 @@ public class CollectibleItem : MonoBehaviour
 {
     [SerializeField] private string itemName;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        LevelManagers.Inventory.AddItem(itemName);
+        Messenger<string, int>.Broadcast(GameEvents.ITEM_COLLECTED, itemName, 1);
         Destroy(this.gameObject);
     }
 }

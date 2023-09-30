@@ -13,6 +13,9 @@
     public static string GAME_INDICATORS_STARTED { get; private set; } = "GAME_INDICATORS_STARTED";
 
 
+    public static string ITEM_COLLECTED { get; private set; } = "ITEM_COLLECTED";
+
+
     public static string DIAMOND_CHANGED { get; private set; } = "DIAMOND_CHANGED";
     public static string PLAYER_HEALTH_CHANGED { get; private set; } = "PLAYER_HEALTH_CHANGED";
     public static string PLAYER_ENERGY_CHANGED { get; private set; } = "PLAYER_ENERGY_CHANGED";

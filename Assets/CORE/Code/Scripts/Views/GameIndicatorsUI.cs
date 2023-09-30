@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -21,9 +20,9 @@ public class GameIndicatorsUI : MonoBehaviour
 
     private void Start()
     {
-        Messenger<int>.AddListener(GameEvents.PLAYER_HEALTH_CHANGED, UpdateHealthIndicator);
         Messenger<int>.AddListener(GameEvents.PLAYER_DAGGER_CHANGED, UpdateDaggerCounter);
         Messenger<int>.AddListener(GameEvents.DIAMOND_CHANGED, UpdateDiamondCounter);
+        Messenger<int, int>.AddListener(GameEvents.PLAYER_HEALTH_CHANGED, UpdateHealthIndicator);
         Messenger<float, float>.AddListener(GameEvents.PLAYER_ENERGY_CHANGED, UpdateEnergyIndicator);
 
         Messenger.Broadcast(GameEvents.GAME_INDICATORS_STARTED);
@@ -31,15 +30,15 @@ public class GameIndicatorsUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        Messenger<int>.RemoveListener(GameEvents.PLAYER_HEALTH_CHANGED, UpdateHealthIndicator);
         Messenger<int>.RemoveListener(GameEvents.PLAYER_DAGGER_CHANGED, UpdateDaggerCounter);
         Messenger<int>.RemoveListener(GameEvents.DIAMOND_CHANGED, UpdateDiamondCounter);
+        Messenger<int, int>.RemoveListener(GameEvents.PLAYER_HEALTH_CHANGED, UpdateHealthIndicator);
         Messenger<float, float>.RemoveListener(GameEvents.PLAYER_ENERGY_CHANGED, UpdateEnergyIndicator);
     }
 
-    private void UpdateHealthIndicator(int hp)
+    private void UpdateHealthIndicator(int hp, int maxHp)
     {
-        int sectorSize = hp / imageHearts.Length;
+        int sectorSize = maxHp / imageHearts.Length;
 
         imageHearts.ToList().ForEach(e => e.sprite = emptyHeart);
 
