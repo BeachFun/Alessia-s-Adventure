@@ -10,19 +10,6 @@ using UnityEngine;
 
 public class Player : Character
 {
-    private enum AnimatorStates
-    {
-        Idle = 0,
-        JumpReady = 10,
-        Jumping = 11,
-        Combo = 20,
-        Sliding = 30,
-        Grab = 40,
-        Dieth = 50
-    }
-    private enum InputMode { On, Off }
-
-
     [SerializeField] private int daggerCount = 5;
     [Header("Energy System")]
     [SerializeField] private float maxEnergy = 100;
@@ -54,13 +41,13 @@ public class Player : Character
         private set
         {
             hp = value;
-            Messenger<int>.Broadcast(GameEvents.PLAYER_HEALTH_CHANGED, value);
+            Messenger<int, int>.Broadcast(GameEvents.PLAYER_HEALTH_CHANGED, value, MaxHP);
         }
     }
     public int DaggerCount
     {
         get => daggerCount;
-        private set
+        set
         {
             daggerCount = value;
             Messenger<int>.Broadcast(GameEvents.PLAYER_DAGGER_CHANGED, value);
@@ -75,10 +62,8 @@ public class Player : Character
             Messenger<float, float>.Broadcast(GameEvents.PLAYER_ENERGY_CHANGED, value, MaxEnergy);
         }
     }
-    public float MaxEnergy
-    {
-        get => maxEnergy;
-    }
+    public float MaxEnergy { get => maxEnergy; }
+    public int MaxHP { get => maxHP; }
 
     private AnimatorStates CurrentState
     {
@@ -265,16 +250,21 @@ public class Player : Character
     {
         if (hp - (attackDamage - def) <= 0)
         {
-            hp = 0;
-            CurrentState = AnimatorStates.Dieth;
+            HP = 0;
+            Dieth();
         }
         else
         {
-            hp = hp - (attackDamage - def);
+            HP = HP - (attackDamage - def);
             _animator.SetTrigger("hit");
         }
 
-        Debug.Log(hp);
+        Debug.Log(HP);
+    }
+
+    public void Heal(int hp)
+    {
+        HP = hp + HP > MaxHP ? MaxHP : HP + hp;
     }
 
     public override void Dieth()
@@ -376,4 +366,17 @@ public class Player : Character
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
     }
+
+
+    private enum AnimatorStates
+    {
+        Idle = 0,
+        JumpReady = 10,
+        Jumping = 11,
+        Combo = 20,
+        Sliding = 30,
+        Grab = 40,
+        Dieth = 50
+    }
+    private enum InputMode { On, Off }
 }
