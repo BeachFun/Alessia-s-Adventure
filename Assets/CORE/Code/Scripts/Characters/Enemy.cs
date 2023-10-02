@@ -41,7 +41,7 @@ public class Enemy : Character
     {
         hp = damage > def ? hp - (damage - def) : hp;
 
-        if (hp <= 0) Dieth();
+        if (hp <= 0) Death();
         else _animator.SetTrigger("hit");
     }
 
@@ -50,6 +50,13 @@ public class Enemy : Character
         base.Flip();
 
         _attackSystem.IsRotated = _spriteRenderer.flipX;
+    }
+
+    public override void Death()
+    {
+        base.Death();
+
+        Messenger.Broadcast(GameEvents.ENEMY_KILLED);
     }
 }
 

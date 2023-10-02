@@ -5,7 +5,10 @@
 
 
     public static string LEVEL_IS_SELECTED_FOR_STARTED { get; private set; } = "LEVEL_IS_SELECTED_FOR_STARTED";
-
+    public static string LEVEL_END_SCREEN_OPENED { get; private set; } = "LEVEL_END_SCREEN_OPENED";
+    public static string LEVEL_COMPLETE { get; private set; } = "LEVEL_COMPLETE";
+    public static string LEVEL_FAILED { get; private set; } = "LEVEL_FAILED";
+    public static string LEVEL_EXIT { get; private set; } = "LEVEL_EXIT";
 
     public static string ON_PAUSE_STATE_CHANGED { get; private set; } = "ON_PAUSE_STATE_CHANGED";
 
@@ -20,4 +23,7 @@
     public static string PLAYER_HEALTH_CHANGED { get; private set; } = "PLAYER_HEALTH_CHANGED";
     public static string PLAYER_ENERGY_CHANGED { get; private set; } = "PLAYER_ENERGY_CHANGED";
     public static string PLAYER_DAGGER_CHANGED { get; private set; } = "PLAYER_DAGGER_CHANGED";
+
+
+    public static string ENEMY_KILLED { get; private set; } = "ENEMY_KILLED";
 }

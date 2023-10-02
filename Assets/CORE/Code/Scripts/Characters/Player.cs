@@ -251,7 +251,7 @@ public class Player : Character
         if (hp - (attackDamage - def) <= 0)
         {
             HP = 0;
-            Dieth();
+            Death();
         }
         else
         {
@@ -267,9 +267,12 @@ public class Player : Character
         HP = hp + HP > MaxHP ? MaxHP : HP + hp;
     }
 
-    public override void Dieth()
+    public override void Death()
     {
+        _animator.SetFloat("speed", 0f);
         CurrentState = AnimatorStates.Dieth;
+
+        Messenger.Broadcast(GameEvents.LEVEL_FAILED);
     }
 
 
@@ -358,10 +361,16 @@ public class Player : Character
             Vector2 origin = new(transform.position.x, _collider.bounds.min.y);
 
             RaycastHit2D[] hits = Physics2D.RaycastAll(origin, Vector2.up, _height)
-                .Where(e => e.collider.tag != this.tag)
+                .Where(e => e.collider.tag != this.tag || e.collider.tag != "MainCamera")
                 .ToArray();
 
             if (hits.Length == 0) CurrentState = AnimatorStates.Idle;
+
+            hits = Physics2D.RaycastAll(origin, LookDirection, _height)
+                .Where(e => e.collider.tag != this.tag || e.collider.tag != "MainCamera")
+                .ToArray();
+
+            if (hits.Length != 0) CurrentState = AnimatorStates.Idle;
 
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
