@@ -221,8 +221,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  moveSpeed: 260
-  jumpForce: 6
+  moveSpeed: 250
+  jumpForce: 5
   fallSpeedMultiplier: -0.2
   checkRadius: 0.3
   layerMask:
@@ -230,7 +230,7 @@ MonoBehaviour:
     m_Bits: 64
   checkerOffset: {x: 0, y: -0.444, z: 0}
   minJumpPower: 1
-  maxJumpPower: 1.5
+  maxJumpPower: 1.7
   powerStep: 0.1
 --- !u!114 &1579035728863751380
 MonoBehaviour:
