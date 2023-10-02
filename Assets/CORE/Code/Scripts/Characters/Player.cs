@@ -361,10 +361,16 @@ public class Player : Character
             Vector2 origin = new(transform.position.x, _collider.bounds.min.y);
 
             RaycastHit2D[] hits = Physics2D.RaycastAll(origin, Vector2.up, _height)
-                .Where(e => e.collider.tag != this.tag)
+                .Where(e => e.collider.tag != this.tag || e.collider.tag != "MainCamera")
                 .ToArray();
 
             if (hits.Length == 0) CurrentState = AnimatorStates.Idle;
+
+            hits = Physics2D.RaycastAll(origin, LookDirection, _height)
+                .Where(e => e.collider.tag != this.tag || e.collider.tag != "MainCamera")
+                .ToArray();
+
+            if (hits.Length != 0) CurrentState = AnimatorStates.Idle;
 
             yield return new WaitForSeconds(Time.fixedDeltaTime);
         }
