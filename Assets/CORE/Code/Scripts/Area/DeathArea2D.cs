@@ -6,7 +6,7 @@ public class DeathArea2D : Area2D
     {
         if (collision != null && collision.transform.tag == "Player")
         {
-            collision.transform.GetComponent<Character>().Dieth();
+            collision.transform.GetComponent<Character>().Death();
         }
     }
 }
