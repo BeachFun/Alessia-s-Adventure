@@ -6,7 +6,7 @@ public class FinishArea2D : Area2D
     {
         if (collision is not null && collision.transform.tag == "Player")
         {
-            Messenger.Broadcast(GameEvents.LEVEL_PASSED);
+            Messenger.Broadcast(GameEvents.LEVEL_COMPLETE);
         }
     }
 }
