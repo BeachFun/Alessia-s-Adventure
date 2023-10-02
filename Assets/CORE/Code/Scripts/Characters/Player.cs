@@ -251,7 +251,7 @@ public class Player : Character
         if (hp - (attackDamage - def) <= 0)
         {
             HP = 0;
-            Dieth();
+            Death();
         }
         else
         {
@@ -267,9 +267,12 @@ public class Player : Character
         HP = hp + HP > MaxHP ? MaxHP : HP + hp;
     }
 
-    public override void Dieth()
+    public override void Death()
     {
+        _animator.SetFloat("speed", 0f);
         CurrentState = AnimatorStates.Dieth;
+
+        Messenger.Broadcast(GameEvents.LEVEL_FAILED);
     }
 
 

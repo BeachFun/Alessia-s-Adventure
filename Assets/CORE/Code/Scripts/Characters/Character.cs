@@ -20,7 +20,7 @@ public abstract class Character : MonoBehaviour
 
     public abstract void Hurt(int damage);
 
-    public virtual void Dieth()
+    public virtual void Death()
     {
         Destroy(this.gameObject);
     }
