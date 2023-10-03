@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 1579035728863751380}
   - component: {fileID: 2643819762920906215}
   - component: {fileID: 7415172353201033157}
+  - component: {fileID: 5733250888459917041}
   m_Layer: 0
   m_Name: Heroine 1
   m_TagString: Player
@@ -308,3 +309,15 @@ MonoBehaviour:
   shootSpeed: 40
   shootAnimationName: throwAttack
   projectile: {fileID: 1455689628942184488, guid: bd224162c2947c642b12910758efd5d5, type: 3}
+--- !u!114 &5733250888459917041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837770208990168602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664425f838d74784297fd2a6735a7579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
