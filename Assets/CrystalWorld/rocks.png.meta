@@ -3,7 +3,7 @@ guid: 9422cf146bf65ee4ab42df4232b29c0c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -25,7 +25,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -65,6 +65,7 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 1
   swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -76,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -88,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -100,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -112,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -124,6 +129,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -770,37 +776,37 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      rocks_24: -530121270
-      rocks_28: 571896416
       rocks_0: 1776862943
-      rocks_6: -524510153
-      rocks_14: -1763298406
-      rocks_18: -1710092831
-      rocks_22: 2134199124
-      rocks_2: 1901292132
-      rocks_23: 1083953268
-      rocks_8: 153372776
-      rocks_19: 824957465
-      rocks_21: 1595812101
+      rocks_1: 114063633
+      rocks_10: 1250890430
+      rocks_11: -1536832475
       rocks_12: -522072247
-      rocks_9: -1375548480
+      rocks_13: -300356082
+      rocks_14: -1763298406
+      rocks_15: -1361442914
+      rocks_16: -318496816
+      rocks_17: -15485423
+      rocks_18: -1710092831
+      rocks_19: 824957465
+      rocks_2: 1901292132
+      rocks_20: 330838392
+      rocks_21: 1595812101
+      rocks_22: 2134199124
+      rocks_23: 1083953268
+      rocks_24: -530121270
+      rocks_25: -1801621156
+      rocks_26: -1062861622
+      rocks_27: 2050709464
+      rocks_28: 571896416
+      rocks_29: 1644456572
+      rocks_3: 1553180682
       rocks_4: 615554273
       rocks_5: -115041381
-      rocks_16: -318496816
-      rocks_20: 330838392
-      rocks_13: -300356082
-      rocks_15: -1361442914
-      rocks_26: -1062861622
-      rocks_10: 1250890430
-      rocks_27: 2050709464
-      rocks_29: 1644456572
-      rocks_1: 114063633
-      rocks_3: 1553180682
+      rocks_6: -524510153
       rocks_7: -1294625339
-      rocks_25: -1801621156
-      rocks_17: -15485423
-      rocks_11: -1536832475
-  spritePackingTag: 
+      rocks_8: 153372776
+      rocks_9: -1375548480
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
   assetBundleName: 

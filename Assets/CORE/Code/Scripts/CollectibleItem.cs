@@ -8,7 +8,10 @@ public class CollectibleItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Messenger<string, int>.Broadcast(GameEvents.ITEM_COLLECTED, itemName, 1);
-        Destroy(this.gameObject);
+        if (collision is not null && collision.tag == "Player")
+        {
+            Messenger<string, int>.Broadcast(GameEvents.ITEM_COLLECTED, itemName, 1);
+            Destroy(this.gameObject);
+        }
     }
 }
