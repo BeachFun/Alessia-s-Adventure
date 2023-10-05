@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4861869382771193465}
   - component: {fileID: 580616649688474637}
   m_Layer: 6
-  m_Name: Movement Platform
+  m_Name: Move Platform 2
   m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.71, y: 1.61, z: -0.23763655}
-  m_LocalScale: {x: 3, y: 4, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4349dc9bba3bef9408ce48e69ff202df, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 92394be00c671b94485945ce72b64d6c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,18 +118,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.000016570091, y: 0.0003310889}
+  m_Offset: {x: -0.00008264184, y: -0.00005529076}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.16, y: 0.25}
+    oldSize: {x: 0.96, y: 0.21}
     newSize: {x: 1.16, y: 0.25}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1623962, y: 0.2527282}
+  m_Size: {x: 0.9613326, y: 0.21067871}
   m_EdgeRadius: 0
 --- !u!114 &580616649688474637
 MonoBehaviour:
