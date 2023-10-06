@@ -5,11 +5,11 @@ public class HeroMovementController2D : MovementController2D, IDifferentJumpable
     [Header("Jump Settings")]
     [SerializeField] private protected float minJumpPower = 1f;
     [SerializeField] private protected float maxJumpPower = 1.5f;
-    [SerializeField] private protected float powerStep = 0.05f;
+    [SerializeField] private protected float powerStep = 0.035f;
 
     private bool _isJumpPowerChanging;
     private bool _isJumpPowerIncreasing;
-    private float _jumpPower;
+    private float _jumpPower = 1f;
 
 
     public float JumpPower

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7785801701674939791}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 3057417320484904109}
   - component: {fileID: 4543649943513467764}
   - component: {fileID: 3844736588761221266}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Morlock
   m_TagString: Enemy
   m_Icon: {fileID: 0}
