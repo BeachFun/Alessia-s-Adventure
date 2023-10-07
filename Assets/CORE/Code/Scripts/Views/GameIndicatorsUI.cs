@@ -18,7 +18,7 @@ public class GameIndicatorsUI : MonoBehaviour
 
     private bool lastEnergyIsMax;
 
-    private void Start()
+    private void Awake()
     {
         Messenger<int>.AddListener(GameEvents.PLAYER_DAGGER_CHANGED, UpdateDaggerCounter);
         Messenger<int>.AddListener(GameEvents.DIAMOND_CHANGED, UpdateDiamondCounter);
