@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(ComboAttackSystem2D))]
 [RequireComponent(typeof(HeroMovementController2D))]
 [RequireComponent(typeof(ShootSystem2D))]
+[RequireComponent(typeof(PlayerInputController))]
 
 public class Player : Character
 {
@@ -33,6 +34,7 @@ public class Player : Character
     private protected ComboAttackSystem2D _comboAttackController;
     private protected ShootSystem2D _shootController;
     private protected HeroMovementController2D _movementController;
+    private protected PlayerInputController _inputController;
 
 
     public int HP
@@ -108,6 +110,7 @@ public class Player : Character
         _comboAttackController = GetComponent<ComboAttackSystem2D>();
         _shootController = GetComponent<ShootSystem2D>();
         _movementController = GetComponent<HeroMovementController2D>();
+        _inputController = GetComponent<PlayerInputController>();
 
         _height = _collider.bounds.max.y - _collider.bounds.min.y;
 
@@ -133,27 +136,27 @@ public class Player : Character
         {
             MovementInputHandler();
 
-            if (Input.GetKeyDown(KeyCode.LeftShift) && Mathf.Abs(_horizonatalVelocity.x) > .3f)
+            if (_inputController.SlideInput && Mathf.Abs(_horizonatalVelocity.x) > .3f)
             {
                 StartCoroutine(SlidingRountine());
                 CurrentState = AnimatorStates.Sliding;
                 return;
             }
 
-            if (Input.GetKey(KeyCode.Space) && _movementController.IsGrounded)
+            if (_inputController.JumpInput && _movementController.IsGrounded)
             {
                 StopMove();
                 CurrentState = AnimatorStates.JumpReady;
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (_inputController.AttackInput)
             {
                 Attack();
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (_inputController.ThrowInput)
             {
                 StopMove();
                 ThrowAttack();
@@ -170,13 +173,13 @@ public class Player : Character
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (_inputController.AttackInput)
             {
                 Attack();
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (_inputController.ThrowInput)
             {
                 ThrowAttack();
             }
@@ -184,7 +187,7 @@ public class Player : Character
 
         if (CurrentState == AnimatorStates.Combo)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (_inputController.AttackInput)
             {
                 Attack();
             }
@@ -209,7 +212,7 @@ public class Player : Character
         {
             MovementInputHandler();
 
-            if (!Input.GetKey(KeyCode.Space) || !_movementController.IsGrounded)
+            if (!_inputController.JumpInput || !_movementController.IsGrounded)
             {
                 CurrentState = AnimatorStates.Jumping;
                 _movementController.Pause = false;
@@ -229,7 +232,7 @@ public class Player : Character
 
     private void MovementInputHandler()
     {
-        _horizonatalVelocity.x = Input.GetAxisRaw("Horizontal");
+        _horizonatalVelocity.x = _inputController.HorizontalInput;
 
         if (_horizonatalVelocity.x == 0)
         {

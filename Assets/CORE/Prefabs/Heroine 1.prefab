@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4012459808480955632}
   m_Layer: 7
   m_Name: left edge collider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,10 +67,10 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.38, y: 0.2}
-  - {x: -0.45, y: 0.1}
-  - {x: -0.45, y: -0.2}
-  - {x: -0.38, y: -0.3}
+  - {x: -0.38, y: 0.3}
+  - {x: -0.45, y: 0.2}
+  - {x: -0.45, y: -0.3}
+  - {x: -0.38, y: -0.4}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 2643819762920906215}
   - component: {fileID: 7415172353201033157}
   - component: {fileID: 5733250888459917041}
+  - component: {fileID: 4007188603988223465}
   m_Layer: 7
   m_Name: Heroine 1
   m_TagString: Player
@@ -398,6 +399,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664425f838d74784297fd2a6735a7579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4007188603988223465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837770208990168602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8afabddd8ea2c194988dfe0f15e3d85b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8674747802786306378
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,7 +423,7 @@ GameObject:
   - component: {fileID: 9110491634916106406}
   m_Layer: 7
   m_Name: right edge collider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -465,10 +478,10 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 0.38, y: 0.2}
-  - {x: 0.45, y: 0.1}
-  - {x: 0.45, y: -0.2}
-  - {x: 0.38, y: -0.3}
+  - {x: 0.38, y: 0.3}
+  - {x: 0.45, y: 0.2}
+  - {x: 0.45, y: -0.3}
+  - {x: 0.38, y: -0.4}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0

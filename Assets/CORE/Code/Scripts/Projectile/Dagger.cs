@@ -23,6 +23,7 @@ public class Dagger : Projectile2D
 
         if (!tagsToSkipOnTriggerEnter.Contains(collision.tag))
         {
+            Debug.Log($"Dagger destroy {collision.tag}");
             StopAllCoroutines();
             Destroy(this.gameObject);
         }
