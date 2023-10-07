@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(GameProgressManager))]
 
-public class GameManagers : Managers
+public class GameManagers : ManagersInitializator
 {
 	public static GameProgressManager GameProgress { get; private set; }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Управляющий/контроллер всеми диспетчерами.
 /// </summary>
-public abstract class Managers : MonoBehaviour
+public abstract class ManagersInitializator : MonoBehaviour
 {
     public ManagerStatus Status { get; private protected set; }
 
