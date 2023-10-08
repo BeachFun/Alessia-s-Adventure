@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Projectile
   - Platform
+  - Area
+  - Collectable
   layers:
   - Default
   - TransparentFX
@@ -15,8 +17,8 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
+  - PlayerLayer
+  - EnemyLayer
   - 
   - 
   - 

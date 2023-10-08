@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -7,6 +7,8 @@ using UnityEngine;
 [System.Serializable]
 public class Dagger : Projectile2D
 {
+    private string[] tagsToSkipOnTriggerEnter = { "Player", "Area" };
+
     private void FixedUpdate()
     {
         _physic.rotation = 0;
@@ -19,8 +21,9 @@ public class Dagger : Projectile2D
             collision.gameObject.GetComponent<Enemy>().Hurt(Damage);
         }
 
-        if (collision.gameObject.tag != "Player")
+        if (!tagsToSkipOnTriggerEnter.Contains(collision.tag))
         {
+            Debug.Log($"Dagger destroy {collision.tag}");
             StopAllCoroutines();
             Destroy(this.gameObject);
         }

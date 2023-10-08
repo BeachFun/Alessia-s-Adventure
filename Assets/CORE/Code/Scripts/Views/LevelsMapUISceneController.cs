@@ -18,7 +18,7 @@ public class LevelsMapUISceneController : MonoBehaviour
     private int _currentLocation;
 
 
-    private void Start()
+    private void Awake()
     {
         LocationChangeHandler();
 

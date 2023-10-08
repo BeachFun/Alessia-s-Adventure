@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class LevelEndingWindowUI : MonoBehaviour
+public class LevelEndingScreenUI : MonoBehaviour
 {
     [Header("Text labels")]
     [SerializeField] private TMP_Text textLevelName;
@@ -37,7 +37,7 @@ public class LevelEndingWindowUI : MonoBehaviour
     private LevelData _data;
 
 
-    private void Start()
+    private void Awake()
     {
         Messenger<bool, LevelData, (int, int, int)>.AddListener(GameEvents.LEVEL_END_SCREEN_OPENED, UpdateData);
 

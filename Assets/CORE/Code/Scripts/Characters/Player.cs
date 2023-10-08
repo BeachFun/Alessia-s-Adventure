@@ -7,8 +7,9 @@ using UnityEngine;
 [RequireComponent(typeof(ComboAttackSystem2D))]
 [RequireComponent(typeof(HeroMovementController2D))]
 [RequireComponent(typeof(ShootSystem2D))]
+[RequireComponent(typeof(PlayerInputController))]
 
-public class Player : Character
+public partial class Player : Character
 {
     [SerializeField] private int daggerCount = 5;
     [Header("Energy System")]
@@ -33,6 +34,7 @@ public class Player : Character
     private protected ComboAttackSystem2D _comboAttackController;
     private protected ShootSystem2D _shootController;
     private protected HeroMovementController2D _movementController;
+    private protected PlayerInputController _inputController;
 
 
     public int HP
@@ -108,6 +110,7 @@ public class Player : Character
         _comboAttackController = GetComponent<ComboAttackSystem2D>();
         _shootController = GetComponent<ShootSystem2D>();
         _movementController = GetComponent<HeroMovementController2D>();
+        _inputController = GetComponent<PlayerInputController>();
 
         _height = _collider.bounds.max.y - _collider.bounds.min.y;
 
@@ -133,27 +136,27 @@ public class Player : Character
         {
             MovementInputHandler();
 
-            if (Input.GetKeyDown(KeyCode.LeftShift) && Mathf.Abs(_horizonatalVelocity.x) > .3f)
+            if (_inputController.SlideInput && Mathf.Abs(_horizonatalVelocity.x) > .3f)
             {
                 StartCoroutine(SlidingRountine());
                 CurrentState = AnimatorStates.Sliding;
                 return;
             }
 
-            if (Input.GetKey(KeyCode.Space) && _movementController.IsGrounded)
+            if (_inputController.JumpInput && _movementController.IsGrounded)
             {
                 StopMove();
                 CurrentState = AnimatorStates.JumpReady;
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (_inputController.AttackInput)
             {
                 Attack();
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (_inputController.ThrowInput)
             {
                 StopMove();
                 ThrowAttack();
@@ -170,13 +173,13 @@ public class Player : Character
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (_inputController.AttackInput)
             {
                 Attack();
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (_inputController.ThrowInput)
             {
                 ThrowAttack();
             }
@@ -184,7 +187,7 @@ public class Player : Character
 
         if (CurrentState == AnimatorStates.Combo)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse1))
+            if (_inputController.AttackInput)
             {
                 Attack();
             }
@@ -209,7 +212,7 @@ public class Player : Character
         {
             MovementInputHandler();
 
-            if (!Input.GetKey(KeyCode.Space) || !_movementController.IsGrounded)
+            if (!_inputController.JumpInput || !_movementController.IsGrounded)
             {
                 CurrentState = AnimatorStates.Jumping;
                 _movementController.Pause = false;
@@ -229,54 +232,13 @@ public class Player : Character
 
     private void MovementInputHandler()
     {
-        _horizonatalVelocity.x = Input.GetAxisRaw("Horizontal");
+        _horizonatalVelocity.x = _inputController.HorizontalInput;
 
-        if (_horizonatalVelocity.x == 0)
-        {
-            _movementController.StopMovement(SnapAxis2D.X);
-        }
-        else
-        {
-            _movementController.Move(_horizonatalVelocity * Time.fixedDeltaTime);
-        }
-
-        _animator.SetFloat("speed", Mathf.Abs(_horizonatalVelocity.x));
-
-        SpriteFlip(_horizonatalVelocity);
+        Move(_horizonatalVelocity);
     }
 
 
-    public override void Hurt(int attackDamage)
-    {
-        if (hp - (attackDamage - def) <= 0)
-        {
-            HP = 0;
-            Death();
-        }
-        else
-        {
-            HP = HP - (attackDamage - def);
-            _animator.SetTrigger("hit");
-        }
-
-        Debug.Log(HP);
-    }
-
-    public void Heal(int hp)
-    {
-        HP = hp + HP > MaxHP ? MaxHP : HP + hp;
-    }
-
-    public override void Death()
-    {
-        _animator.SetFloat("speed", 0f);
-        CurrentState = AnimatorStates.Dieth;
-
-        Messenger.Broadcast(GameEvents.LEVEL_FAILED);
-    }
-
-
-    public void StopMove()
+    private void StopMove()
     {
         _animator.SetFloat("speed", 0f);
 
@@ -284,44 +246,11 @@ public class Player : Character
         _movementController.StopMovement(SnapAxis2D.X);
     }
 
-    public void ResumeMove()
+    private void ResumeMove()
     {
         _movementController.Pause = false;
     }
 
-    public override void Attack()
-    {
-        if (Energy < attackEnergy) return;
-        Energy -= attackEnergy;
-
-        if (CurrentState == AnimatorStates.Idle)
-        {
-            StopMove();
-            CurrentState = AnimatorStates.Combo;
-            _comboAttackController.Attack();
-            return;
-        }
-        if (CurrentState == AnimatorStates.Combo)
-        {
-            _comboAttackController.NextAttack();
-        }
-        if (CurrentState == AnimatorStates.Jumping)
-        {
-            _animator.SetTrigger("attackInJump");
-        }
-    }
-
-    // Бросает меч в направлении куда смотрит
-    public void ThrowAttack()
-    {
-        if (DaggerCount == 0 || Energy < throwEnergy) return;
-        Energy -= throwEnergy;
-        DaggerCount--;
-
-        if (!(CurrentState == AnimatorStates.Idle || CurrentState == AnimatorStates.Jumping)) return;
-
-        _shootController.Throw(LookDirection, 1 + (CurrentState == AnimatorStates.Jumping ? Mathf.Abs(_horizonatalVelocity.x) : 0f));
-    }
 
     private void SpriteFlip(Vector2 direction)
     {
@@ -388,4 +317,86 @@ public class Player : Character
         Dieth = 50
     }
     private enum InputMode { On, Off }
+}
+
+public partial class Player
+{
+    public void Move(Vector2 horizonatalVelocity)
+    {
+        if (horizonatalVelocity.x == 0)
+        {
+            _movementController.StopMovement(SnapAxis2D.X);
+        }
+        else
+        {
+            _movementController.Move(horizonatalVelocity * Time.fixedDeltaTime);
+        }
+
+        _animator.SetFloat("speed", Mathf.Abs(horizonatalVelocity.x));
+
+        SpriteFlip(horizonatalVelocity);
+    }
+
+    public override void Attack()
+    {
+        if (Energy < attackEnergy) return;
+        Energy -= attackEnergy;
+
+        if (CurrentState == AnimatorStates.Idle)
+        {
+            StopMove();
+            CurrentState = AnimatorStates.Combo;
+            _comboAttackController.Attack();
+            return;
+        }
+        if (CurrentState == AnimatorStates.Combo)
+        {
+            _comboAttackController.NextAttack();
+        }
+        if (CurrentState == AnimatorStates.Jumping)
+        {
+            _animator.SetTrigger("attackInJump");
+        }
+    }
+
+    public void ThrowAttack()
+    {
+        // Бросает меч в направлении куда смотрит
+        if (DaggerCount == 0 || Energy < throwEnergy) return;
+        Energy -= throwEnergy;
+        DaggerCount--;
+
+        if (!(CurrentState == AnimatorStates.Idle || CurrentState == AnimatorStates.Jumping)) return;
+
+        _shootController.Throw(LookDirection, 1 + (CurrentState == AnimatorStates.Jumping ? Mathf.Abs(_horizonatalVelocity.x) : 0f));
+    }
+
+    public override void Hurt(int attackDamage)
+    {
+        if (hp - (attackDamage - def) <= 0)
+        {
+            HP = 0;
+            Death();
+        }
+        else
+        {
+            HP = HP - (attackDamage - def);
+            _animator.SetTrigger("hit");
+        }
+
+        Debug.Log(HP);
+    }
+
+    public void Heal(int hp)
+    {
+        HP = hp + HP > MaxHP ? MaxHP : HP + hp;
+    }
+
+    public override void Death()
+    {
+        _animator.SetFloat("speed", 0f);
+        CurrentState = AnimatorStates.Dieth;
+
+        Messenger.Broadcast(GameEvents.LEVEL_FAILED);
+    }
 }

@@ -184,39 +184,39 @@ MonoBehaviour:
   - levelIndex: 0
     levelName: Level 1-1
     timeAccess: 00:02:00
-    enemiesIntoLevel: 5
-    maxDiamonds: 52
-  - levelIndex: 0
+    enemiesIntoLevel: 1
+    maxDiamonds: 28
+  - levelIndex: 1
     levelName: Level 1-2
-    timeAccess: 
-    enemiesIntoLevel: 1
-    maxDiamonds: 0
-  - levelIndex: 0
+    timeAccess: 00:05:00
+    enemiesIntoLevel: 7
+    maxDiamonds: 65
+  - levelIndex: 2
     levelName: Level 1-3
-    timeAccess: 
-    enemiesIntoLevel: 1
-    maxDiamonds: 0
-  - levelIndex: 0
+    timeAccess: 00:05:00
+    enemiesIntoLevel: 14
+    maxDiamonds: 87
+  - levelIndex: 3
     levelName: Level 1-4
-    timeAccess: 
-    enemiesIntoLevel: 1
-    maxDiamonds: 0
-  - levelIndex: 0
+    timeAccess: 00:06:30
+    enemiesIntoLevel: 13
+    maxDiamonds: 70
+  - levelIndex: 4
     levelName: Level 1-5
-    timeAccess: 
-    enemiesIntoLevel: 1
-    maxDiamonds: 0
-  - levelIndex: 0
+    timeAccess: 00:03:00
+    enemiesIntoLevel: 22
+    maxDiamonds: 105
+  - levelIndex: 5
     levelName: Level 2-1
     timeAccess: 
     enemiesIntoLevel: 1
     maxDiamonds: 0
-  - levelIndex: 0
+  - levelIndex: 6
     levelName: Level 2-2
     timeAccess: 
     enemiesIntoLevel: 1
     maxDiamonds: 0
-  - levelIndex: 0
+  - levelIndex: 7
     levelName: Level 2-3
     timeAccess: 
     enemiesIntoLevel: 1

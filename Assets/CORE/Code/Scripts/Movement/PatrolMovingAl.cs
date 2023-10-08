@@ -21,6 +21,7 @@ public class PatrolMovingAl : MovementController2D
     private protected Vector2 _destination;
     private protected SpriteRenderer _spriteRenderer;
 
+    private readonly string[] _tagsToSkip = { "Area", "Projectile", "Player", "Collectable" };
 
     public bool IsRotating
     {
@@ -48,7 +49,7 @@ public class PatrolMovingAl : MovementController2D
             if (isAvoidObstacles)
             {
                 return Physics2D.RaycastAll(currentPosition, _destination - currentPosition, obstacleDistance)
-                    .Where(e => e.transform.tag != this.tag && e.transform.tag != "Projectile" && e.transform.tag != "Player")
+                    .Where(e => e.transform.tag != this.tag && !_tagsToSkip.Contains(e.transform.tag))
                     .Count() > 0;
             }
 
@@ -159,7 +160,9 @@ public class PatrolMovingAl : MovementController2D
     {
         Vector2 bottomBodyPoint = new Vector2(this.transform.position.x, _collider.bounds.min.y);
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(bottomBodyPoint, Vector2.down).Where(e => e.transform.tag != this.tag).ToArray();
+        RaycastHit2D[] hits = Physics2D.RaycastAll(bottomBodyPoint, Vector2.down)
+            .Where(e => e.transform.tag != this.tag && !_tagsToSkip.Contains(e.transform.tag))
+            .ToArray();
 
         if (hits.Length > 0) return hits.First().point;
         else return null;
@@ -180,7 +183,9 @@ public class PatrolMovingAl : MovementController2D
             direction = new Vector2(0.3f, -1f);
         }
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(forwardBodyPoint, direction).Where(e => e.transform.tag != this.tag).ToArray();
+        RaycastHit2D[] hits = Physics2D.RaycastAll(forwardBodyPoint, direction)
+            .Where(e => e.transform.tag != this.tag && !_tagsToSkip.Contains(e.transform.tag))
+            .ToArray();
 
         if (hits.Length > 0) return hits.First().point;
         else return null;

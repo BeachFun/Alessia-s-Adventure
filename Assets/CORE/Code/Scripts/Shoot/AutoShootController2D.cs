@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Action = System.Action;
@@ -11,6 +12,7 @@ public class AutoShootController2D : ShootSystem2D
     [SerializeField] private VisionMode detectionMode = VisionMode.Known;
     [SerializeField] private Transform enemyTransform;
 
+    private string[] tagsToSkipOnDetecting = { "Enemy", "Area" };
     private VisionCone2D _vision;
 
 
@@ -40,7 +42,12 @@ public class AutoShootController2D : ShootSystem2D
         else if (this.enemyTransform != null)
         {
             _enemyDirection = (this.enemyTransform.position - this.transform.position).normalized;
-            detectedTransform = Physics2D.Raycast(transform.position + _enemyDirection * shootMinDistance, _enemyDirection, shootMaxDistance).transform;
+
+            RaycastHit2D hit = Physics2D.RaycastAll(transform.position + _enemyDirection * shootMinDistance, _enemyDirection, shootMaxDistance)
+                .Where(e => !tagsToSkipOnDetecting.Contains(e.transform.tag))
+                .FirstOrDefault();
+
+            if (hit.collider is not null) detectedTransform = hit.transform;
         }
 
         if (detectedTransform is not null && detectedTransform.tag == enemyTag)

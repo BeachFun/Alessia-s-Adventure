@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7598904175793026618}
   - component: {fileID: 3149665745777619264}
   - component: {fileID: 6892881664462942190}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Predatory Plant
   m_TagString: Enemy
   m_Icon: {fileID: 0}
