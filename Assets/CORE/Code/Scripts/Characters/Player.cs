@@ -9,7 +9,7 @@ using UnityEngine;
 [RequireComponent(typeof(ShootSystem2D))]
 [RequireComponent(typeof(PlayerInputController))]
 
-public class Player : Character
+public partial class Player : Character
 {
     [SerializeField] private int daggerCount = 5;
     [Header("Energy System")]
@@ -234,52 +234,11 @@ public class Player : Character
     {
         _horizonatalVelocity.x = _inputController.HorizontalInput;
 
-        if (_horizonatalVelocity.x == 0)
-        {
-            _movementController.StopMovement(SnapAxis2D.X);
-        }
-        else
-        {
-            _movementController.Move(_horizonatalVelocity * Time.fixedDeltaTime);
-        }
-
-        _animator.SetFloat("speed", Mathf.Abs(_horizonatalVelocity.x));
-
-        SpriteFlip(_horizonatalVelocity);
+        Move(_horizonatalVelocity);
     }
 
 
-    public override void Hurt(int attackDamage)
-    {
-        if (hp - (attackDamage - def) <= 0)
-        {
-            HP = 0;
-            Death();
-        }
-        else
-        {
-            HP = HP - (attackDamage - def);
-            _animator.SetTrigger("hit");
-        }
-
-        Debug.Log(HP);
-    }
-
-    public void Heal(int hp)
-    {
-        HP = hp + HP > MaxHP ? MaxHP : HP + hp;
-    }
-
-    public override void Death()
-    {
-        _animator.SetFloat("speed", 0f);
-        CurrentState = AnimatorStates.Dieth;
-
-        Messenger.Broadcast(GameEvents.LEVEL_FAILED);
-    }
-
-
-    public void StopMove()
+    private void StopMove()
     {
         _animator.SetFloat("speed", 0f);
 
@@ -287,44 +246,11 @@ public class Player : Character
         _movementController.StopMovement(SnapAxis2D.X);
     }
 
-    public void ResumeMove()
+    private void ResumeMove()
     {
         _movementController.Pause = false;
     }
 
-    public override void Attack()
-    {
-        if (Energy < attackEnergy) return;
-        Energy -= attackEnergy;
-
-        if (CurrentState == AnimatorStates.Idle)
-        {
-            StopMove();
-            CurrentState = AnimatorStates.Combo;
-            _comboAttackController.Attack();
-            return;
-        }
-        if (CurrentState == AnimatorStates.Combo)
-        {
-            _comboAttackController.NextAttack();
-        }
-        if (CurrentState == AnimatorStates.Jumping)
-        {
-            _animator.SetTrigger("attackInJump");
-        }
-    }
-
-    // Бросает меч в направлении куда смотрит
-    public void ThrowAttack()
-    {
-        if (DaggerCount == 0 || Energy < throwEnergy) return;
-        Energy -= throwEnergy;
-        DaggerCount--;
-
-        if (!(CurrentState == AnimatorStates.Idle || CurrentState == AnimatorStates.Jumping)) return;
-
-        _shootController.Throw(LookDirection, 1 + (CurrentState == AnimatorStates.Jumping ? Mathf.Abs(_horizonatalVelocity.x) : 0f));
-    }
 
     private void SpriteFlip(Vector2 direction)
     {
@@ -391,4 +317,86 @@ public class Player : Character
         Dieth = 50
     }
     private enum InputMode { On, Off }
+}
+
+public partial class Player
+{
+    public void Move(Vector2 horizonatalVelocity)
+    {
+        if (horizonatalVelocity.x == 0)
+        {
+            _movementController.StopMovement(SnapAxis2D.X);
+        }
+        else
+        {
+            _movementController.Move(horizonatalVelocity * Time.fixedDeltaTime);
+        }
+
+        _animator.SetFloat("speed", Mathf.Abs(horizonatalVelocity.x));
+
+        SpriteFlip(horizonatalVelocity);
+    }
+
+    public override void Attack()
+    {
+        if (Energy < attackEnergy) return;
+        Energy -= attackEnergy;
+
+        if (CurrentState == AnimatorStates.Idle)
+        {
+            StopMove();
+            CurrentState = AnimatorStates.Combo;
+            _comboAttackController.Attack();
+            return;
+        }
+        if (CurrentState == AnimatorStates.Combo)
+        {
+            _comboAttackController.NextAttack();
+        }
+        if (CurrentState == AnimatorStates.Jumping)
+        {
+            _animator.SetTrigger("attackInJump");
+        }
+    }
+
+    public void ThrowAttack()
+    {
+        // Бросает меч в направлении куда смотрит
+        if (DaggerCount == 0 || Energy < throwEnergy) return;
+        Energy -= throwEnergy;
+        DaggerCount--;
+
+        if (!(CurrentState == AnimatorStates.Idle || CurrentState == AnimatorStates.Jumping)) return;
+
+        _shootController.Throw(LookDirection, 1 + (CurrentState == AnimatorStates.Jumping ? Mathf.Abs(_horizonatalVelocity.x) : 0f));
+    }
+
+    public override void Hurt(int attackDamage)
+    {
+        if (hp - (attackDamage - def) <= 0)
+        {
+            HP = 0;
+            Death();
+        }
+        else
+        {
+            HP = HP - (attackDamage - def);
+            _animator.SetTrigger("hit");
+        }
+
+        Debug.Log(HP);
+    }
+
+    public void Heal(int hp)
+    {
+        HP = hp + HP > MaxHP ? MaxHP : HP + hp;
+    }
+
+    public override void Death()
+    {
+        _animator.SetFloat("speed", 0f);
+        CurrentState = AnimatorStates.Dieth;
+
+        Messenger.Broadcast(GameEvents.LEVEL_FAILED);
+    }
 }

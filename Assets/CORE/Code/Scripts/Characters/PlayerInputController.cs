@@ -2,39 +2,39 @@ using UnityEngine;
 
 public class PlayerInputController : MonoBehaviour
 {
-    private float horizontalInput;
-    private bool jumpInput;
-    private bool attackInput;
-    private bool throwInput;
-    private bool slideInput;
+    private float _horizontalInput;
+    private bool _jumpInput;
+    private bool _attackInput;
+    private bool _throwInput;
+    private bool _slideInput;
 
     public float HorizontalInput
     {
-        get => horizontalInput;
+        get => _horizontalInput;
     }
     public bool JumpInput
     {
-        get => jumpInput;
+        get => _jumpInput;
     }
     public bool AttackInput
     {
-        get => attackInput;
+        get => _attackInput;
     }
     public bool ThrowInput
     {
-        get => throwInput;
+        get => _throwInput;
     }
     public bool SlideInput
     {
-        get => slideInput;
+        get => _slideInput;
     }
 
     private void Update()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        jumpInput = Input.GetKey(KeyCode.Space);
-        attackInput = Input.GetKeyDown(KeyCode.Mouse1);
-        throwInput = Input.GetKeyDown(KeyCode.F);
-        slideInput = Input.GetKeyDown(KeyCode.LeftShift);
+        _horizontalInput = Input.GetAxisRaw("Horizontal");
+        _jumpInput = Input.GetKey(KeyCode.Space);
+        _attackInput = Input.GetKeyDown(KeyCode.Mouse1);
+        _throwInput = Input.GetKeyDown(KeyCode.F);
+        _slideInput = Input.GetKeyDown(KeyCode.LeftShift);
     }
 }
