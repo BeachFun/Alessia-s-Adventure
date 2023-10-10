@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class ScreenplayManager : MonoBehaviour, IGameManager
+public class ScenarioManager : MonoBehaviour, IGameManager
 {
+    [SerializeField] private Player player;
+
     public ManagerStatus Status { get; private set; }
 
 
