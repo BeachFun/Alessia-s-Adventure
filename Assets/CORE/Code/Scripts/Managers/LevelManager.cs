@@ -20,9 +20,9 @@ public class LevelManager : MonoBehaviour, IGameManager
     private int _enemyKillCounter = 0;
     private float _lastTimeScale;
     private float _levelStartTime;
-
-    private (int, int, int) _scores;
     private LevelData _levelData;
+    // При завершении
+    private (int, int, int) _scores;
 
 
     public ManagerStatus Status { get; private set; }
@@ -37,12 +37,9 @@ public class LevelManager : MonoBehaviour, IGameManager
     }
     public int EnemyKillCounter { get => _enemyKillCounter; set => _enemyKillCounter = value; }
     internal static int LevelIndex { get; set; }
+    internal string LevelName { get; private set; }
+    internal LevelData CurrentLevelData { get => _levelData; private set => _levelData = value; }
 
-
-    private void Start()
-    {
-        StartCoroutine(Startup());
-    }
 
     private void OnDestroy()
     {
@@ -61,6 +58,9 @@ public class LevelManager : MonoBehaviour, IGameManager
         Status = ManagerStatus.Initializing;
 
         yield return null;
+
+        _levelData = LevelIndex != -1 ? GameManagers.GameProgress[LevelIndex] : default(LevelData);
+        LevelName = _levelData.LevelName;
 
         Messenger.AddListener(GameEvents.ENEMY_KILLED, OnEnemyKilled);
         Messenger.AddListener(GameEvents.LEVEL_COMPLETE, OnLevelComplete);
@@ -82,10 +82,12 @@ public class LevelManager : MonoBehaviour, IGameManager
         if (itemName == ItemNames.SmallDiamond)
         {
             CollectedDiamonds++;
+            _levelData.CollectedDiamondCount = CollectedDiamonds;
         }
         if (itemName == ItemNames.BigDiamond)
         {
             CollectedDiamonds += 5;
+            _levelData.CollectedDiamondCount = CollectedDiamonds;
         }
         if (itemName == ItemNames.Heart)
         {
@@ -93,7 +95,11 @@ public class LevelManager : MonoBehaviour, IGameManager
         }
     }
 
-    private void OnEnemyKilled() => EnemyKillCounter++;
+    private void OnEnemyKilled()
+    {
+        EnemyKillCounter++;
+        _levelData.EnemiesKillCounter = EnemyKillCounter;
+    }
 
     private void OnLevelPassed(bool isCompleted)
     {
@@ -104,16 +110,12 @@ public class LevelManager : MonoBehaviour, IGameManager
         float timeElapsed = Time.time - _levelStartTime;
         Time.timeScale = _lastTimeScale;
 
-        _levelData = GameManagers.GameProgress[LevelIndex];
-
         var timeAccess = TimeSpan.Parse(_levelData.TimeAccess);
         var timeCompleted = TimeSpan.FromSeconds((double)timeElapsed);
 
         // Grouping data
         _levelData.IsComplete = isCompleted;
         _levelData.TimeComplete = timeCompleted.ToString();
-        _levelData.EnemiesKillCounter = EnemyKillCounter;
-        _levelData.CollectedDiamondCount = CollectedDiamonds;
 
         _scores.Item1 = oneSecondScore * (isCompleted && timeCompleted < timeAccess ? (timeAccess - timeCompleted).Seconds : 0);
         _scores.Item2 = EnemyKillCounter * oneKillEnemyScore;
@@ -132,7 +134,7 @@ public class LevelManager : MonoBehaviour, IGameManager
 
         SaveData();
 
-        Messenger<bool, LevelData, (int, int, int)>.Broadcast(GameEvents.LEVEL_END_SCREEN_OPENED, true, _levelData, _scores);
+        Messenger<bool, LevelData, (int, int, int)>.Broadcast(GameEvents.LEVEL_PASS_DATA_COLLECTED, true, _levelData, _scores);
     }
 
     private void OnLevelFailed()
@@ -141,7 +143,7 @@ public class LevelManager : MonoBehaviour, IGameManager
 
         SaveData();
 
-        Messenger<bool, LevelData, (int, int, int)>.Broadcast(GameEvents.LEVEL_END_SCREEN_OPENED, false, _levelData, _scores);
+        Messenger<bool, LevelData, (int, int, int)>.Broadcast(GameEvents.LEVEL_PASS_DATA_COLLECTED, false, _levelData, _scores);
     }
 
     private void SaveData()

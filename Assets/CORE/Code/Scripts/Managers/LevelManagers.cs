@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class LevelManagers : ManagersInitializator
 {
-	public static LevelManager GameProgress { get; private set; }
+	public static LevelManager Level { get; private set; }
 
 
     private void Awake()
@@ -15,7 +15,7 @@ public class LevelManagers : ManagersInitializator
         InitializeFields();
 
         _startSequence = new List<IGameManager>();
-        _startSequence.Add(GameProgress);
+        _startSequence.Add(Level);
 
         StartCoroutine(StartupManagers());
 	}
@@ -24,12 +24,12 @@ public class LevelManagers : ManagersInitializator
     {
         base.OnDestroy();
 
-        GameProgress = null;
+        Level = null;
 	}
 
     // Инициализация менеджеров
     private void InitializeFields()
     {
-        GameProgress = GetComponent<LevelManager>();
+        Level = GetComponent<LevelManager>();
     }
 }

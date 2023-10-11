@@ -57,7 +57,7 @@ public abstract class ManagersInitializator : MonoBehaviour
 		}
 
 		Status = ManagerStatus.Started;
-		Messenger.Broadcast(GameEvents.ALL_MANAGERS_STARTED);
+		Messenger.Broadcast(StartupNotice.ALL_MANAGERS_STARTED);
 		Debug.Log("All managers started up");
 	}
 }
