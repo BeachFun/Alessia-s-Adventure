@@ -9,6 +9,12 @@ public class PauseScreen : MonoBehaviour
     [SerializeField] private TMP_Text textDiamonds;
     [SerializeField] private TMP_Text textEnemies;
 
+    private float _timeScale;
+
+    private void Start()
+    {
+        _timeScale = Time.timeScale;
+    }
 
     private void UpdateData()
     {
@@ -40,5 +46,6 @@ public class PauseScreen : MonoBehaviour
     public void ExitLevel()
     {
         Messenger.Broadcast(GameEvents.LEVEL_FAILED);
+        Time.timeScale = _timeScale;
     }
 }
