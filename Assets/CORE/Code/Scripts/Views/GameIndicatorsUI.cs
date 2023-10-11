@@ -20,6 +20,8 @@ public class GameIndicatorsUI : MonoBehaviour
 
     private void Awake()
     {
+        Messenger.AddListener(StartupNotice.HUD_CANVAS_STARTED, Show);
+
         Messenger<int>.AddListener(GameEvents.PLAYER_DAGGER_CHANGED, UpdateDaggerCounter);
         Messenger<int>.AddListener(GameEvents.DIAMOND_CHANGED, UpdateDiamondCounter);
         Messenger<int, int>.AddListener(GameEvents.PLAYER_HEALTH_CHANGED, UpdateHealthIndicator);
@@ -30,6 +32,8 @@ public class GameIndicatorsUI : MonoBehaviour
 
     private void OnDestroy()
     {
+        Messenger.RemoveListener(StartupNotice.HUD_CANVAS_STARTED, Show);
+
         Messenger<int>.RemoveListener(GameEvents.PLAYER_DAGGER_CHANGED, UpdateDaggerCounter);
         Messenger<int>.RemoveListener(GameEvents.DIAMOND_CHANGED, UpdateDiamondCounter);
         Messenger<int, int>.RemoveListener(GameEvents.PLAYER_HEALTH_CHANGED, UpdateHealthIndicator);
@@ -73,4 +77,8 @@ public class GameIndicatorsUI : MonoBehaviour
     {
         textDiamondCounter.text = diamondCount.ToString("D5");
     }
+
+    public void Show() => gameObject.SetActive(true);
+
+    public void Hide() => gameObject.SetActive(false);
 }

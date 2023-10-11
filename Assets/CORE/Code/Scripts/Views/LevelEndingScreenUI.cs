@@ -35,23 +35,23 @@ public class LevelEndingScreenUI : MonoBehaviour
 
     private bool _isCompleted;
     private LevelData _data;
-
+    private (int, int, int) _scores;
 
     private void Awake()
     {
-        Messenger<bool, LevelData, (int, int, int)>.AddListener(GameEvents.LEVEL_END_SCREEN_OPENED, UpdateData);
+        Messenger<bool, LevelData, (int, int, int)>.AddListener(GameEvents.LEVEL_PASS_DATA_COLLECTED, UpdateData);
 
-        Close();
+        Hide();
     }
 
     private void OnDestroy()
     {
-        Messenger<bool, LevelData, (int, int, int)>.RemoveListener(GameEvents.LEVEL_END_SCREEN_OPENED, UpdateData);
+        Messenger<bool, LevelData, (int, int, int)>.RemoveListener(GameEvents.LEVEL_PASS_DATA_COLLECTED, UpdateData);
     }
 
-    internal void UpdateData(bool isCompleted, LevelData levelData, (int, int, int) scores)
+    internal void UpdateData(bool isCompleted,  LevelData levelData, (int, int, int) scores)
     {
-        Open();
+        Show();
 
         textLevelName.text = levelData.LevelName;
         textBoolResult.text = isCompleted ? "completed" : "failed";
@@ -78,13 +78,19 @@ public class LevelEndingScreenUI : MonoBehaviour
 
         _isCompleted = isCompleted;
         _data = levelData;
+        _scores = scores;
 
         StartCoroutine(ShowStars());
     }
 
-    public void Open() => gameObject.SetActive(true);
+    internal void OpenWithAnimation()
+    {
 
-    public void Close() => gameObject.SetActive(false);
+    }
+
+    public void Show() => gameObject.SetActive(true);
+
+    public void Hide() => gameObject.SetActive(false);
 
     public void ExitLevel()
     {
