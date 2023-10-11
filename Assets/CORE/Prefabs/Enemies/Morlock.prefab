@@ -44,10 +44,10 @@ GameObject:
   - component: {fileID: 1181370757079391568}
   - component: {fileID: 6992511103967847856}
   - component: {fileID: 8297647117516364563}
-  - component: {fileID: 7313403803357943038}
   - component: {fileID: 3057417320484904109}
   - component: {fileID: 4543649943513467764}
   - component: {fileID: 3844736588761221266}
+  - component: {fileID: 7313403803357943038}
   m_Layer: 8
   m_Name: Morlock
   m_TagString: Enemy
@@ -216,22 +216,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &7313403803357943038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8903401469520007687}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a83021911a8d19443a425866c9fa450a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hp: 20
-  maxHP: 20
-  def: 0
-  playerTag: Player
 --- !u!114 &3057417320484904109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,3 +287,19 @@ MonoBehaviour:
   routePoints: []
   isMoveBack: 0
   rotateSeconds: 3
+--- !u!114 &7313403803357943038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8903401469520007687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83021911a8d19443a425866c9fa450a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 20
+  maxHP: 20
+  def: 0
+  playerTag: Player
