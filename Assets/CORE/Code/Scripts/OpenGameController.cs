@@ -8,12 +8,12 @@ public class OpenGameController : MonoBehaviour
 
     void Awake()
     {
-        Messenger.AddListener(GameEvents.ALL_MANAGERS_STARTED, OpenScene);
+        Messenger.AddListener(StartupNotice.ALL_MANAGERS_STARTED, OpenScene);
     }
 
     private void OnDestroy()
     {
-        Messenger.RemoveListener(GameEvents.ALL_MANAGERS_STARTED, OpenScene);
+        Messenger.RemoveListener(StartupNotice.ALL_MANAGERS_STARTED, OpenScene);
     }
 
     private void OpenScene()
