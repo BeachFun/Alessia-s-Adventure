@@ -7204,18 +7204,13 @@ MonoBehaviour:
   - Rocky Level 3
   - Rocky Level 4
   - Rocky Level 5
-  - Crystal Level 1
-  - Crystal Level 2
-  - Crystal Level 3
   locationSprites:
   - {fileID: 21300000, guid: 44330770cc81c274b9c1d071aa525a19, type: 3}
-  - {fileID: 21300000, guid: 920aaa1b00668694698fa640fe042191, type: 3}
   locationImage: {fileID: 1956142477}
   buttonLeft: {fileID: 1586636753}
   buttonRight: {fileID: 420999819}
   groupListsLevels:
   - {fileID: 2104106875}
-  - {fileID: 134095284}
 --- !u!4 &2088610164
 Transform:
   m_ObjectHideFlags: 0
