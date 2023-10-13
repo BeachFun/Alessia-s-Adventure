@@ -150,7 +150,7 @@ Transform:
   m_GameObject: {fileID: 136883928}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.084558, y: -1.893883, z: 10.055945}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -208,9 +208,9 @@ MonoBehaviour:
     maxDiamonds: 105
   - levelIndex: 5
     levelName: Level 2-1
-    timeAccess: 
-    enemiesIntoLevel: 1
-    maxDiamonds: 0
+    timeAccess: 00:04:00
+    enemiesIntoLevel: 12
+    maxDiamonds: 53
   - levelIndex: 6
     levelName: Level 2-2
     timeAccess: 
@@ -247,7 +247,7 @@ Transform:
   m_GameObject: {fileID: 1433255047}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.89389735, y: 0.27666837, z: -0.16100281}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -397,7 +397,7 @@ Transform:
   m_GameObject: {fileID: 1707898745}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.89389735, y: 0.27666837, z: -0.16100281}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
