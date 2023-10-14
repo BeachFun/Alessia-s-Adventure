@@ -195,8 +195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76d5301e64573fb4fbe4132cbee206e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 30
-  maxHP: 30
+  hp: 50
+  maxHP: 50
   def: 0
 --- !u!114 &3149665745777619264
 MonoBehaviour:
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackOn: 1
-  attackDamage: 10
+  attackDamage: 13
   timeBetweenAttacks: 5
   enemyTag: Player
   attackData:

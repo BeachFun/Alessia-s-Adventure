@@ -7,7 +7,7 @@ using UnityEngine;
 [System.Serializable]
 public class Dagger : Projectile2D
 {
-    private string[] tagsToSkipOnTriggerEnter = { "Player", "Area" };
+    private string[] tagsToSkipOnTriggerEnter = { "Player", "Area", "Collectable" };
 
     private void FixedUpdate()
     {

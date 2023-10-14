@@ -9,13 +9,6 @@ public class PauseScreen : MonoBehaviour
     [SerializeField] private TMP_Text textDiamonds;
     [SerializeField] private TMP_Text textEnemies;
 
-    private float _timeScale;
-
-    private void Start()
-    {
-        _timeScale = Time.timeScale;
-    }
-
     private void UpdateData()
     {
         LevelData data = LevelManagers.Level.CurrentLevelData;
@@ -25,7 +18,7 @@ public class PauseScreen : MonoBehaviour
         textLevelName.text = data.LevelName;
         textTimeAccess.text = $"Time Access: {timeAccess.Minutes.ToString("D2")} : {timeAccess.Seconds.ToString("D2")}";
         textDiamonds.text = $"Collected Diamonds: {data.CollectedDiamondCount} out of {data.MaxDiamonds}";
-        textEnemies.text = $"Killed Enemies:{data.EnemiesKillCounter} out of {data.EnemiesIntoLevel}";
+        textEnemies.text = $"Killed Enemies: {data.EnemiesKillCounter} out of {data.EnemiesIntoLevel}";
     }
 
     public void Show()
@@ -40,12 +33,13 @@ public class PauseScreen : MonoBehaviour
 
     public void RestartLevel()
     {
+        Time.timeScale = 1f;
         Messenger.Broadcast(GameEvents.LEVEL_RESTART);
     }
 
     public void ExitLevel()
     {
+        Time.timeScale = 1f;
         Messenger.Broadcast(GameEvents.LEVEL_FAILED);
-        Time.timeScale = _timeScale;
     }
 }

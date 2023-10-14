@@ -10,8 +10,6 @@ public class LevelManagers : ManagersInitializator
 
     private void Awake()
 	{
-        DontDestroyOnLoad(gameObject);
-
         InitializeFields();
 
         _startSequence = new List<IGameManager>();

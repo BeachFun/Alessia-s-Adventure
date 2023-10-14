@@ -7,7 +7,7 @@ using UnityEngine;
 [System.Serializable]
 public class EnergyBall : Projectile2D
 {
-    private string[] tagsToSkipOnTriggerEnter = { "Enemy", "Area" };
+    private string[] tagsToSkipOnTriggerEnter = { "Enemy", "Area", "Collectable" };
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

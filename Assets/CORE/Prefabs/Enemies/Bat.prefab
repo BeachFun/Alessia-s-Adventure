@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootOn: 1
-  shootDamage: 10
+  shootDamage: 25
   timeBetweenShoots: 8
   shootSpeed: 80
   shootAnimationName: attack1

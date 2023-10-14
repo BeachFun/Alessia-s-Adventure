@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,8 +16,10 @@ public class GameIndicatorsUI : MonoBehaviour
     [SerializeField] private Image[] imageHearts;
     [SerializeField] private Image imageEnergyIndicator;
     [SerializeField] private TMP_Text textDaggerCounter;
+    [SerializeField] private TMP_Text textTimePassed;
 
     private bool lastEnergyIsMax;
+    private Coroutine timeUpdateRoutine;
 
     private void Awake()
     {
@@ -26,8 +29,13 @@ public class GameIndicatorsUI : MonoBehaviour
         Messenger<int>.AddListener(GameEvents.DIAMOND_CHANGED, UpdateDiamondCounter);
         Messenger<int, int>.AddListener(GameEvents.PLAYER_HEALTH_CHANGED, UpdateHealthIndicator);
         Messenger<float, float>.AddListener(GameEvents.PLAYER_ENERGY_CHANGED, UpdateEnergyIndicator);
+    }
 
+    private void Start()
+    {
         Messenger.Broadcast(GameEvents.GAME_INDICATORS_STARTED);
+
+        timeUpdateRoutine = StartCoroutine(TimeUpdateRoutine());
     }
 
     private void OnDestroy()
@@ -81,4 +89,15 @@ public class GameIndicatorsUI : MonoBehaviour
     public void Show() => gameObject.SetActive(true);
 
     public void Hide() => gameObject.SetActive(false);
+
+
+    private IEnumerator TimeUpdateRoutine()
+    {
+        while (true)
+        {
+            textTimePassed.text = UnityUtils.ToTimeSpanStringMS(LevelManagers.Level.TimePassed);
+            Debug.Log(LevelManagers.Level.TimePassed);
+            yield return new WaitForSeconds(1f);
+        }
+    }
 }

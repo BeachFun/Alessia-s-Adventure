@@ -16,7 +16,9 @@ public class GameProgressManager : MonoBehaviour, IGameManager
 
         yield return null;
 
-        // TODO: реализовать загрузку данных, которая будет заменять levelDatas
+        var data = GameManagers.DataSaver.Load<LevelData[]>("levelData");
+        if (data is not null && data.Length != 0)
+            levelDatas = data;
 
         Status = ManagerStatus.Started;
     }
@@ -24,6 +26,10 @@ public class GameProgressManager : MonoBehaviour, IGameManager
     internal LevelData this[int levelIndex]
     {
         get => levelDatas[levelIndex];
-        set => levelDatas[levelIndex] = value;
+        set
+        {
+            levelDatas[levelIndex] = value;
+            GameManagers.DataSaver.Dump(levelDatas, "levelData");
+        }
     }
 }

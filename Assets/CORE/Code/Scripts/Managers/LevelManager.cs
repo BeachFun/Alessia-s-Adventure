@@ -39,7 +39,7 @@ public class LevelManager : MonoBehaviour, IGameManager
     internal static int LevelIndex { get; set; }
     internal string LevelName { get; private set; }
     internal LevelData CurrentLevelData { get => _levelData; private set => _levelData = value; }
-
+    internal float TimePassed { get => Time.time - _levelStartTime; }
 
     private void OnDestroy()
     {
@@ -49,6 +49,7 @@ public class LevelManager : MonoBehaviour, IGameManager
             Messenger.RemoveListener(GameEvents.LEVEL_COMPLETE, OnLevelComplete);
             Messenger.RemoveListener(GameEvents.LEVEL_FAILED, OnLevelFailed);
             Messenger.RemoveListener(GameEvents.LEVEL_EXIT, OnLevelExit);
+            Messenger.RemoveListener(GameEvents.LEVEL_RESTART, LevelRestart);
             Messenger<string, int>.RemoveListener(GameEvents.ITEM_COLLECTED, OnItemCollected);
         }
     }
@@ -66,6 +67,7 @@ public class LevelManager : MonoBehaviour, IGameManager
         Messenger.AddListener(GameEvents.LEVEL_COMPLETE, OnLevelComplete);
         Messenger.AddListener(GameEvents.LEVEL_FAILED, OnLevelFailed);
         Messenger.AddListener(GameEvents.LEVEL_EXIT, OnLevelExit);
+        Messenger.AddListener(GameEvents.LEVEL_RESTART, LevelRestart);
         Messenger<string, int>.AddListener(GameEvents.ITEM_COLLECTED, OnItemCollected);
 
         Status = ManagerStatus.Started;
@@ -163,5 +165,10 @@ public class LevelManager : MonoBehaviour, IGameManager
     private void OnLevelExit()
     {
         SceneManager.LoadScene(sceneNameToBack);
+    }
+
+    public void LevelRestart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

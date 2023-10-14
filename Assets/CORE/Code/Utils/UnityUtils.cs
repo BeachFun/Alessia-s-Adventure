@@ -52,6 +52,13 @@ public class UnityUtils : MonoBehaviour
     {
         return new Vector2(-vector.x, -vector.y);
     }
+
+    public static string ToTimeSpanStringMS(float timeSeconds)
+    {
+        var ts = System.TimeSpan.FromSeconds(timeSeconds);
+
+        return $"{ts.Minutes.ToString("D2")}:{ts.Seconds.ToString("D2")}";
+    }
 }
 
 public enum SnapAxis2D { None, All, X, Y }

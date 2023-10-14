@@ -67,10 +67,10 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -0.38, y: 0.3}
-  - {x: -0.45, y: 0.2}
-  - {x: -0.45, y: -0.3}
-  - {x: -0.38, y: -0.4}
+  - {x: -0.38, y: 0.5}
+  - {x: -0.45, y: 0.4}
+  - {x: -0.45, y: -0.4}
+  - {x: -0.38, y: -0.5}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -324,7 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackOn: 1
-  attackDamage: 10
+  attackDamage: 15
   timeBetweenAttacks: 0
   enemyTag: Enemy
   attackData:
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackOn: 1
-  attackDamage: 10
+  attackDamage: 15
   timeBetweenAttacks: 0
   enemyTag: Enemy
   attackData:
@@ -382,7 +382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootOn: 1
-  shootDamage: 20
+  shootDamage: 25
   timeBetweenShoots: 0
   shootSpeed: 40
   shootAnimationName: throwAttack
@@ -478,10 +478,10 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: 0.38, y: 0.3}
-  - {x: 0.45, y: 0.2}
-  - {x: 0.45, y: -0.3}
-  - {x: 0.38, y: -0.4}
+  - {x: 0.38, y: 0.5}
+  - {x: 0.45, y: 0.4}
+  - {x: 0.45, y: -0.4}
+  - {x: 0.38, y: -0.5}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
