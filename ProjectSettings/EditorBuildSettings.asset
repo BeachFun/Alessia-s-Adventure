@@ -6,27 +6,27 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/CORE/Scenes/Bootstrap Scene.unity
+    path: Assets/#Scenes/Bootstrap Scene.unity
     guid: da4efd7b1a751fe40aba2de25f5dfa67
   - enabled: 1
-    path: Assets/CORE/Scenes/Main Menu.unity
+    path: Assets/#Scenes/Main Menu.unity
     guid: f717a87c54f96d04e8601d17da26eb64
   - enabled: 1
-    path: Assets/CORE/Scenes/Levels Map.unity
+    path: Assets/#Scenes/Levels Map.unity
     guid: d64acbdd4dc316347af36d388c583bb5
   - enabled: 1
-    path: Assets/CORE/Scenes/Rocky Level 1.unity
+    path: Assets/#Scenes/Rocky Level 1.unity
     guid: f7f27d077c79f8540a9e938bdc3f9ec4
   - enabled: 1
-    path: Assets/CORE/Scenes/Rocky Level 2.unity
+    path: Assets/#Scenes/Rocky Level 2.unity
     guid: f00f65393c415e642b03f9a42910d069
   - enabled: 1
-    path: Assets/CORE/Scenes/Rocky Level 3.unity
+    path: Assets/#Scenes/Rocky Level 3.unity
     guid: 02f3283b49b317c44b0a885b5336ad32
   - enabled: 1
-    path: Assets/CORE/Scenes/Rocky Level 4.unity
+    path: Assets/#Scenes/Rocky Level 4.unity
     guid: 7a899066e7c0d8a4e96b7dc60d1ecdd0
   - enabled: 1
-    path: Assets/CORE/Scenes/Rocky Level 5.unity
+    path: Assets/#Scenes/Rocky Level 5.unity
     guid: d62a8814939fd4241b25545b401a625d
   m_configObjects: {}

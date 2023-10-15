@@ -2,6 +2,10 @@
 {
     public static string LEVEL_IS_SELECTED_FOR_STARTED { get; private set; } = "LEVEL_IS_SELECTED_FOR_STARTED";
 
+    public static string MAIN_MENU_OPENED { get; private set; } = "MAIN_MENU_OPENED";
+    public static string UI_CLICKED { get; private set; } = "UI_CLICKED";
+
+
 
     public static string GAME_STARTED { get; private set; } = "GAME_STARTED";
     public static string LEVEL_RESTART { get; private set; } = "LEVEL_RESTART";

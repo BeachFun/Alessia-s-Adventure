@@ -32,4 +32,9 @@ public class HUDCanvasUI : MonoBehaviour
         if (isPaused) pauseScreen.Show();
         else pauseScreen.Hide();
     }
+
+    public void OnUIClick()
+    {
+        Messenger.Broadcast(GameEvents.UI_CLICKED);
+    }
 }

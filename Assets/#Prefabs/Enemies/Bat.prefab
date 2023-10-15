@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7509936409577972889}
   - component: {fileID: 4917672180056376277}
   - component: {fileID: 6609729337487380498}
+  - component: {fileID: 1167687780500804663}
   m_Layer: 8
   m_Name: Bat
   m_TagString: Enemy
@@ -272,3 +273,22 @@ MonoBehaviour:
     id: 0
     nameAnimatorProperty: attack2
   isAttackAllOnZone: 0
+--- !u!114 &1167687780500804663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820939710128056745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 096e6b3037154434e9110d2f5ef0d3c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackSoundVolume: 0.4
+  throwSoundVolume: 0.3
+  hitSoundVolume: 0.45
+  stepSoundVolume: 0.3
+  healSoundVolume: 0.3
+  jumpSoundVolume: 0.3
+  landingSoundVolume: 0.3
