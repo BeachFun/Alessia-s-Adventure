@@ -88,7 +88,11 @@ public class LevelEndingScreenUI : MonoBehaviour
 
     }
 
-    public void Show() => gameObject.SetActive(true);
+    public void Show()
+    {
+        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Close Level"]);
+        gameObject.SetActive(true);
+    }
 
     public void Hide() => gameObject.SetActive(false);
 

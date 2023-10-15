@@ -25,6 +25,11 @@ public class LevelsMapUISceneController : MonoBehaviour
         Messenger<int>.AddListener(GameEvents.LEVEL_IS_SELECTED_FOR_STARTED, OpenLevel);
     }
 
+    private void Start()
+    {
+        Messenger.Broadcast(GameEvents.MAIN_MENU_OPENED);
+    }
+
     private void OnDestroy()
     {
         Messenger<int>.RemoveListener(GameEvents.LEVEL_IS_SELECTED_FOR_STARTED, OpenLevel);
@@ -39,6 +44,7 @@ public class LevelsMapUISceneController : MonoBehaviour
     {
         if (levelNumber > levelsNames.Length || levelNumber < 0) return;
 
+        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Open Level"]);
         SceneManager.LoadScene(levelsNames[levelNumber]);
     }
 
@@ -60,6 +66,11 @@ public class LevelsMapUISceneController : MonoBehaviour
 
             LocationChangeHandler();
         }
+    }
+
+    public void OnUIClick()
+    {
+        Messenger.Broadcast(GameEvents.UI_CLICKED);
     }
 
     private void LocationChangeHandler()

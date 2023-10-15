@@ -5271,6 +5271,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Locust
       objectReference: {fileID: 0}
+    - target: {fileID: 2988007364489633110, guid: 095095d4e27d76d459a6fb06727b6332, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4789172253562785246, guid: 095095d4e27d76d459a6fb06727b6332, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.34
@@ -5970,7 +5974,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8903401469520007687, guid: f50612dbf190a03469443980f42c9599, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6654119717843473843, guid: f50612dbf190a03469443980f42c9599, type: 3}
@@ -7335,7 +7339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4150626833935404340, guid: 640e6f38587898a4da162c0aab5f10ed, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8263281725397485862, guid: 640e6f38587898a4da162c0aab5f10ed, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9639,6 +9643,7 @@ MonoBehaviour:
   - {fileID: 1213897640}
   imageEnergyIndicator: {fileID: 1061190168}
   textDaggerCounter: {fileID: 208740970}
+  textTimePassed: {fileID: 0}
 --- !u!114 &1980053441
 MonoBehaviour:
   m_ObjectHideFlags: 0

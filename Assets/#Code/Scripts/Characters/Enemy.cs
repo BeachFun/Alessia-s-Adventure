@@ -55,7 +55,7 @@ public class Enemy : Character
     public override void Death()
     {
         base.Death();
-
+        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Enemy Death"]);
         Messenger.Broadcast(GameEvents.ENEMY_KILLED);
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(CharacterSoundController))]
 
 public abstract class Character : MonoBehaviour
 {
@@ -28,5 +29,10 @@ public abstract class Character : MonoBehaviour
     public virtual void Flip()
     {
         _spriteRenderer.flipX = !_spriteRenderer.flipX;
+    }
+
+    public void StepSoundPlay()
+    {
+        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Step"]);
     }
 }

@@ -21,6 +21,8 @@ public class Pauser : MonoBehaviour
 
     public void TogglePause()
     {
+        GameManagers.Audio.TogglePauseMusic();
+
         isPaused = !isPaused;
         Time.timeScale = isPaused ? PauseTimeScale : NormalTimeScale; // Изменили состояние времени
 
