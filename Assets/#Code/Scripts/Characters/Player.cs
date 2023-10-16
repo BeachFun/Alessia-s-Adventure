@@ -130,7 +130,11 @@ public partial class Player : Character
     {
         if (!_inputOn) return;
 
-        if (!_movementController.IsGrounded) CurrentState = AnimatorStates.Jumping;
+        if (!_movementController.IsGrounded)
+        {
+            _animator.SetFloat("speed", 0f);
+            CurrentState = AnimatorStates.Jumping;
+        }
 
         if (CurrentState == AnimatorStates.Idle)
         {
@@ -159,7 +163,7 @@ public partial class Player : Character
             if (_inputController.ThrowInput)
             {
                 StopMove();
-                ThrowAttack();
+                if (ThrowAttack() == -1) ResumeMove();
             }
         }
 
@@ -359,16 +363,18 @@ public partial class Player
         }
     }
 
-    public void ThrowAttack()
+    public int ThrowAttack()
     {
         // Бросает меч в направлении куда смотрит
-        if (DaggerCount == 0 || Energy < throwEnergy) return;
+        if (DaggerCount == 0 || Energy < throwEnergy) return -1;
         Energy -= throwEnergy;
         DaggerCount--;
 
-        if (!(CurrentState == AnimatorStates.Idle || CurrentState == AnimatorStates.Jumping)) return;
+        if (!(CurrentState == AnimatorStates.Idle || CurrentState == AnimatorStates.Jumping)) return 0;
 
         _shootController.Throw(LookDirection, 1 + (CurrentState == AnimatorStates.Jumping ? Mathf.Abs(_horizonatalVelocity.x) : 0f));
+
+        return 1;
     }
 
     public override void Hurt(int attackDamage)
@@ -389,7 +395,7 @@ public partial class Player
 
     public void Heal(int hp)
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Heal"], 0.2f);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Heal"], 0.2f);
         HP = hp + HP > MaxHP ? MaxHP : HP + hp;
     }
 

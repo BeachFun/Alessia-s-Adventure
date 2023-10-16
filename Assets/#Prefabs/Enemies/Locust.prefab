@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8389294546765068266}
   - component: {fileID: 7275353200975382604}
   - component: {fileID: 381305149059366567}
+  - component: {fileID: 6247812605592112994}
   m_Layer: 8
   m_Name: Locust
   m_TagString: Enemy
@@ -207,6 +208,7 @@ MonoBehaviour:
     id: 0
     nameAnimatorProperty: attack
   isAttackAllOnZone: 0
+  timeBeforeAttack: 0
 --- !u!114 &8389294546765068266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,6 +274,26 @@ MonoBehaviour:
   maxHP: 40
   def: 5
   playerTag: Player
+--- !u!114 &6247812605592112994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2988007364489633110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 096e6b3037154434e9110d2f5ef0d3c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackSoundVolume: 0.3
+  throwSoundVolume: 0.3
+  hitSoundVolume: 0.3
+  stepSoundVolume: 0.3
+  healSoundVolume: 0.3
+  jumpSoundVolume: 0.3
+  landingSoundVolume: 0.3
+  slidingSoundVolume: 0.3
 --- !u!1 &3040844542253575025
 GameObject:
   m_ObjectHideFlags: 0

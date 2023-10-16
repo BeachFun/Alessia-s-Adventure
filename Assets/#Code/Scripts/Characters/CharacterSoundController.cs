@@ -13,45 +13,45 @@ public class CharacterSoundController : MonoBehaviour
 
     public void AttackSoundPlay()
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Attack"], attackSoundVolume);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Attack"], attackSoundVolume);
     }
 
     public void ThrowSoundPlay()
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Throw"], throwSoundVolume);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Throw"], throwSoundVolume);
     }
 
     public void HitSoundPlay()
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Hit"], hitSoundVolume);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Hit"], hitSoundVolume);
     }
 
     public void StepSoundPlay()
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Step"], stepSoundVolume);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Step"], stepSoundVolume);
     }
 
     public void HealSoundPlay()
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Hit"], healSoundVolume);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Hit"], healSoundVolume);
     }
 
     public void JumpSoundPlay()
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Jump"], jumpSoundVolume);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Jump"], jumpSoundVolume);
     }
 
     public void LandingSoundPlay()
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Landing"], landingSoundVolume);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Landing"], landingSoundVolume);
     }
     public void SlidingSoundPlay()
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Sliding"], slidingSoundVolume);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Sliding"], slidingSoundVolume);
     }
 
     public void EnergyBallThrowSoundPlay()
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Energy Ball"]);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Energy Ball"]);
     }
 }

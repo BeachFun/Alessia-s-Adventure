@@ -273,6 +273,7 @@ MonoBehaviour:
     id: 0
     nameAnimatorProperty: attack2
   isAttackAllOnZone: 0
+  timeBeforeAttack: 0.3
 --- !u!114 &1167687780500804663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,3 +293,4 @@ MonoBehaviour:
   healSoundVolume: 0.3
   jumpSoundVolume: 0.3
   landingSoundVolume: 0.3
+  slidingSoundVolume: 0.3

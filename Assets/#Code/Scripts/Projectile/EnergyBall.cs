@@ -13,7 +13,11 @@ public class EnergyBall : Projectile2D
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<Player>().Hurt(Damage);
+            try
+            {
+                collision.gameObject.GetComponent<Player>().Hurt(Damage);
+            }
+            catch { Debug.LogWarning("Error this"); }
         }
 
         if (!tagsToSkipOnTriggerEnter.Contains(collision.tag))

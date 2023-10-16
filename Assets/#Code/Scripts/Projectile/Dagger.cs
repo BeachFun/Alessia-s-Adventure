@@ -18,7 +18,11 @@ public class Dagger : Projectile2D
     {
         if (collision.gameObject.tag == "Enemy")
         {
-            collision.gameObject.GetComponent<Enemy>().Hurt(Damage);
+            try
+            {
+                collision.gameObject.GetComponent<Enemy>().Hurt(Damage);
+            }
+            catch { Debug.LogWarning("Error this"); }
         }
 
         if (!tagsToSkipOnTriggerEnter.Contains(collision.tag))
