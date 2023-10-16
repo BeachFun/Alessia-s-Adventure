@@ -213,7 +213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackOn: 1
   attackDamage: 13
-  timeBetweenAttacks: 5
+  timeBetweenAttacks: 2.9
   enemyTag: Player
   attackData:
   - distance: 1.536
@@ -225,6 +225,7 @@ MonoBehaviour:
     id: 0
     nameAnimatorProperty: left_attack
   isAttackAllOnZone: 0
+  timeBeforeAttack: 1.1
 --- !u!114 &6892881664462942190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,3 +266,4 @@ MonoBehaviour:
   healSoundVolume: 0.3
   jumpSoundVolume: 0.3
   landingSoundVolume: 0.3
+  slidingSoundVolume: 0.3

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Action = System.Action;
 
@@ -5,6 +6,8 @@ using Action = System.Action;
 
 public class AutoAttackController2D : AttackSystem2D
 {
+    [SerializeField] private float timeBeforeAttack = 0f;
+
     private Animator _animator;
 
     public event Action ActionBeforeAttack;
@@ -40,6 +43,13 @@ public class AutoAttackController2D : AttackSystem2D
     {
         if (!_attackOn) return;
         _attackOn = false;
+
+        StartCoroutine(AttackRoutine());
+    }
+
+    public IEnumerator AttackRoutine()
+    {
+        yield return new WaitForSeconds(timeBeforeAttack);
 
         if (_attackZoneIndex != -1) _animator.SetTrigger(attackData[_attackZoneIndex].NameAnimatorProperty);
     }
