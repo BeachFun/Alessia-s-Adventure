@@ -7,6 +7,7 @@ public class LevelsMapUISceneController : MonoBehaviour
 {
     [SerializeField] private string mainSceneName;
     [SerializeField] private string[] levelsNames;
+    [SerializeField] private Button[] levelButtons;
     [Header("Location")]
     [SerializeField] private Sprite[] locationSprites;
     [Header("UI Elements")]
@@ -21,6 +22,16 @@ public class LevelsMapUISceneController : MonoBehaviour
     private void Awake()
     {
         LocationChangeHandler();
+
+        bool lastIsComplete = true;
+        for (int i = 0; i < levelsNames.Length; i++)
+        {
+            LevelData data = GameManagers.GameProgress[i];
+
+            levelButtons[i].interactable = lastIsComplete;
+
+            lastIsComplete = data.IsComplete;
+        }
 
         Messenger<int>.AddListener(GameEvents.LEVEL_IS_SELECTED_FOR_STARTED, OpenLevel);
     }
