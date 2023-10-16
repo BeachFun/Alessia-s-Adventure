@@ -80,18 +80,18 @@ public class LevelManager : MonoBehaviour, IGameManager
     {
         if (itemName == ItemNames.Dagger)
         {
-            GameManagers.Audio.PlaySound(AudioClipPool.Instance["Dagger Collect"], 0.2f);
+            GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Dagger Collect"], 0.2f);
             player.DaggerCount += count;
         }
         if (itemName == ItemNames.SmallDiamond)
         {
-            GameManagers.Audio.PlaySound(AudioClipPool.Instance["Diamond Collect"], 0.15f);
+            GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Diamond Collect"], 0.15f);
             CollectedDiamonds++;
             _levelData.CollectedDiamondCount = CollectedDiamonds;
         }
         if (itemName == ItemNames.BigDiamond)
         {
-            GameManagers.Audio.PlaySound(AudioClipPool.Instance["Diamond Collect"], 0.25f);
+            GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Diamond Collect"], 0.25f);
             CollectedDiamonds += 5;
             _levelData.CollectedDiamondCount = CollectedDiamonds;
         }
@@ -109,7 +109,7 @@ public class LevelManager : MonoBehaviour, IGameManager
 
     private void OnLevelPassed(bool isCompleted)
     {
-        GameManagers.Audio.StopMusic();
+        GameManagers.Audio?.StopMusic();
 
         _lastTimeScale = Time.timeScale;
         Time.timeScale = 0f;
@@ -175,7 +175,7 @@ public class LevelManager : MonoBehaviour, IGameManager
 
     public void LevelRestart()
     {
-        GameManagers.Audio.StopMusic();
+        GameManagers.Audio?.StopMusic();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

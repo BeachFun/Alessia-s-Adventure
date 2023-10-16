@@ -44,7 +44,7 @@ public class LevelsMapUISceneController : MonoBehaviour
     {
         if (levelNumber > levelsNames.Length || levelNumber < 0) return;
 
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Open Level"]);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Open Level"]);
         SceneManager.LoadScene(levelsNames[levelNumber]);
     }
 

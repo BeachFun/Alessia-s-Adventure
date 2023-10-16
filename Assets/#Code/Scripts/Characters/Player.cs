@@ -389,7 +389,7 @@ public partial class Player
 
     public void Heal(int hp)
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Heal"], 0.2f);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Heal"], 0.2f);
         HP = hp + HP > MaxHP ? MaxHP : HP + hp;
     }
 

@@ -33,6 +33,6 @@ public abstract class Character : MonoBehaviour
 
     public void StepSoundPlay()
     {
-        GameManagers.Audio.PlaySound(AudioClipPool.Instance["Step"]);
+        GameManagers.Audio?.PlaySound(AudioClipPool.Instance["Step"]);
     }
 }
