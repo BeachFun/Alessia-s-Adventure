@@ -192,7 +192,7 @@ MonoBehaviour:
     levelName: Level 1-2
     timeAccess: 00:05:00
     enemiesIntoLevel: 7
-    maxDiamonds: 65
+    maxDiamonds: 68
   - levelIndex: 2
     levelName: Level 1-3
     timeAccess: 00:05:00
