@@ -161,7 +161,7 @@ public class PatrolMovingAl : MovementController2D
         Vector2 bottomBodyPoint = new Vector2(this.transform.position.x, _collider.bounds.min.y);
 
         RaycastHit2D[] hits = Physics2D.RaycastAll(bottomBodyPoint, Vector2.down)
-            .Where(e => e.transform.tag != this.tag && !_tagsToSkip.Contains(e.transform.tag))
+            .Where(e => e.transform.gameObject != this.gameObject && !_tagsToSkip.Contains(e.transform.tag))
             .ToArray();
 
         if (hits.Length > 0) return hits.First().point;
@@ -184,7 +184,7 @@ public class PatrolMovingAl : MovementController2D
         }
 
         RaycastHit2D[] hits = Physics2D.RaycastAll(forwardBodyPoint, direction)
-            .Where(e => e.transform.tag != this.tag && !_tagsToSkip.Contains(e.transform.tag))
+            .Where(e => e.transform.gameObject != this.gameObject && !_tagsToSkip.Contains(e.transform.tag))
             .ToArray();
 
         if (hits.Length > 0) return hits.First().point;

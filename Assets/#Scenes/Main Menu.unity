@@ -2224,7 +2224,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7509936409577972889, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: endPosition.x
-      value: -8.6
+      value: -7.6
       objectReference: {fileID: 0}
     - target: {fileID: 7509936409577972889, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: endPosition.y
@@ -2232,11 +2232,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7509936409577972889, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: rotateSeconds
-      value: 0
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7509936409577972889, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: startPosition.x
-      value: 8.6
+      value: 7.6
       objectReference: {fileID: 0}
     - target: {fileID: 7509936409577972889, guid: ddd74ed312eb18449ac24454c249da23, type: 3}
       propertyPath: startPosition.y
